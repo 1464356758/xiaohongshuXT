@@ -7,7 +7,7 @@
   "role": "AI系统制作员",
   "result": "BUILD_COMPLETE",
   "source_task_path": "任务/SYS-001/V1/任务.json",
-  "source_revision_path": "用户下发的SYS-001 R1返修任务（本轮会话）",
+  "source_revision_path": "返修/SYS-001/V1/R1/任务.json",
   "changed_scope": [
     "当前有效LOCK唯一指针",
     "状态机合法失败状态",
