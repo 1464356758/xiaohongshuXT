@@ -1,0 +1,105 @@
+{
+  "schema": "SYS-002_STATE_PHASE_TRANSITION_TABLE_V1",
+  "authority": "R01",
+  "rule": "main state与business phase是两个独立字段。任何迁移必须同时校验state与phase；PUBLISHED、DATA_FEEDBACK、CLOSED永远只能出现在phase字段，禁止作为state值。",
+  "legal_main_states": [
+    "READY",
+    "BUILDING",
+    "REVIEWING",
+    "REVISION_REQUIRED",
+    "PASS",
+    "LOCKED",
+    "NEXT_TASK",
+    "BLOCKED_INPUT_MISSING",
+    "BLOCKED_PRODUCT_UNCERTAIN",
+    "BLOCKED_SKU_UNCERTAIN",
+    "BLOCKED_PERSONA_MISSING",
+    "BLOCKED_ASSET_MISSING",
+    "BLOCKED_HOT_STALE",
+    "BLOCKED_CONFLICT"
+  ],
+  "tail_phase_values": [
+    "PUBLISH_PREP",
+    "PUBLISH_READY",
+    "PUBLISHED",
+    "DATA_WAITING",
+    "DATA_FEEDBACK",
+    "DATA_REVIEWED",
+    "NEXT_CONTENT",
+    "CLOSED"
+  ],
+  "forbidden_state_values": [
+    "PUBLISH_PREP",
+    "PUBLISH_READY",
+    "PUBLISHED",
+    "DATA_WAITING",
+    "DATA_FEEDBACK",
+    "DATA_REVIEWED",
+    "NEXT_CONTENT",
+    "CLOSED"
+  ],
+  "transitions": [
+    {
+      "business_stage": "准备发布包",
+      "from": {"state": "PASS", "phase": "FINAL_APPROVAL"},
+      "to": {"state": "BUILDING", "phase": "PUBLISH_PREP"},
+      "actor": "R01",
+      "trigger": "CONTENT LOCK有效并正式派发R14发布包任务"
+    },
+    {
+      "business_stage": "发布包完成，等待用户实际发布",
+      "from": {"state": "BUILDING", "phase": "PUBLISH_PREP"},
+      "to": {"state": "READY", "phase": "PUBLISH_READY"},
+      "actor": "R01",
+      "trigger": "R14发布包交付存在且R01确认"
+    },
+    {
+      "business_stage": "用户已发布，R14提交发布回执，R01确认",
+      "from": {"state": "READY", "phase": "PUBLISH_READY"},
+      "to": {"state": "PASS", "phase": "PUBLISHED"},
+      "actor": "R01",
+      "trigger": "用户实际发布且R14发布回执有效"
+    },
+    {
+      "business_stage": "等待24h/72h/7d数据",
+      "from": {"state": "PASS", "phase": "PUBLISHED"},
+      "to": {"state": "READY", "phase": "DATA_WAITING"},
+      "actor": "R01",
+      "trigger": "当前CONTENT需要进入数据采集阶段"
+    },
+    {
+      "business_stage": "R14提交有效数据，R01确认进入分析",
+      "from": {"state": "READY", "phase": "DATA_WAITING"},
+      "to": {"state": "BUILDING", "phase": "DATA_FEEDBACK"},
+      "actor": "R01",
+      "trigger": "R14真实数据交付有效"
+    },
+    {
+      "business_stage": "数据分析完成，等待总监决策",
+      "from": {"state": "BUILDING", "phase": "DATA_FEEDBACK"},
+      "to": {"state": "PASS", "phase": "DATA_REVIEWED"},
+      "actor": "R01",
+      "trigger": "R14数据分析/反馈报告完成且R01确认"
+    },
+    {
+      "business_stage": "进入下一篇",
+      "from": {"state": "PASS", "phase": "DATA_REVIEWED"},
+      "to": {"state": "NEXT_TASK", "phase": "NEXT_CONTENT"},
+      "actor": "R01",
+      "trigger": "R01决定启动下一CONTENT"
+    },
+    {
+      "business_stage": "当前CONTENT完整结束",
+      "from": {"state": "PASS", "phase": "DATA_REVIEWED"},
+      "to": {"state": "LOCKED", "phase": "CLOSED"},
+      "actor": "R01",
+      "trigger": "R01决定结束当前CONTENT生命周期"
+    }
+  ],
+  "write_rules": [
+    "R14不得直接修改state或phase，只能提交发布包、发布回执、数据快照和数据分析产物。",
+    "每次尾段迁移必须同时写state_transition与phase_transition，不得只写其中一个。",
+    "任何state值必须属于legal_main_states；任何phase值必须属于合法phase集合。",
+    "若state/phase组合不在本表允许的尾段组合内，R01不得确认迁移。"
+  ]
+}
