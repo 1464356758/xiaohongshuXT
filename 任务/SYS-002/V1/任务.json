@@ -4,36 +4,37 @@
   "input_revision": 1,
   "task_lifecycle_status": "ACTIVE",
   "task_type": ["14角色生产工作流总架构", "生产权限", "并行屏障", "资产版本", "发布数据闭环"],
-  "source": "用户转交的AI系统总监正式SYS-002与R1精确返修指令",
+  "source": "用户转交的AI系统总监正式SYS-002及R1/R2精确返修指令",
   "user_original_requirements": [
     "4个AI仅保留为系统建设组，未来内容生产使用14个常驻专业AI角色，另保留增长投放AI与商务合作AI两个条件角色。",
     "14角色必须明确职责、读写边界、禁止修改项、串并行关系、交接、LOCK、状态机、返修、防重复与用户最少操作。",
     "图片为最高重点之一，R10/R11/R12独立审核，PRODUCT/SKU/PERSONA/CONTENT LOCK继续作为硬门禁。",
-    "SYS-002 R1只修6个P1：正式任务、商品事实研究时序、并行交付证据、角色独立幂等、ASSET MANIFEST与三审同版、R14到R01状态闭环；顺带补数据DUE/RECORDED/MISSED和barrier revision。"
+    "SYS-002 R1修复正式任务、商品事实研究时序、并行交付证据、角色独立幂等、ASSET MANIFEST与三审同版、R14到R01状态闭环。",
+    "SYS-002 R2只修生产尾段state与phase混用，PUBLISHED/DATA_FEEDBACK/CLOSED必须仅作为phase。"
   ],
-  "goal": "在不推倒14角色主体架构的前提下，把SYS-002修成可从GitHub单一真源恢复、可证明并行角色真实完成、可证明三名图片审核员审核同一资产版本、且R14不越权改主状态的生产总架构。",
+  "goal": "在不推倒14角色主体架构的前提下，把SYS-002修成可从GitHub单一真源恢复、并能严格区分生产主状态与业务阶段的生产总架构。",
   "allowed_scope": [
     "系统/生产架构/SYS-002/WORKFLOW_GRAPH.json",
     "系统/生产架构/SYS-002/R1修正规则.md",
+    "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
     "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
-    "模板/生产/PRODUCTION_TASK_TEMPLATE.json",
-    "模板/生产/PARALLEL_BARRIER_TEMPLATE.json",
-    "模板/生产/ASSET_MANIFEST_TEMPLATE.json",
-    "模板/生产/IMAGE_REVIEW_EVIDENCE_TEMPLATE.json",
     "模板/生产/DATA_COLLECTION_PLAN_TEMPLATE.json",
     "任务/SYS-002/V1/任务.json",
-    "返修/SYS-002/V1/R1/任务.json",
-    "交付/SYS-002/V1/交付.json",
-    "交付/SYS-002/V1/R1/交付.json"
+    "返修/SYS-002/V1/R2/任务.json",
+    "交付/SYS-002/V1/R2/交付.json"
   ],
   "forbidden_scope": [
     "14个角色数量和主体职责",
     "R01总监独占正式权限",
+    "R02/R03/R04研究时序",
     "PRODUCT LOCK",
     "SKU LOCK",
     "PERSONA LOCK",
+    "ASSET MANIFEST",
     "R09图片制作职责",
     "R10/R11/R12三道图片审核职责",
+    "并行证据链",
+    "幂等键",
     "R13真实性审核职责",
     "四大发布硬门禁",
     "局部返修主体规则",
@@ -41,23 +42,22 @@
     "SYS-001"
   ],
   "acceptance_criteria": [
-    "R02与R03先并行，R01形成候选商品集后R04逐个深查，正式商品必须来自R04已研究集合，否则重新触发R04。",
-    "并行角色每个都有独立任务身份、独立幂等键和可验证交付证据；无正式交付路径或版本不吻合不得计入barrier COMPLETE。",
-    "R10/R11/R12最终有效审核证据必须绑定同一个asset_manifest_id与manifest_revision，并逐页绑定asset_id/asset_revision/fingerprint。",
-    "任一页面换图必须提高该页asset_revision与manifest_revision，旧页面相关审核自动失效；只重跑真正受影响审核，未受影响审核只能通过确定性carry-forward binding复用。",
-    "R14只产出发布包、发布回执和数据；PUBLISHED、DATA_FEEDBACK、NEXT_TASK/CLOSED都由R01确认或迁移。",
-    "24h/72h/7d窗口使用DUE/RECORDED/MISSED，普通聊天模式不宣称会自动到点执行。",
-    "required_role_ids变更必须有barrier_revision/task revision，禁止静默删角色。",
-    "新聊天只读GitHub能恢复SYS-002存在原因、R1修改范围、冻结范围、基线固定提交和交付位置。"
+    "main state与business phase始终是两个独立字段。",
+    "PUBLISHED、DATA_FEEDBACK、CLOSED不得作为state值。",
+    "尾段每次正式迁移同时记录state_transition与phase_transition，且只由R01执行。",
+    "发布尾段映射为BUILDING/PUBLISH_PREP → READY/PUBLISH_READY → PASS/PUBLISHED。",
+    "数据尾段映射为READY/DATA_WAITING → BUILDING/DATA_FEEDBACK → PASS/DATA_REVIEWED → NEXT_TASK/NEXT_CONTENT或LOCKED/CLOSED。",
+    "新AI只读生产当前进度即可分别回答主状态与业务阶段。"
   ],
   "baseline_fixed_commit": "57de47e58758762ffb904a81823e7242a971fd4d",
-  "current_fixed_commit_at_task_creation": "57de47e58758762ffb904a81823e7242a971fd4d",
-  "active_revision_path": "返修/SYS-002/V1/R1/任务.json",
-  "delivery_path": "交付/SYS-002/V1/R1/交付.json",
+  "r1_fixed_commit": "6e95e466479b0d19b2f7a13c51beaf6c786f4a97",
+  "current_revision_round": "R2",
+  "active_revision_path": "返修/SYS-002/V1/R2/任务.json",
+  "delivery_path": "交付/SYS-002/V1/R2/交付.json",
   "formal_task_path": "任务/SYS-002/V1/任务.json",
   "assigned_to": "AI系统制作员",
   "review_after_build": {
-    "AI系统审核员A": ["正式任务", "并行证据", "幂等键", "R14→R01状态闭环"],
-    "AI系统审核员B": ["商品研究时序", "ASSET MANIFEST", "三审同版图片机制"]
+    "AI系统审核员A": ["state/phase拆分", "STATE_PHASE_TRANSITION_TABLE", "生产尾段迁移合法性"],
+    "AI系统审核员B": "PASS_FROZEN_NO_REVIEW_REQUIRED"
   }
 }
