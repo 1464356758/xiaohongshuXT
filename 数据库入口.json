@@ -1,0 +1,40 @@
+{
+  "project_id": "XHS-XT",
+  "system_version": "V1.0",
+  "repository": "https://github.com/1464356758/xiaohongshuXT",
+  "branch": "main",
+  "single_source_of_truth": "GitHub文字资料",
+  "image_transport": "USER_FILE_ALLOWED_NOT_REQUIRED_IN_GITHUB",
+  "current_progress": "当前进度.json",
+  "core_rules": "系统/系统核心规则V1.0.md",
+  "active_task": "任务/SYS-001/V1/任务.json",
+  "lock_roots": {
+    "product": "批准/PRODUCT/",
+    "sku": "批准/SKU/",
+    "persona": "批准/PERSONA/",
+    "content": "批准/CONTENT/"
+  },
+  "template_roots": {
+    "task": "模板/任务/",
+    "research": "模板/研究/",
+    "locks": "模板/锁定/",
+    "image": "模板/图片/",
+    "review": "模板/审核/",
+    "revision": "模板/返修/"
+  },
+  "production_roots": {
+    "hot_research": "产物/热点研究/",
+    "product_research": "产物/商品研究/",
+    "copy": "产物/文案/",
+    "image_tasks": "产物/图片任务/",
+    "reviews": "审核/",
+    "publish_packages": "发布包/"
+  },
+  "formal_authority": {
+    "formal_task": "AI系统总监",
+    "formal_state": "AI系统总监",
+    "lock_approval": "AI系统总监",
+    "final_system_acceptance": "AI系统总监"
+  },
+  "read_rule": "每轮先读本文件，再读当前进度，再读当前任务；不得用聊天记忆覆盖仓库。"
+}

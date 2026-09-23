@@ -1,0 +1,26 @@
+{
+  "lock_type": "PRODUCT_LOCK",
+  "lock_id": "PRODUCT-000-LOCK-V1",
+  "status": "DRAFT|LOCKED|SUPERSEDED",
+  "brand": "",
+  "formal_product_name": "",
+  "series": "",
+  "model": "",
+  "version": "",
+  "capacity_or_size": "",
+  "package_description": "",
+  "official_url": "",
+  "ecommerce_urls": [],
+  "reference_images": [
+    {"ref_id":"REF-01","transport":"GITHUB|USER_FILE|URL","location":"","purpose":"产品身份锚点"}
+  ],
+  "known_sku_count_or_options": [],
+  "sku_lock_required": true,
+  "do_not_confuse_with": [],
+  "identity_checks": ["品牌","正式名称","系列","型号","包装版本"],
+  "source_paths": [],
+  "input_revision": 1,
+  "approved_by": "AI系统总监",
+  "approved_at": null,
+  "supersedes": null
+}

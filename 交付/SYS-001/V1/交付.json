@@ -1,0 +1,42 @@
+{
+  "task_id": "SYS-001",
+  "task_version": "V1",
+  "input_revision": 1,
+  "builder": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "system_version": "V1.0",
+  "deliverables": [
+    "系统/系统核心规则V1.0.md",
+    "数据库入口.json",
+    "当前进度.json",
+    "任务/SYS-001/V1/任务.json",
+    "模板/任务/TASK_TEMPLATE.json",
+    "模板/研究/HOT_RESEARCH_TEMPLATE.json",
+    "模板/研究/PRODUCT_RESEARCH_TEMPLATE.json",
+    "模板/锁定/PRODUCT_LOCK_TEMPLATE.json",
+    "模板/锁定/SKU_LOCK_TEMPLATE.json",
+    "模板/锁定/PERSONA_LOCK_TEMPLATE.json",
+    "模板/图片/PAGE_IMAGE_TASK_TEMPLATE.json",
+    "模板/审核/A_REVIEW_TEMPLATE.json",
+    "模板/审核/B_REVIEW_TEMPLATE.json",
+    "模板/审核/PRODUCT_IMAGE_VERIFY_TEMPLATE.json",
+    "模板/审核/TRUTHFULNESS_REVIEW_TEMPLATE.json",
+    "模板/返修/PARTIAL_REVISION_TEMPLATE.json"
+  ],
+  "self_check": {
+    "requirements_covered": true,
+    "image_priority_materialized": true,
+    "multi_sku_hard_gate": true,
+    "persona_not_robotic_template": true,
+    "product_mismatch_blocks": true,
+    "hot_staleness_blocks": true,
+    "partial_revision": true,
+    "double_review": true,
+    "idempotency": true,
+    "old_version_protection": true,
+    "dead_loop_exit": true,
+    "short_reply_rule": true
+  },
+  "formal_pass_declared": false,
+  "next": ["AI系统审核员A","AI系统审核员B"]
+}

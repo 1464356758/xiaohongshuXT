@@ -1,0 +1,54 @@
+{
+  "content_id": "CONTENT-000",
+  "image_task_version": "V1",
+  "product_lock_id": "PRODUCT-000-LOCK-V1",
+  "sku_lock_id": "SKU-000-LOCK-V1",
+  "persona_lock_id": "PERSONA-000-LOCK-V1",
+  "global_rules": {
+    "not_every_page_requires_persona": true,
+    "product_identity_must_match_lock": true,
+    "wrong_or_uncertain_product_action": "BLOCKED",
+    "image_transport": "USER_FILE_ALLOWED"
+  },
+  "pages": [
+    {
+      "page_id": "P1",
+      "status": "OPEN",
+      "page_goal": "",
+      "page_type": "人物|产品静物|手持|局部|眼妆|唇妆|美甲特写|桌面|梳妆台|镜子|生活场景|对比|信息图",
+      "main_subject": "",
+      "persona_required": true,
+      "persona": {
+        "lock_id": "PERSONA-000-LOCK-V1",
+        "clothing": "",
+        "hairstyle": "",
+        "makeup": "",
+        "accessories": "",
+        "expression": "",
+        "pose_or_action": ""
+      },
+      "product": {
+        "required": true,
+        "product_lock_id": "PRODUCT-000-LOCK-V1",
+        "sku_lock_id": "SKU-000-LOCK-V1",
+        "placement": "",
+        "orientation": "",
+        "visibility_required": [],
+        "must_not_mutate": ["品牌","包装","系列","SKU/色号","盘面结构","产品颜色","Logo","可见文字","版本","外观"]
+      },
+      "shot_size": "特写|近景|中景|半身|全身|俯拍静物",
+      "camera_angle": "",
+      "composition": "",
+      "scene_or_background": "",
+      "lighting": "",
+      "page_copy": {"headline":"","subheadline":"","body":"","labels":[]},
+      "typography_hierarchy": {"level_1":"","level_2":"","level_3":""},
+      "information_hierarchy": [],
+      "negative_space": "",
+      "safe_area": "",
+      "reference_images": [],
+      "forbidden": [],
+      "acceptance_checks": ["页面目的达成","商品身份准确","需要人物时身份一致","文字无错位/乱码","构图可读"]
+    }
+  ]
+}

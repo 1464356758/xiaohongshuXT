@@ -1,0 +1,29 @@
+{
+  "content_id": "CONTENT-000",
+  "research_version": "V1",
+  "searched_at": "ISO-8601",
+  "timezone": "Asia/Shanghai",
+  "search_window_days": 30,
+  "freshness_policy": {
+    "new_launch_or_controversy_prefer_days": 7,
+    "trend_prefer_days": 30,
+    "must_recheck_if_expired": true
+  },
+  "signals": [
+    {
+      "topic": "",
+      "category": "新品|新色|联名|限定|节日|季节|妆容|审美|争议|评论区问题|其他",
+      "evidence_date": "",
+      "source_type": "小红书|官方|电商|其他公开来源",
+      "source_ref": "",
+      "observed_signal": "",
+      "freshness_class": "HOT|RECENT|AGING|STALE",
+      "valid_until": "",
+      "confidence": "HIGH|MEDIUM|LOW"
+    }
+  ],
+  "candidate_products": [],
+  "selected_direction": "",
+  "blocked_reason": null,
+  "result": "COMPLETE|BLOCKED_HOT_STALE|BLOCKED_INPUT_MISSING"
+}

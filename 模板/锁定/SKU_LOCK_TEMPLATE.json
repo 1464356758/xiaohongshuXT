@@ -1,0 +1,32 @@
+{
+  "lock_type": "SKU_LOCK",
+  "lock_id": "SKU-000-LOCK-V1",
+  "status": "DRAFT|LOCKED|SUPERSEDED",
+  "product_lock_id": "PRODUCT-000-LOCK-V1",
+  "ecommerce_url": "",
+  "multi_sku_link": true,
+  "target_sku": {
+    "platform_sku_name": "",
+    "sku_id_if_visible": "",
+    "shade_or_color_number": "",
+    "shade_or_color_name": "",
+    "model_or_variant": "",
+    "capacity_or_size": "",
+    "package_version": "",
+    "palette_pan_count_or_structure": "",
+    "visible_color_signature": [],
+    "logo_or_text_signature": [],
+    "included_accessories": []
+  },
+  "reference_images": [
+    {"ref_id":"SKU-REF-01","transport":"GITHUB|USER_FILE|URL","location":"","must_match":true}
+  ],
+  "sibling_skus_in_same_link": [],
+  "do_not_confuse_with": [],
+  "disambiguation_notes": "说明为什么本SKU与同链接其他SKU不同。",
+  "generation_gate": "只有status=LOCKED且目标SKU字段足以唯一识别时才允许生成含商品图片。",
+  "input_revision": 1,
+  "approved_by": "AI系统总监",
+  "approved_at": null,
+  "supersedes": null
+}

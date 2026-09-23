@@ -1,0 +1,42 @@
+{
+  "content_id": "CONTENT-000",
+  "product_candidate_id": "PRODUCT-CAND-000",
+  "version": "V1",
+  "official": {
+    "brand": "",
+    "formal_name": "",
+    "series": "",
+    "model": "",
+    "launch_or_version": "",
+    "official_url": "",
+    "claims": []
+  },
+  "ecommerce": {
+    "platform": "淘宝|天猫|其他",
+    "url": "",
+    "has_multiple_skus": true,
+    "sku_options_seen": [],
+    "buyer_review_sample_notes": [],
+    "positive_patterns": [],
+    "negative_patterns": [],
+    "buyer_show_patterns": []
+  },
+  "xiaohongshu_competitor_research": {
+    "sample_count": 0,
+    "content_patterns": [],
+    "high_frequency_questions": [],
+    "high_frequency_praise": [],
+    "high_frequency_complaints": [],
+    "conflicting_opinions": []
+  },
+  "usage": {
+    "scenarios": [],
+    "target_users": [],
+    "advantages_supported": [],
+    "limitations_supported": []
+  },
+  "evidence_boundary": "他人体验只能作为聚合研究证据，不得改写成账号主体亲身经历。",
+  "recommended_for_lock": false,
+  "missing_facts": [],
+  "result": "COMPLETE|BLOCKED_PRODUCT_UNCERTAIN"
+}

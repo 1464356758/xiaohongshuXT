@@ -1,0 +1,12 @@
+{
+  "task_id": "SYS-001",
+  "task_version": "V1",
+  "input_revision": 1,
+  "system_version": "V1.0",
+  "type": ["系统架构","工作流","图片系统","商品系统","人物系统","审核机制","GitHub结构"],
+  "goal": "建立首个可运行完整骨架版，优先打通热点研究、PRODUCT/SKU锁定、PERSONA LOCK、逐页图片任务、商品图片核验、双审核、GitHub单一真源和简短回复。",
+  "must_not_change": ["4角色建设闭环","仓库地址","图片可由用户文件传递","非每页必须有人物","图片优先级","总监正式权限"],
+  "acceptance": ["完整流程","目录结构","状态机","版本与LOCK","三类LOCK模板","热点及商品研究模板","逐页图片任务","独立商品核验","A+B双审核","局部返修","简短回复"],
+  "assigned_to": "AI系统制作员",
+  "result_expected": "BUILD COMPLETE"
+}

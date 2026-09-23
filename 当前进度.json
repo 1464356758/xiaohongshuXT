@@ -1,0 +1,19 @@
+{
+  "project_id": "XHS-XT",
+  "system_version": "V1.0",
+  "task_id": "SYS-001",
+  "task_version": "V1",
+  "input_revision": 1,
+  "state": "REVIEWING",
+  "state_owner": "AI系统总监",
+  "build_result": "BUILD_COMPLETE_PENDING_A_B_REVIEW",
+  "builder": "AI系统制作员",
+  "active_task_path": "任务/SYS-001/V1/任务.json",
+  "delivery_path": "交付/SYS-001/V1/交付.json",
+  "review_A": "PENDING",
+  "review_B": "PENDING",
+  "lock_status": "UNLOCKED",
+  "next_roles": ["AI系统审核员A", "AI系统审核员B"],
+  "bootstrap_note": "本文件为SYS-001首轮骨架初始化。此后正式状态迁移只能由AI系统总监执行。",
+  "updated_at": "2026-09-23T17:05:00+08:00"
+}

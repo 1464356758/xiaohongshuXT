@@ -1,0 +1,26 @@
+{
+  "review_type": "SYSTEM_REVIEW_A",
+  "task_id": "SYS-000",
+  "review_version": "V1",
+  "reviewer": "AI系统审核员A",
+  "independent_review": true,
+  "checks": {
+    "requirements_coverage": "PASS|FAIL",
+    "workflow_closed_loop": "PASS|FAIL",
+    "role_permissions": "PASS|FAIL",
+    "single_source_of_truth": "PASS|FAIL",
+    "state_machine": "PASS|FAIL",
+    "version_and_lock": "PASS|FAIL",
+    "dead_loop_exit": "PASS|FAIL",
+    "idempotency": "PASS|FAIL",
+    "complexity_reasonable": "PASS|FAIL",
+    "recovery_paths": "PASS|FAIL"
+  },
+  "P0": [],
+  "P1": [],
+  "P2": [],
+  "must_fix": [],
+  "conclusion": "PASS|FAIL",
+  "pass_condition": "P0=0 AND P1=0",
+  "next": "AI系统总监"
+}

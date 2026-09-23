@@ -1,0 +1,33 @@
+{
+  "review_type": "SYSTEM_REVIEW_B",
+  "task_id": "SYS-000",
+  "review_version": "V1",
+  "reviewer": "AI系统审核员B",
+  "independent_review": true,
+  "checks": {
+    "image_tasks_are_page_specific": "PASS|FAIL",
+    "multi_sku_disambiguation": "PASS|FAIL",
+    "product_lock_strength": "PASS|FAIL",
+    "product_image_verification": "PASS|FAIL",
+    "persona_stability": "PASS|FAIL",
+    "persona_variation_allowed": "PASS|FAIL",
+    "not_every_page_forced_persona": "PASS|FAIL",
+    "hot_freshness": "PASS|FAIL",
+    "effect_research_boundary": "PASS|FAIL",
+    "human_natural_copy": "PASS|FAIL",
+    "wrong_product_blocks_flow": "PASS|FAIL",
+    "partial_revision": "PASS|FAIL",
+    "independent_image_review": "PASS|FAIL",
+    "user_operation_simple": "PASS|FAIL",
+    "short_chat_reply": "PASS|FAIL"
+  },
+  "flip_tests": ["同链接4色号拿错","旧包装新正文","人物换脸","全页同姿势","漂亮但SKU错误","热点过期","他人评价冒充我用了三天","A PASS但商品错误","单页错误却全套重做","input_revision变化仍跑旧任务"],
+  "P0": [],
+  "P1": [],
+  "P2": [],
+  "most_dangerous_gap": "",
+  "must_fix": [],
+  "conclusion": "PASS|FAIL",
+  "pass_condition": "P0=0 AND P1=0",
+  "next": "AI系统总监"
+}

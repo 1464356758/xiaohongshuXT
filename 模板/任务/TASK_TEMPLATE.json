@@ -1,0 +1,19 @@
+{
+  "task_id": "CONTENT-000",
+  "task_version": "V1",
+  "input_revision": 1,
+  "state": "READY",
+  "created_by": "AI系统总监",
+  "assigned_role": "ROLE_NAME",
+  "goal": "",
+  "input_paths": [],
+  "required_locks": [],
+  "asset_transport": "GITHUB_TEXT_OR_USER_FILE",
+  "scope": [],
+  "forbidden_changes": [],
+  "acceptance": [],
+  "idempotency_key": "CONTENT-000|V1|1|ROLE_NAME",
+  "on_success": "REVIEWING",
+  "on_failure": "BLOCKED_OR_REVISION_REQUIRED",
+  "supersedes": null
+}

@@ -1,0 +1,29 @@
+{
+  "review_type": "PRODUCT_IMAGE_VERIFY",
+  "content_id": "CONTENT-000",
+  "image_task_version": "V1",
+  "product_lock_id": "PRODUCT-000-LOCK-V1",
+  "sku_lock_id": "SKU-000-LOCK-V1",
+  "pages": [
+    {
+      "page_id": "P1",
+      "image_asset_ref": "USER_FILE_OR_PATH",
+      "checks": {
+        "brand": "PASS|FAIL|UNKNOWN",
+        "formal_product_or_series": "PASS|FAIL|UNKNOWN",
+        "sku_or_shade": "PASS|FAIL|UNKNOWN",
+        "package_version": "PASS|FAIL|UNKNOWN",
+        "palette_or_structure": "PASS|FAIL|UNKNOWN",
+        "product_color": "PASS|FAIL|UNKNOWN",
+        "logo": "PASS|FAIL|UNKNOWN",
+        "visible_text": "PASS|FAIL|UNKNOWN",
+        "cap_bottle_body_accessories": "PASS|FAIL|UNKNOWN",
+        "not_confused_with_forbidden_items": "PASS|FAIL|UNKNOWN"
+      },
+      "result": "PASS|FAIL|BLOCKED",
+      "reason": "",
+      "revision_scope_if_fail": ["P1"]
+    }
+  ],
+  "hard_rule": "任一关键身份字段FAIL则该页FAIL；无法确认关键身份则BLOCKED；不得因画面美观覆盖商品错误。"
+}

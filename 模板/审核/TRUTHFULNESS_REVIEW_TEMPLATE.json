@@ -1,0 +1,25 @@
+{
+  "review_type": "COPY_TRUTHFULNESS",
+  "content_id": "CONTENT-000",
+  "copy_version": "V1",
+  "claims": [
+    {
+      "claim_text": "",
+      "claim_type": "官方事实|可观察事实|聚合用户反馈|编辑性判断|个人体验",
+      "evidence_refs": [],
+      "personal_experience_verified": false,
+      "risk": "LOW|MEDIUM|HIGH",
+      "result": "PASS|FAIL|BLOCKED",
+      "rewrite_requirement": ""
+    }
+  ],
+  "checks": {
+    "no_fabricated_first_person_use": "PASS|FAIL",
+    "other_users_not_impersonated_as_persona": "PASS|FAIL",
+    "effect_claims_supported": "PASS|FAIL",
+    "copy_is_natural_not_research_report": "PASS|FAIL",
+    "public_copy_does_not_need_internal_production_notes": "PASS|FAIL"
+  },
+  "forbidden_unless_verified": ["我用了三天","我实测持妆X小时","我回购了","我用了以后皮肤明显变好"],
+  "conclusion": "PASS|FAIL|BLOCKED"
+}
