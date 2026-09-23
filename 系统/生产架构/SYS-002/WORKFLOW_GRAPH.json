@@ -1,13 +1,15 @@
 {
-  "schema": "SYS-002_WORKFLOW_GRAPH_V1_R1",
+  "schema": "SYS-002_WORKFLOW_GRAPH_V1_R2",
   "content_unit": "CONTENT_ID",
   "formal_router": "R01",
+  "state_phase_transition_table": "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
   "global_execution_contracts": {
     "role_idempotency_key": "content_id|stage|role_id|task_version|input_revision|revision_round|dependency_revision",
     "parallel_role_rule": "每个并行角色必须拥有独立task_path、独立delivery_path、独立role_id与独立idempotency_key；父任务不能替代子角色交付。",
     "barrier_evidence_required_fields": ["role_id", "task_path", "delivery_path", "result", "task_version", "input_revision", "dependency_revision", "completed_at", "delivery_fingerprint_or_commit"],
     "barrier_complete_rule": "required_role_ids中的每个角色都必须存在正式delivery_path，且task_version/input_revision/dependency_revision与当前barrier要求完全吻合，result满足本阶段要求，才能计入COMPLETE。",
-    "barrier_revision_rule": "required_role_ids、依赖版本或barrier规则发生变化时，R01必须创建新的barrier_revision并对应正式task revision；禁止静默删角色或静默改变依赖。"
+    "barrier_revision_rule": "required_role_ids、依赖版本或barrier规则发生变化时，R01必须创建新的barrier_revision并对应正式task revision；禁止静默删角色或静默改变依赖。",
+    "state_phase_rule": "main state与business phase必须分字段记录。PUBLISHED、DATA_FEEDBACK、CLOSED只能作为phase；所有生产尾段迁移必须同时记录state_transition与phase_transition，并由R01确认。"
   },
   "asset_identity_contract": {
     "manifest_runtime_path": "生产/资产清单/{CONTENT_ID}/{Vn}/M{manifest_revision}/ASSET_MANIFEST.json",
@@ -112,50 +114,113 @@
       "output": "CONTENT_LOCK"
     },
     {
-      "id": "S8A_PUBLISH_PACKAGE",
-      "type": "SERIAL_OUTPUT_ONLY",
-      "role": "R14",
+      "id": "S8A_ENTER_PUBLISH_PREP",
+      "type": "SERIAL_STATE_PHASE_GATE",
+      "role": "R01",
       "precondition": "CONTENT_LOCK",
-      "output": "PUBLISH_PACKAGE",
-      "main_state_write": false
+      "state_transition": {"from": "PASS", "to": "BUILDING"},
+      "phase_transition": {"from": "FINAL_APPROVAL", "to": "PUBLISH_PREP"},
+      "next": "R14生成发布包"
     },
     {
-      "id": "S8B_USER_ACTUAL_PUBLISH",
+      "id": "S8B_PUBLISH_PACKAGE",
+      "type": "SERIAL_OUTPUT_ONLY",
+      "role": "R14",
+      "precondition": "state=BUILDING AND phase=PUBLISH_PREP",
+      "output": "PUBLISH_PACKAGE",
+      "main_state_write": false,
+      "phase_write": false
+    },
+    {
+      "id": "S8C_CONFIRM_PUBLISH_READY",
+      "type": "SERIAL_STATE_PHASE_GATE",
+      "role": "R01",
+      "precondition": "valid R14 PUBLISH_PACKAGE",
+      "state_transition": {"from": "BUILDING", "to": "READY"},
+      "phase_transition": {"from": "PUBLISH_PREP", "to": "PUBLISH_READY"}
+    },
+    {
+      "id": "S8D_USER_ACTUAL_PUBLISH",
       "type": "EXTERNAL_USER_ACTION",
-      "precondition": "PUBLISH_PACKAGE",
+      "precondition": "state=READY AND phase=PUBLISH_READY",
       "output": "actual publish event if user publishes"
     },
     {
-      "id": "S8C_PUBLISH_RECEIPT",
+      "id": "S8E_PUBLISH_RECEIPT",
       "type": "SERIAL_OUTPUT_ONLY",
       "role": "R14",
       "precondition": "user provides actual publish result/link or verifiable receipt",
       "output": "PUBLISH_RECEIPT",
-      "main_state_write": false
+      "main_state_write": false,
+      "phase_write": false
     },
     {
-      "id": "S8D_CONFIRM_PUBLISHED",
-      "type": "SERIAL_STATE_GATE",
+      "id": "S8F_CONFIRM_PUBLISHED",
+      "type": "SERIAL_STATE_PHASE_GATE",
       "role": "R01",
       "precondition": "valid R14 PUBLISH_RECEIPT",
-      "state_transition": "-> PUBLISHED"
+      "state_transition": {"from": "READY", "to": "PASS"},
+      "phase_transition": {"from": "PUBLISH_READY", "to": "PUBLISHED"}
     },
     {
-      "id": "S9_DATA_WINDOWS",
+      "id": "S9A_ENTER_DATA_WAITING",
+      "type": "SERIAL_STATE_PHASE_GATE",
+      "role": "R01",
+      "precondition": "state=PASS AND phase=PUBLISHED AND data collection required",
+      "state_transition": {"from": "PASS", "to": "READY"},
+      "phase_transition": {"from": "PUBLISHED", "to": "DATA_WAITING"}
+    },
+    {
+      "id": "S9B_DATA_WINDOWS",
       "type": "MANUAL_TRIGGER_DATA_COLLECTION",
       "role": "R14",
+      "precondition": "state=READY AND phase=DATA_WAITING",
       "windows": ["24h", "72h", "7d"],
       "window_status_enum": ["DUE", "RECORDED", "MISSED"],
       "normal_chat_rule": "普通聊天模式不会自动在未来醒来。没有外部自动化时，由用户在到点后再次触发R14；若错过则记录MISSED，不补猜数据。",
-      "main_state_write": false
+      "main_state_write": false,
+      "phase_write": false
     },
     {
-      "id": "S10_CONFIRM_DATA_FEEDBACK",
-      "type": "SERIAL_STATE_GATE",
+      "id": "S9C_CONFIRM_DATA_FEEDBACK",
+      "type": "SERIAL_STATE_PHASE_GATE",
       "role": "R01",
-      "precondition": "R14 has submitted required available real data snapshot/report",
-      "state_transition": "-> DATA_FEEDBACK",
-      "next": "R01 after analysis decides NEXT_TASK or CLOSED"
+      "precondition": "R14 has submitted valid available real data delivery",
+      "state_transition": {"from": "READY", "to": "BUILDING"},
+      "phase_transition": {"from": "DATA_WAITING", "to": "DATA_FEEDBACK"}
+    },
+    {
+      "id": "S9D_DATA_ANALYSIS",
+      "type": "SERIAL_OUTPUT_ONLY",
+      "role": "R14",
+      "precondition": "state=BUILDING AND phase=DATA_FEEDBACK",
+      "output": "FEEDBACK_REPORT",
+      "main_state_write": false,
+      "phase_write": false
+    },
+    {
+      "id": "S9E_CONFIRM_DATA_REVIEWED",
+      "type": "SERIAL_STATE_PHASE_GATE",
+      "role": "R01",
+      "precondition": "valid R14 FEEDBACK_REPORT",
+      "state_transition": {"from": "BUILDING", "to": "PASS"},
+      "phase_transition": {"from": "DATA_FEEDBACK", "to": "DATA_REVIEWED"}
+    },
+    {
+      "id": "S10A_NEXT_CONTENT",
+      "type": "SERIAL_STATE_PHASE_GATE",
+      "role": "R01",
+      "precondition": "state=PASS AND phase=DATA_REVIEWED AND R01 decides continue",
+      "state_transition": {"from": "PASS", "to": "NEXT_TASK"},
+      "phase_transition": {"from": "DATA_REVIEWED", "to": "NEXT_CONTENT"}
+    },
+    {
+      "id": "S10B_CLOSE_CONTENT",
+      "type": "SERIAL_STATE_PHASE_GATE",
+      "role": "R01",
+      "precondition": "state=PASS AND phase=DATA_REVIEWED AND R01 decides close",
+      "state_transition": {"from": "PASS", "to": "LOCKED"},
+      "phase_transition": {"from": "DATA_REVIEWED", "to": "CLOSED"}
     }
   ],
   "revision_routing_examples": [
