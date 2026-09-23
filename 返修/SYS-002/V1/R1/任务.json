@@ -1,0 +1,60 @@
+{
+  "task_id": "SYS-002",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R1",
+  "state": "REVISION_REQUIRED",
+  "task_lifecycle_status": "ACTIVE",
+  "baseline_commit": "57de47e58758762ffb904a81823e7242a971fd4d",
+  "source_review_A": {
+    "result": "FAIL",
+    "p1_count": 4,
+    "must_fix": ["正式SYS-002任务入库", "并行逐角色交付证据", "并行角色独立幂等键", "R14→R01正式状态闭环"]
+  },
+  "source_review_B": {
+    "result": "FAIL",
+    "p1_count": 2,
+    "must_fix": ["商品事实研究时序", "ASSET MANIFEST与三审同版资产机制"]
+  },
+  "revision_scope": [
+    "创建正式任务/SYS-002/V1/任务.json",
+    "R02+R03先并行→R01候选集→R04逐候选深查→R01正式商品→R05",
+    "并行barrier逐角色delivery evidence与barrier revision",
+    "角色级独立幂等键",
+    "ASSET MANIFEST、页面asset_revision、同manifest三审与失效规则",
+    "R14产物→用户发布→R14回执→R01确认PUBLISHED；数据阶段也由R01迁移",
+    "24h/72h/7d窗口DUE/RECORDED/MISSED与人工再次触发规则"
+  ],
+  "frozen_scope": [
+    "14个角色数量和主体职责",
+    "R01总监独占正式权限",
+    "PRODUCT LOCK",
+    "SKU LOCK",
+    "PERSONA LOCK",
+    "R09图片制作职责",
+    "R10/R11/R12三道图片审核职责",
+    "R13真实性审核职责",
+    "四大发布硬门禁",
+    "局部返修主体规则",
+    "USER_FILE图片传递模式",
+    "SYS-001"
+  ],
+  "must_fix": [
+    "R04不得与R02/R03在候选商品产生前盲并行；正式商品若不在R04研究集合必须重新触发R04。",
+    "并行屏障只有在每个required role存在版本吻合的正式交付证据时才能COMPLETE。",
+    "幂等键必须包含content_id+stage+role_id+task_version+input_revision+revision_round+dependency_revision。",
+    "每组实际图片建立不可歧义的ASSET MANIFEST；图片字节变化时AI自动更新fingerprint，禁止要求用户手算SHA。",
+    "R10/R11/R12和R13必须绑定同一个当前manifest；页面换图使旧页面相关审核自动失效。",
+    "R14无权修改主状态；数据采集窗口明确DUE/RECORDED/MISSED，普通聊天模式由用户再次触发。"
+  ],
+  "acceptance_criteria": [
+    "候选商品先产生再做R04深查，R04不可被scope reduction跳过。",
+    "每个并行角色有自己的task_path、delivery_path、版本、dependency_revision、完成时间与交付指纹/commit。",
+    "P3换图只增加P3 asset_revision但同时增加manifest_revision；旧P3相关PASS失效。",
+    "最终IMAGE-QA barrier对三审有效证据执行同manifest绑定检查，不允许新旧P3混审后ALL PASS。",
+    "R14提交发布与数据产物后均由R01确认主状态迁移。",
+    "required_role_ids变更必须产生正式barrier_revision/task revision。"
+  ],
+  "delivery_path": "交付/SYS-002/V1/R1/交付.json"
+}
