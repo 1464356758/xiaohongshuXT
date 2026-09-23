@@ -1,0 +1,38 @@
+{
+  "schema": "SYS-002_HANDOFF_TEMPLATE_V1",
+  "handoff_id": "HANDOFF-CONTENT-000-001",
+  "content_id": "CONTENT-000",
+  "task_id": "CONTENT-000-STAGE-000",
+  "task_version": "V1",
+  "input_revision": 1,
+  "revision_round": null,
+  "from_role_id": "R00",
+  "to_role_ids": ["R00"],
+  "phase": "INTAKE",
+  "state": "READY",
+  "input_paths": [],
+  "required_lock_paths": {
+    "product": null,
+    "sku": null,
+    "persona": null,
+    "content": null
+  },
+  "image_asset_refs": [
+    {
+      "page_id": "P1",
+      "asset_transport": "USER_FILE|GITHUB_OPTIONAL",
+      "asset_ref": "",
+      "source_task_version": "V1"
+    }
+  ],
+  "frozen_scope": [],
+  "unresolved_issues": [],
+  "expected_output_path": "",
+  "success_criteria": [],
+  "next_on_success": [],
+  "next_on_fail": ["R01"],
+  "next_on_blocked": ["R01"],
+  "formal_routing_rule": "Only R01 creates formal cross-role task/revision routing. Other roles may recommend next steps but cannot create official assignments.",
+  "user_action_required": false,
+  "user_action_reason": null
+}

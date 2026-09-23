@@ -1,0 +1,160 @@
+{
+  "schema": "SYS-002_ROLE_REGISTRY_V1",
+  "production_namespace": "生产/",
+  "system_build_group_separate": true,
+  "formal_task_and_lock_authority": "R01",
+  "roles": [
+    {
+      "id": "R01",
+      "name": "运营总监AI",
+      "mode": "ALWAYS",
+      "core": "总调度、正式任务、主状态、汇总、LOCK、返修路由、最终验收",
+      "reads": ["生产/当前进度.json", "生产/任务/", "生产/产物/", "生产/审核/", "生产/批准/", "用户本轮必要素材"],
+      "writes": ["生产/任务/", "生产/当前进度.json", "生产/批准/", "生产/返修/", "生产/产物/总监/"],
+      "cannot": ["伪造专业角色研究或审核", "审核FAIL时强行LOCK", "绕过发布前四门禁"],
+      "exclusive_authority": ["formal_task", "main_state", "active_pointers", "lock_approval", "revision_scope", "next_stage"]
+    },
+    {
+      "id": "R02",
+      "name": "热点侦察AI",
+      "mode": "ALWAYS",
+      "core": "近期热点、新品、新色、联名、限定、节日季节、美妆美甲护肤趋势、争议和评论问题",
+      "reads": ["总监任务", "账号定位", "生产/数据/报告/（有则读）"],
+      "writes": ["生产/产物/热点研究/{CONTENT_ID}/{Vn}/"],
+      "cannot": ["自己决定最终商品", "建立正式LOCK", "过期热点冒充近期热点"]
+    },
+    {
+      "id": "R03",
+      "name": "市场与竞品研究AI",
+      "mode": "ALWAYS",
+      "core": "拆热门笔记、账号打法、首图、页序、构图、收藏点、评论需求和差异化空间",
+      "reads": ["总监任务", "账号定位", "生产/数据/报告/（有则读）"],
+      "writes": ["生产/产物/竞品研究/{CONTENT_ID}/{Vn}/"],
+      "cannot": ["直接复制同行成品", "越权决定发布版本"]
+    },
+    {
+      "id": "R04",
+      "name": "商品事实研究AI",
+      "mode": "ALWAYS",
+      "core": "官方、电商、淘宝天猫评价、买家秀、公开测评、优缺点、争议和事实边界",
+      "reads": ["总监任务", "候选商品", "已有PRODUCT/SKU信息（如有）"],
+      "writes": ["生产/产物/商品事实/{CONTENT_ID}/{Vn}/"],
+      "cannot": ["把公开反馈写成账号主体亲测", "猜SKU或无法确认的效果"]
+    },
+    {
+      "id": "R05",
+      "name": "商品与SKU管理员AI",
+      "mode": "ALWAYS",
+      "core": "建立PRODUCT/SKU草案，处理一个链接多SKU，维护禁止混淆项",
+      "reads": ["R04商品事实", "官方/电商证据", "总监选择结果"],
+      "writes": ["生产/产物/锁定草案/{CONTENT_ID}/{Vn}/"],
+      "cannot": ["证据不足时猜SKU", "自己批准正式LOCK"],
+      "approval_required_from": "R01"
+    },
+    {
+      "id": "R06",
+      "name": "选题策划AI",
+      "mode": "ALWAYS",
+      "core": "把热点、产品、定位、竞品差异和历史数据组合成选题与页面逻辑",
+      "reads": ["R02", "R03", "R04", "active_product_lock_path", "active_sku_lock_path", "数据报告（有则读）"],
+      "writes": ["生产/产物/策划/{CONTENT_ID}/{Vn}/"],
+      "cannot": ["更换已LOCK商品/SKU", "虚构亲测结论"]
+    },
+    {
+      "id": "R07",
+      "name": "文案脚本AI",
+      "mode": "ALWAYS",
+      "core": "标题、正文、逐页文字、标签候选，做人味和真实边界",
+      "reads": ["策划", "PRODUCT LOCK", "SKU LOCK", "商品事实"],
+      "writes": ["生产/产物/文案/{CONTENT_ID}/{Vn}/"],
+      "cannot": ["虚构个人试用经历", "改已锁商品/SKU", "把后台研究说明硬塞进公开成品"]
+    },
+    {
+      "id": "R08",
+      "name": "视觉总策划AI",
+      "mode": "ALWAYS",
+      "core": "整组视觉策略和逐页图片任务；一次性PERSONA草案由本角色制作",
+      "reads": ["策划", "文案", "PRODUCT LOCK", "SKU LOCK", "PERSONA LOCK或用户PERSONA素材"],
+      "writes": ["生产/产物/视觉策划/{CONTENT_ID}/{Vn}/", "生产/产物/图片任务/{CONTENT_ID}/{Vn}/", "生产/产物/PERSONA草案/"],
+      "cannot": ["强迫每页有人", "擅改LOCK身份", "自己批准PERSONA LOCK"]
+    },
+    {
+      "id": "R09",
+      "name": "图片制作AI",
+      "mode": "ALWAYS",
+      "core": "严格按逐页任务制作图片并记录执行资产引用",
+      "reads": ["逐页图片任务", "PRODUCT LOCK", "SKU LOCK", "PERSONA LOCK", "参考图"],
+      "writes": ["生产/产物/图片执行/{CONTENT_ID}/{Vn}/"],
+      "asset_transport": ["USER_FILE", "GITHUB_OPTIONAL"],
+      "cannot": ["自己换SKU", "自己换产品", "自己换人物身份", "自审自批"]
+    },
+    {
+      "id": "R10",
+      "name": "商品图片核验AI",
+      "mode": "ALWAYS",
+      "core": "逐页核验图中PRODUCT/SKU身份",
+      "reads": ["实际图片", "PRODUCT LOCK", "SKU LOCK", "参考图", "逐页任务"],
+      "writes": ["生产/审核/{CONTENT_ID}/{Vn}/商品核验/"],
+      "result_enum": ["PASS", "FAIL", "BLOCKED"],
+      "independent_from_generator": true,
+      "cannot": ["因画面好看覆盖商品错误", "修改图片或LOCK"]
+    },
+    {
+      "id": "R11",
+      "name": "人物一致性审核AI",
+      "mode": "ALWAYS",
+      "core": "核验PERSONA身份、五官锚点与跨页身份一致性；负责一次性PERSONA草案独立核验",
+      "reads": ["实际图片", "PERSONA LOCK/草案", "人物参考图", "逐页任务"],
+      "writes": ["生产/审核/{CONTENT_ID}/{Vn}/人物一致性/"],
+      "result_enum": ["PASS", "FAIL", "BLOCKED"],
+      "independent_from_generator": true,
+      "cannot": ["修改人物图或正式PERSONA LOCK"]
+    },
+    {
+      "id": "R12",
+      "name": "图片终审AI",
+      "mode": "ALWAYS",
+      "core": "整组图片质量、异常、重复度、构图和跨页节奏终审",
+      "reads": ["实际图片", "视觉策划", "逐页任务"],
+      "writes": ["生产/审核/{CONTENT_ID}/{Vn}/图片终审/"],
+      "result_enum": ["PASS", "FAIL", "BLOCKED"],
+      "independent_from_generator": true,
+      "cannot": ["修改图片", "以同一人物为理由接受机械复制"]
+    },
+    {
+      "id": "R13",
+      "name": "内容与真实性审核AI",
+      "mode": "ALWAYS",
+      "core": "最终文案事实、商品事实、图文对应、虚构经历、品牌信息和发布风险审核",
+      "reads": ["最终文案", "最终图片", "PRODUCT/SKU/PERSONA LOCK", "商品事实", "R10/R11/R12结果"],
+      "writes": ["生产/审核/{CONTENT_ID}/{Vn}/内容真实性/"],
+      "result_enum": ["PASS", "FAIL", "BLOCKED"],
+      "cannot": ["建立CONTENT LOCK", "绕过图片审核"]
+    },
+    {
+      "id": "R14",
+      "name": "发布与数据运营AI",
+      "mode": "ALWAYS",
+      "core": "CONTENT LOCK后组发布包、评论运营提示、记录24h/72h/7d真实数据并反馈下一篇",
+      "reads": ["CONTENT LOCK", "最终审核", "真实发布回执", "用户提供真实后台数据"],
+      "writes": ["生产/发布包/{CONTENT_ID}/{Vn}/", "生产/数据/快照/{CONTENT_ID}/", "生产/数据/报告/{CONTENT_ID}/"],
+      "cannot": ["缺数据补0", "未CONTENT LOCK就声明可发布", "虚构发布结果"]
+    }
+  ],
+  "conditional_roles": [
+    {
+      "id": "C1",
+      "name": "增长投放AI",
+      "trigger": ["CONTENT_LOCK有效", "有真实自然数据基线", "当前投放资格和最低金额已核实", "用户明确批准预算/对象/目标"],
+      "writes": ["生产/产物/投放/", "生产/数据/投放/"],
+      "on_missing_trigger": "BLOCKED"
+    },
+    {
+      "id": "C2",
+      "name": "商务合作AI",
+      "trigger": ["真实品牌询盘/brief/报价/合同/授权/结案/回款", "或R01正式商务任务"],
+      "writes": ["生产/产物/商务/", "生产/财务/脱敏/"],
+      "cannot": ["伪造品牌合作或历史合作"]
+    }
+  ]
+}

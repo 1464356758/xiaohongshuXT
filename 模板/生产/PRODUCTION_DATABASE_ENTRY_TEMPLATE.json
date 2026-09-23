@@ -1,0 +1,37 @@
+{
+  "schema": "SYS-002_PRODUCTION_DATABASE_ENTRY_V1",
+  "namespace": "生产",
+  "repository": "https://github.com/1464356758/xiaohongshuXT",
+  "branch": "main",
+  "current_progress": "生产/当前进度.json",
+  "role_registry": "系统/生产架构/SYS-002/ROLE_REGISTRY.json",
+  "workflow_graph": "系统/生产架构/SYS-002/WORKFLOW_GRAPH.json",
+  "formal_role_rules_root": "生产/角色/",
+  "task_root": "生产/任务/",
+  "revision_root": "生产/返修/",
+  "approval_root": "生产/批准/",
+  "output_root": "生产/产物/",
+  "review_root": "生产/审核/",
+  "delivery_root": "生产/交付/",
+  "publish_root": "生产/发布包/",
+  "data_root": "生产/数据/",
+  "persona_asset_root": "生产/资产/PERSONA/",
+  "image_transport": "USER_FILE_ALLOWED_GITHUB_OPTIONAL",
+  "read_order": [
+    "生产/数据库入口.json",
+    "生产/当前进度.json",
+    "active_task_path",
+    "active_revision_path if non-null",
+    "explicit active lock paths",
+    "role instruction",
+    "declared input paths"
+  ],
+  "anti_guess_rule": "Do not scan directories, infer latest by filename, or use chat memory as formal truth.",
+  "authority": {
+    "formal_task": "R01",
+    "main_state": "R01",
+    "lock_approval": "R01",
+    "revision_scope": "R01",
+    "content_final_approval": "R01"
+  }
+}

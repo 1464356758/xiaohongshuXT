@@ -1,0 +1,107 @@
+{
+  "schema": "SYS-002_WORKFLOW_GRAPH_V1",
+  "content_unit": "CONTENT_ID",
+  "formal_router": "R01",
+  "stages": [
+    {
+      "id": "S0_PERSONA_SETUP",
+      "type": "CONDITIONAL_SERIAL",
+      "condition": "active_persona_lock_path == null OR user_requests_persona_change",
+      "sequence": ["R08", "R11", "R01"],
+      "output": "PERSONA_LOCK",
+      "failure": "BLOCKED_PERSONA_MISSING|REVISION_REQUIRED"
+    },
+    {
+      "id": "S1_DISCOVERY",
+      "type": "PARALLEL_BARRIER",
+      "parallel_group_id": "DISCOVERY-G1",
+      "roles": ["R02", "R03", "R04"],
+      "barrier": "ALL_REQUIRED_COMPLETE",
+      "collector": "R01",
+      "on_blocked": "R01 decides wait, minimal补任务, or scope reduction"
+    },
+    {
+      "id": "S2_PRODUCT_LOCK",
+      "type": "SERIAL_HARD_GATE",
+      "sequence": ["R01_SELECT_CANDIDATE", "R05_BUILD_DRAFT", "R01_APPROVE_LOCKS"],
+      "required_outputs": ["PRODUCT_LOCK", "SKU_LOCK when multi-SKU or SKU-specific content"],
+      "on_uncertain": ["BLOCKED_PRODUCT_UNCERTAIN", "BLOCKED_SKU_UNCERTAIN"],
+      "forbidden_transition": "No SKU certainty -> no product-specific copy/image production"
+    },
+    {
+      "id": "S3_PLANNING_COPY",
+      "type": "SERIAL",
+      "sequence": ["R06", "R01_STAGE_APPROVAL", "R07"]
+    },
+    {
+      "id": "S4_VISUAL_BUILD",
+      "type": "SERIAL",
+      "sequence": ["R08", "R09"],
+      "image_transport": ["USER_FILE", "GITHUB_OPTIONAL"],
+      "asset_manifest_required": true
+    },
+    {
+      "id": "S5_IMAGE_QA",
+      "type": "PARALLEL_BARRIER",
+      "parallel_group_id": "IMAGE-QA-G1",
+      "roles": ["R10", "R11", "R12"],
+      "barrier": "ALL_THREE_PASS",
+      "on_any_fail": "R01_CREATE_MINIMAL_REVISION",
+      "on_any_blocked": "ENTER_CORRESPONDING_BLOCKED_STATE",
+      "cannot_be_overridden_by_other_passes": true
+    },
+    {
+      "id": "S6_CONTENT_TRUTH_REVIEW",
+      "type": "SERIAL_HARD_GATE",
+      "precondition": "R10=PASS AND R11=PASS AND R12=PASS",
+      "role": "R13",
+      "on_fail": "R01 routes minimum affected upstream role(s)",
+      "on_blocked": "corresponding BLOCKED_*"
+    },
+    {
+      "id": "S7_FINAL_APPROVAL",
+      "type": "SERIAL_HARD_GATE",
+      "role": "R01",
+      "required_gates": [
+        "PRODUCT_SKU_IMAGE_VERIFY_PASS",
+        "PERSONA_CONSISTENCY_PASS_OR_VALID_NO_PERSONA_CASE",
+        "CROSS_PAGE_VISUAL_PASS",
+        "CONTENT_TRUTHFULNESS_PASS"
+      ],
+      "output": "CONTENT_LOCK"
+    },
+    {
+      "id": "S8_PUBLISH_DATA",
+      "type": "SERIAL_PLUS_SCHEDULED_DATA",
+      "role": "R14",
+      "precondition": "CONTENT_LOCK",
+      "outputs": ["PUBLISH_PACKAGE", "PUBLISH_RECEIPT", "24H_SNAPSHOT", "72H_SNAPSHOT", "7D_SNAPSHOT", "FEEDBACK_REPORT"]
+    }
+  ],
+  "revision_routing_examples": [
+    {
+      "issue": "only P3 wrong product appearance",
+      "route": ["R01", "R09", "R10"],
+      "frozen_pages": "all other PASS pages",
+      "optional_rechecks": ["R11/R12 only if P3 modification affects persona or cross-page rhythm"]
+    },
+    {
+      "issue": "P3 visual task itself wrong",
+      "route": ["R01", "R08_P3_ONLY", "R09_P3_ONLY", "affected_reviewers"]
+    },
+    {
+      "issue": "copy contains invented first-person experience",
+      "route": ["R01", "R07", "R13"],
+      "image_rebuild": false
+    },
+    {
+      "issue": "SKU LOCK itself wrong",
+      "route": ["R01", "R05", "affected_downstream_from_lock_dependency"],
+      "rule": "invalidate only dependent downstream outputs, never blindly rerun unrelated research"
+    }
+  ],
+  "conditional_roles": {
+    "C1": "Not part of every-content critical path; only after explicit triggers and user budget approval",
+    "C2": "Not part of every-content critical path; only on real business event or formal director task"
+  }
+}
