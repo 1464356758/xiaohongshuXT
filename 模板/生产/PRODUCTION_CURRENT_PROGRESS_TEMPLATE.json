@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-002_PRODUCTION_CURRENT_PROGRESS_V1",
+  "schema": "SYS-002_PRODUCTION_CURRENT_PROGRESS_V1_R1",
   "namespace": "生产",
   "content_id": "CONTENT-000",
   "task_id": "CONTENT-000-STAGE-000",
@@ -18,60 +18,66 @@
   "active_persona_lock_path": null,
   "active_content_lock_path": null,
   "active_asset_manifest_path": null,
+  "active_asset_manifest_id": null,
+  "active_manifest_revision": null,
   "parallel_group": {
     "parallel_group_id": null,
+    "barrier_revision": 1,
+    "task_revision": 1,
     "required_role_ids": [],
-    "completed_role_ids": [],
+    "role_results": [
+      {
+        "role_id": "R00",
+        "task_path": "",
+        "delivery_path": "",
+        "result": "PENDING|PASS|FAIL|BLOCKED|COMPLETE",
+        "task_version": "V1",
+        "input_revision": 1,
+        "dependency_revision": "",
+        "completed_at": null,
+        "delivery_fingerprint_or_commit": "",
+        "effective_asset_manifest_id": null,
+        "effective_manifest_revision": null,
+        "evidence_valid": false
+      }
+    ],
     "failed_role_ids": [],
     "blocked_role_ids": [],
-    "barrier_rule": null
+    "barrier_rule": null,
+    "barrier_status": "OPEN|COMPLETE|FAIL|BLOCKED"
   },
   "quality_gates": {
-    "product_sku_image_verify": "NOT_STARTED",
-    "persona_consistency": "NOT_STARTED",
-    "cross_page_visual": "NOT_STARTED",
-    "content_truthfulness": "NOT_STARTED"
+    "product_sku_image_verify": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
+    "persona_consistency": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
+    "cross_page_visual": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
+    "content_truthfulness": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null}
+  },
+  "publish_flow": {
+    "publish_package_delivery_path": null,
+    "user_actual_publish_confirmed": false,
+    "publish_receipt_delivery_path": null,
+    "published_confirmed_by_r01_at": null,
+    "r14_may_write_main_state": false
+  },
+  "data_collection": {
+    "24h": {"status":"DUE|RECORDED|MISSED", "due_at":null, "delivery_path":null},
+    "72h": {"status":"DUE|RECORDED|MISSED", "due_at":null, "delivery_path":null},
+    "7d": {"status":"DUE|RECORDED|MISSED", "due_at":null, "delivery_path":null},
+    "normal_chat_trigger_rule": "没有外部自动化时，到点后由用户再次触发R14；普通聊天AI不得宣称会自动醒来。",
+    "data_feedback_confirmed_by_r01_at": null
   },
   "frozen_pages": [],
   "open_revision_pages": [],
   "unresolved_issues": [],
   "next_role_ids": [],
-  "legal_main_states": [
-    "READY",
-    "BUILDING",
-    "REVIEWING",
-    "REVISION_REQUIRED",
-    "PASS",
-    "LOCKED",
-    "NEXT_TASK",
-    "BLOCKED_INPUT_MISSING",
-    "BLOCKED_PRODUCT_UNCERTAIN",
-    "BLOCKED_SKU_UNCERTAIN",
-    "BLOCKED_PERSONA_MISSING",
-    "BLOCKED_ASSET_MISSING",
-    "BLOCKED_HOT_STALE",
-    "BLOCKED_CONFLICT"
-  ],
-  "legal_phases": [
-    "INTAKE",
-    "PERSONA_SETUP",
-    "DISCOVERY",
-    "PRODUCT_LOCK",
-    "PLANNING",
-    "COPY",
-    "VISUAL_PLAN",
-    "IMAGE_BUILD",
-    "IMAGE_REVIEW",
-    "CONTENT_REVIEW",
-    "FINAL_APPROVAL",
-    "PUBLISH_PREP",
-    "PUBLISHED",
-    "DATA_FEEDBACK",
-    "CLOSED"
-  ],
+  "legal_main_states": ["READY", "BUILDING", "REVIEWING", "REVISION_REQUIRED", "PASS", "LOCKED", "NEXT_TASK", "BLOCKED_INPUT_MISSING", "BLOCKED_PRODUCT_UNCERTAIN", "BLOCKED_SKU_UNCERTAIN", "BLOCKED_PERSONA_MISSING", "BLOCKED_ASSET_MISSING", "BLOCKED_HOT_STALE", "BLOCKED_CONFLICT"],
+  "legal_phases": ["INTAKE", "PERSONA_SETUP", "DISCOVERY", "PRODUCT_LOCK", "PLANNING", "COPY", "VISUAL_PLAN", "IMAGE_BUILD", "IMAGE_REVIEW", "CONTENT_REVIEW", "FINAL_APPROVAL", "PUBLISH_PREP", "PUBLISHED", "DATA_FEEDBACK", "CLOSED"],
   "pointer_rule": "Production roles read only explicit paths in this file; null means no active object. Never scan directories to guess latest task, revision, lock, asset manifest, or delivery.",
   "revision_pointer_rule": "revision_round + active_revision_path + delivery_path move together when entering R1/R2/R3.",
   "lock_pointer_rule": "Only R01 may activate or replace active_*_lock_path after formal approval.",
-  "parallel_rule": "Parallel roles write separate paths. A barrier is complete only when required_role_ids satisfy the stage barrier; one role may not impersonate another role's completion.",
+  "asset_pointer_rule": "Only R01 activates active_asset_manifest_path/id/revision after R09 creates a valid manifest. Any page asset change requires a new manifest_revision; old dependent review evidence becomes STALE.",
+  "parallel_rule": "Barrier COMPLETE requires one valid role_results evidence record for every required_role_id. The delivery path must exist and all version/dependency fields must match the current barrier. completed_role_ids alone is not authoritative.",
+  "barrier_revision_rule": "Changing required_role_ids or dependencies requires a new barrier_revision and formal task revision; silent removal is forbidden.",
+  "state_authority_rule": "R14 never writes state/phase transitions. PUBLISHED, DATA_FEEDBACK, NEXT_TASK and CLOSED are confirmed or set by R01 only.",
   "updated_at": null
 }
