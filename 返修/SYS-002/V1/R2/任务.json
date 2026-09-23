@@ -1,0 +1,49 @@
+{
+  "task_id": "SYS-002",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R2",
+  "task_lifecycle_status": "ACTIVE",
+  "source_review_A": {
+    "result": "FAIL",
+    "summary": "仅剩1个P1：生产尾段state与phase混用，PUBLISHED、DATA_FEEDBACK、CLOSED曾被写成state_transition目标。"
+  },
+  "source_review_B": {
+    "result": "PASS_FROZEN",
+    "summary": "B已通过的商品研究时序、ASSET MANIFEST、三审同版机制继续冻结，不重复复审。"
+  },
+  "revision_scope": [
+    "生产尾段state与phase完全拆分",
+    "新增state_phase_transition_table",
+    "同步修正WORKFLOW_GRAPH、R1修正规则、PRODUCTION_CURRENT_PROGRESS_TEMPLATE及相关数据模板中的尾段状态表述"
+  ],
+  "frozen_scope": [
+    "14角色架构",
+    "R02/R03/R04研究时序",
+    "PRODUCT/SKU",
+    "PERSONA",
+    "ASSET MANIFEST",
+    "R10/R11/R12图片三审",
+    "并行证据链",
+    "幂等键",
+    "R14权限主体",
+    "局部返修",
+    "SYS-001"
+  ],
+  "must_fix": [
+    "PUBLISHED、DATA_FEEDBACK、CLOSED只能作为phase，禁止作为main state。",
+    "所有生产尾段迁移必须同时记录state_transition与phase_transition。",
+    "新增正式state_phase_transition_table，明确PUBLISH_PREP、PUBLISH_READY、PUBLISHED、DATA_WAITING、DATA_FEEDBACK、DATA_REVIEWED、NEXT_CONTENT、CLOSED对应的main state。",
+    "R14仍只写产物；正式state/phase迁移只能由R01执行。"
+  ],
+  "acceptance_criteria": [
+    "任何新AI只看生产当前进度即可分别回答当前main state与business phase。",
+    "不存在state=PUBLISHED、state=DATA_FEEDBACK、state=CLOSED等非法组合。",
+    "发布与数据尾段完整映射为BUILDING/PUBLISH_PREP → READY/PUBLISH_READY → PASS/PUBLISHED → READY/DATA_WAITING → BUILDING/DATA_FEEDBACK → PASS/DATA_REVIEWED → NEXT_TASK/NEXT_CONTENT或LOCKED/CLOSED。",
+    "本轮仅交AI系统审核员A复审。"
+  ],
+  "state_phase_transition_table_path": "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
+  "delivery_path": "交付/SYS-002/V1/R2/交付.json",
+  "assigned_to": "AI系统制作员"
+}
