@@ -4,10 +4,12 @@
   "task_id": "TASK-000",
   "task_version": "V1",
   "input_revision": 1,
+  "revision_round": null,
   "state": "READY",
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "AI系统总监",
   "active_task_path": "任务/TASK-000/V1/任务.json",
+  "active_revision_path": null,
   "delivery_path": null,
   "active_product_lock_path": null,
   "active_sku_lock_path": null,
@@ -32,6 +34,13 @@
     "BLOCKED_HOT_STALE",
     "BLOCKED_CONFLICT"
   ],
-  "pointer_rule": "四类active_*_lock_path是当前有效LOCK唯一指针。null代表无有效LOCK，禁止扫描目录猜最新。",
+  "pointer_rule": "四类active_*_lock_path是当前有效LOCK唯一指针。revision_round、active_revision_path、delivery_path是当前返修唯一指针组：无返修时revision_round与active_revision_path为null；进入R1/R2/R3时三者必须同步更新，delivery_path必须指向该轮最新交付。禁止扫描目录猜当前LOCK或返修轮次。",
+  "recovery_read_order": [
+    "数据库入口.json",
+    "当前进度.json",
+    "active_revision_path（非null时）",
+    "delivery_path"
+  ],
+  "formal_revision_rule": "任何正式返修任务必须先写入返修/{TASK_ID}/{Vn}/{Rn}/任务.json，再开始执行；不得只存在于聊天上下文。",
   "lifecycle_rule": "SUPERSEDED只允许作为task_lifecycle_status的值，不得写入state。"
 }
