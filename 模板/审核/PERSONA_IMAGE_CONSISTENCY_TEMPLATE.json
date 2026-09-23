@@ -1,0 +1,40 @@
+{
+  "review_type": "PERSONA_IMAGE_CONSISTENCY",
+  "content_id": "CONTENT-000",
+  "image_task_version": "V1",
+  "persona_lock_id": "PERSONA-000-LOCK-V1",
+  "reviewer": "ROLE_NAME",
+  "independent_from_generator": true,
+  "reference_images": [],
+  "persona_required_pages": [],
+  "pages": [
+    {
+      "page_id": "P1",
+      "persona_required": true,
+      "image_asset_ref": "USER_FILE_OR_PATH",
+      "checks": {
+        "same_identity_as_persona_lock": "PASS|FAIL|UNKNOWN",
+        "face_shape": "PASS|FAIL|UNKNOWN",
+        "facial_proportions": "PASS|FAIL|UNKNOWN",
+        "eyes_nose_lips_signature": "PASS|FAIL|UNKNOWN",
+        "recognition_features": "PASS|FAIL|UNKNOWN",
+        "front_45_halfbody_anchor_consistency": "PASS|FAIL|UNKNOWN|NOT_APPLICABLE",
+        "hairstyle_change_preserves_identity": "PASS|FAIL|UNKNOWN|NOT_APPLICABLE",
+        "makeup_change_preserves_features": "PASS|FAIL|UNKNOWN|NOT_APPLICABLE",
+        "local_crop_no_face_swap": "PASS|FAIL|UNKNOWN|NOT_APPLICABLE"
+      },
+      "result": "PASS|FAIL|BLOCKED",
+      "reason": ""
+    }
+  ],
+  "cross_page_checks": {
+    "same_person_across_all_persona_pages": "PASS|FAIL|UNKNOWN|NOT_APPLICABLE",
+    "no_page_to_page_identity_drift": "PASS|FAIL|UNKNOWN|NOT_APPLICABLE"
+  },
+  "failed_pages": [],
+  "required_revision_pages": [],
+  "frozen_pass_pages": [],
+  "result": "PASS|FAIL|BLOCKED",
+  "no_persona_pages_rule": "若整组persona_required_pages为空，可在核对任务确实不要求人物后记录result=PASS并写明NO_PERSONA_PAGES；不得伪造人物参考图。",
+  "hard_rule": "任何需要人物的页面若无法确认仍是PERSONA LOCK中的同一人则BLOCKED；确认换脸则FAIL。仅P3失败时required_revision_pages只能包含P3，其他PASS页继续冻结。"
+}

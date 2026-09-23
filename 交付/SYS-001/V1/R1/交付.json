@@ -1,0 +1,62 @@
+{
+  "task_id": "SYS-001",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R1",
+  "role": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "source_task_path": "任务/SYS-001/V1/任务.json",
+  "source_revision_path": "用户下发的SYS-001 R1返修任务（本轮会话）",
+  "changed_scope": [
+    "当前有效LOCK唯一指针",
+    "状态机合法失败状态",
+    "Vn/Rn/input_revision与返修路径",
+    "PERSONA图片一致性独立审核",
+    "图片质量与跨页视觉独立审核",
+    "商品图片核验独立审计字段",
+    "发布前四大硬门禁"
+  ],
+  "frozen_scope": [
+    "热点系统",
+    "PRODUCT LOCK主体结构",
+    "SKU LOCK主体结构",
+    "PERSONA LOCK主体结构",
+    "文案真实性主体规则",
+    "逐页图片任务主体结构",
+    "GitHub仓库地址",
+    "四角色建设闭环",
+    "简短回复机制"
+  ],
+  "deliverables": [
+    "当前进度.json",
+    "数据库入口.json",
+    "系统/系统核心规则V1.0.md",
+    "模板/状态/CURRENT_PROGRESS_TEMPLATE.json",
+    "模板/任务/TASK_TEMPLATE.json",
+    "模板/返修/PARTIAL_REVISION_TEMPLATE.json",
+    "模板/交付/DELIVERY_TEMPLATE.json",
+    "模板/审核/PRODUCT_IMAGE_VERIFY_TEMPLATE.json",
+    "模板/审核/PERSONA_IMAGE_CONSISTENCY_TEMPLATE.json",
+    "模板/审核/CROSS_PAGE_VISUAL_REVIEW_TEMPLATE.json",
+    "模板/审核/PRE_PUBLISH_GATE_TEMPLATE.json"
+  ],
+  "self_check": {
+    "active_lock_pointers_unique": true,
+    "null_means_no_lock_and_no_directory_guess": true,
+    "pseudo_state_removed": true,
+    "superseded_not_main_state": true,
+    "revision_path_includes_task_version": true,
+    "delivery_trace_fields_complete": true,
+    "persona_independent_review": true,
+    "cross_page_visual_review": true,
+    "product_review_independent_audit_fields": true,
+    "four_pre_publish_gates": true,
+    "scope_not_expanded": true
+  },
+  "formal_pass_declared": false,
+  "next_review_scope": {
+    "AI系统审核员A": ["LOCK指针", "状态机", "版本/R/input_revision"],
+    "AI系统审核员B": ["PERSONA审核", "跨页视觉审核", "商品审核独立性"]
+  }
+}

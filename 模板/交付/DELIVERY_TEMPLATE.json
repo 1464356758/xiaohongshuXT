@@ -1,0 +1,16 @@
+{
+  "task_id": "TASK-000",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": null,
+  "revision_round": null,
+  "role": "ROLE_NAME",
+  "result": "COMPLETE|BUILD_COMPLETE|PASS|FAIL|BLOCKED",
+  "source_task_path": "任务/TASK-000/V1/任务.json",
+  "source_revision_path": null,
+  "deliverables": [],
+  "fixed_inputs": [],
+  "supersedes_delivery": null,
+  "trace_rule": "所有交付必须能反查task_version + input_revision + parent_version + revision_round；无返修时revision_round=null。",
+  "overwrite_forbidden": true
+}

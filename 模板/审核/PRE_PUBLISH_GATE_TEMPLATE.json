@@ -1,0 +1,32 @@
+{
+  "gate_type": "PRE_PUBLISH_HARD_GATE",
+  "content_id": "CONTENT-000",
+  "content_version": "V1",
+  "reviewer": "AI系统总监或获授权审核汇总角色",
+  "checks": {
+    "product_sku_verify": {
+      "required": true,
+      "result": "PASS|FAIL|BLOCKED",
+      "evidence_path": ""
+    },
+    "persona_consistency": {
+      "required": true,
+      "result": "PASS|FAIL|BLOCKED",
+      "evidence_path": ""
+    },
+    "cross_page_visual_quality": {
+      "required": true,
+      "result": "PASS|FAIL|BLOCKED",
+      "evidence_path": ""
+    },
+    "truthfulness_review": {
+      "required": true,
+      "result": "PASS|FAIL|BLOCKED",
+      "evidence_path": ""
+    }
+  },
+  "overall_result": "PASS|FAIL|BLOCKED",
+  "content_lock_allowed": false,
+  "publish_package_allowed": false,
+  "hard_rule": "四项必须同时PASS才可把content_lock_allowed与publish_package_allowed设为true。任一FAIL进入REVISION_REQUIRED；任一BLOCKED进入对应合法BLOCKED_*状态。"
+}

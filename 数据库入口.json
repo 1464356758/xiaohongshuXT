@@ -6,8 +6,10 @@
   "single_source_of_truth": "GitHub文字资料",
   "image_transport": "USER_FILE_ALLOWED_NOT_REQUIRED_IN_GITHUB",
   "current_progress": "当前进度.json",
+  "current_progress_template": "模板/状态/CURRENT_PROGRESS_TEMPLATE.json",
   "core_rules": "系统/系统核心规则V1.0.md",
   "active_task": "任务/SYS-001/V1/任务.json",
+  "active_lock_pointer_source": "当前进度.json",
   "lock_roots": {
     "product": "批准/PRODUCT/",
     "sku": "批准/SKU/",
@@ -15,12 +17,14 @@
     "content": "批准/CONTENT/"
   },
   "template_roots": {
+    "status": "模板/状态/",
     "task": "模板/任务/",
     "research": "模板/研究/",
     "locks": "模板/锁定/",
     "image": "模板/图片/",
     "review": "模板/审核/",
-    "revision": "模板/返修/"
+    "revision": "模板/返修/",
+    "delivery": "模板/交付/"
   },
   "production_roots": {
     "hot_research": "产物/热点研究/",
@@ -28,6 +32,7 @@
     "copy": "产物/文案/",
     "image_tasks": "产物/图片任务/",
     "reviews": "审核/",
+    "revisions": "返修/{TASK_ID}/{Vn}/{Rn}/",
     "publish_packages": "发布包/"
   },
   "formal_authority": {
@@ -36,5 +41,5 @@
     "lock_approval": "AI系统总监",
     "final_system_acceptance": "AI系统总监"
   },
-  "read_rule": "每轮先读本文件，再读当前进度，再读当前任务；不得用聊天记忆覆盖仓库。"
+  "read_rule": "每轮先读本文件，再读当前进度，再读当前任务；LOCK只读当前进度四个active_*_lock_path明确指向的文件，null即无有效LOCK，禁止扫描目录猜最新。"
 }

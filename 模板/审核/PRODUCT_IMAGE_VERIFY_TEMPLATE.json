@@ -2,12 +2,16 @@
   "review_type": "PRODUCT_IMAGE_VERIFY",
   "content_id": "CONTENT-000",
   "image_task_version": "V1",
+  "reviewer": "ROLE_NAME",
+  "independent_from_generator": true,
   "product_lock_id": "PRODUCT-000-LOCK-V1",
   "sku_lock_id": "SKU-000-LOCK-V1",
+  "reference_images_used": [],
   "pages": [
     {
       "page_id": "P1",
       "image_asset_ref": "USER_FILE_OR_PATH",
+      "reference_images_used": [],
       "checks": {
         "brand": "PASS|FAIL|UNKNOWN",
         "formal_product_or_series": "PASS|FAIL|UNKNOWN",
@@ -25,5 +29,8 @@
       "revision_scope_if_fail": ["P1"]
     }
   ],
-  "hard_rule": "任一关键身份字段FAIL则该页FAIL；无法确认关键身份则BLOCKED；不得因画面美观覆盖商品错误。"
+  "failed_pages": [],
+  "required_revision_pages": [],
+  "result": "PASS|FAIL|BLOCKED",
+  "hard_rule": "必须由图片生成者之外的独立审核者执行。任一关键身份字段FAIL则该页FAIL；无法确认关键身份则BLOCKED；不得因画面美观覆盖商品错误。"
 }

@@ -1,0 +1,47 @@
+{
+  "review_type": "CROSS_PAGE_VISUAL_REVIEW",
+  "content_id": "CONTENT-000",
+  "image_task_version": "V1",
+  "reviewer": "ROLE_NAME",
+  "independent_from_generator": true,
+  "reference_image_task_path": "",
+  "page_count": 0,
+  "page_type_counts": {
+    "persona_pages": 0,
+    "product_pages": 0,
+    "detail_pages": 0,
+    "information_pages": 0
+  },
+  "checks": {
+    "pose_repetition": "PASS|FAIL|BLOCKED",
+    "hairstyle_repetition": "PASS|FAIL|BLOCKED|NOT_APPLICABLE",
+    "clothing_repetition_excessive": "PASS|FAIL|BLOCKED|NOT_APPLICABLE",
+    "background_repetition": "PASS|FAIL|BLOCKED",
+    "camera_repetition": "PASS|FAIL|BLOCKED",
+    "composition_repetition": "PASS|FAIL|BLOCKED",
+    "shot_size_variety": "PASS|FAIL|BLOCKED",
+    "persona_page_ratio_not_excessive": "PASS|FAIL|BLOCKED",
+    "product_page_ratio_not_insufficient": "PASS|FAIL|BLOCKED",
+    "page_rhythm": "PASS|FAIL|BLOCKED",
+    "visual_hierarchy": "PASS|FAIL|BLOCKED",
+    "information_density": "PASS|FAIL|BLOCKED",
+    "typography_hierarchy": "PASS|FAIL|BLOCKED",
+    "negative_space": "PASS|FAIL|BLOCKED",
+    "image_quality_anomalies": "PASS|FAIL|BLOCKED",
+    "style_consistent_without_mechanical_copy": "PASS|FAIL|BLOCKED"
+  },
+  "page_findings": [
+    {
+      "page_id": "P1",
+      "result": "PASS|FAIL|BLOCKED",
+      "issues": []
+    }
+  ],
+  "cross_page_findings": [],
+  "failed_pages": [],
+  "required_revision_pages": [],
+  "frozen_pass_pages": [],
+  "result": "PASS|FAIL|BLOCKED",
+  "principle": "同一人物、同一账号风格可以保持一致，但姿势、镜头、景别、构图、背景与页面功能必须呈现自然变化，不能像复制粘贴。",
+  "partial_revision_rule": "若仅P3存在独立问题，则required_revision_pages=[P3]，其他PASS页继续冻结。只有真实跨页依赖问题才能扩大到修复该问题所需的最小页面集合。"
+}

@@ -2,6 +2,9 @@
   "task_id": "CONTENT-000",
   "task_version": "V1",
   "input_revision": 1,
+  "parent_version": null,
+  "revision_round": null,
+  "task_lifecycle_status": "ACTIVE",
   "state": "READY",
   "created_by": "AI系统总监",
   "assigned_role": "ROLE_NAME",
@@ -13,7 +16,17 @@
   "forbidden_changes": [],
   "acceptance": [],
   "idempotency_key": "CONTENT-000|V1|1|ROLE_NAME",
-  "on_success": "REVIEWING",
-  "on_failure": "BLOCKED_OR_REVISION_REQUIRED",
+  "routing": {
+    "on_success": "REVIEWING",
+    "on_review_fail": "REVISION_REQUIRED",
+    "on_missing_input": "BLOCKED_INPUT_MISSING",
+    "on_product_uncertain": "BLOCKED_PRODUCT_UNCERTAIN",
+    "on_sku_uncertain": "BLOCKED_SKU_UNCERTAIN",
+    "on_persona_missing": "BLOCKED_PERSONA_MISSING",
+    "on_asset_missing": "BLOCKED_ASSET_MISSING",
+    "on_hot_stale": "BLOCKED_HOT_STALE",
+    "on_conflict": "BLOCKED_CONFLICT"
+  },
+  "version_rule": "用户需求发生实质变化时input_revision+1，并生成新的task_version；旧任务task_lifecycle_status=SUPERSEDED。R1/R2/R3只属于对应task_version，不得跨V复用。",
   "supersedes": null
 }
