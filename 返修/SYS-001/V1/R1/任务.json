@@ -1,0 +1,48 @@
+{
+  "task_id": "SYS-001",
+  "task_version": "V1",
+  "input_revision": 1,
+  "revision_round": "R1",
+  "parent_version": "V1",
+  "task_lifecycle_status": "ACTIVE",
+  "state": "REVIEWING",
+  "source_review_A": {
+    "result": "FAIL",
+    "summary": "R1复审后仍有2个P1：当前返修唯一指针不完整；R1返修任务未正式落入GitHub，导致新会话无法从单一真源恢复当前返修。"
+  },
+  "source_review_B": {
+    "result": "PASS",
+    "summary": "B负责的PERSONA图片一致性、跨页视觉审核、商品审核独立性已通过并冻结。"
+  },
+  "revision_scope": [
+    "当前返修唯一指针",
+    "R1返修任务正式入库与交付来源回填"
+  ],
+  "frozen_scope": [
+    "PRODUCT LOCK",
+    "SKU LOCK",
+    "PERSONA LOCK",
+    "PERSONA图片一致性审核",
+    "跨页视觉审核",
+    "商品图片审核",
+    "文案真实性审核",
+    "发布前四大门禁",
+    "热点系统",
+    "状态机主体",
+    "V/R目录规则"
+  ],
+  "must_fix": [
+    "当前进度.json与CURRENT_PROGRESS_TEMPLATE.json增加revision_round、active_revision_path、delivery_path，并保证进入R2/R3时三者同步更新。",
+    "当前SYS-001明确revision_round=R1、active_revision_path=返修/SYS-001/V1/R1/任务.json、delivery_path=交付/SYS-001/V1/R1/交付.json。",
+    "交付/SYS-001/V1/R1/交付.json的source_revision_path改为返修/SYS-001/V1/R1/任务.json。",
+    "今后任何正式返修任务必须先写入GitHub，再执行；禁止依赖聊天上下文或扫描目录猜当前返修轮次。"
+  ],
+  "acceptance_criteria": [
+    "无聊天上下文的新AI只读取数据库入口→当前进度→active_revision_path→delivery_path即可恢复SYS-001/V1/R1当前复审上下文。",
+    "能明确知道为什么返修、修改范围、冻结范围、最新交付位置。",
+    "当前进度不再指向V1首轮交付。",
+    "CURRENT_PROGRESS_TEMPLATE明确规定revision_round、active_revision_path、delivery_path同步更新。"
+  ],
+  "execution_rule": "正式返修任务必须先入GitHub再执行；当前有效返修只认当前进度.json中的revision_round、active_revision_path、delivery_path，禁止目录扫描猜测。",
+  "created_by": "AI系统总监下发，AI系统制作员落库"
+}
