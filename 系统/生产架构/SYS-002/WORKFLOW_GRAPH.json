@@ -1,7 +1,24 @@
 {
-  "schema": "SYS-002_WORKFLOW_GRAPH_V1",
+  "schema": "SYS-002_WORKFLOW_GRAPH_V1_R1",
   "content_unit": "CONTENT_ID",
   "formal_router": "R01",
+  "global_execution_contracts": {
+    "role_idempotency_key": "content_id|stage|role_id|task_version|input_revision|revision_round|dependency_revision",
+    "parallel_role_rule": "每个并行角色必须拥有独立task_path、独立delivery_path、独立role_id与独立idempotency_key；父任务不能替代子角色交付。",
+    "barrier_evidence_required_fields": ["role_id", "task_path", "delivery_path", "result", "task_version", "input_revision", "dependency_revision", "completed_at", "delivery_fingerprint_or_commit"],
+    "barrier_complete_rule": "required_role_ids中的每个角色都必须存在正式delivery_path，且task_version/input_revision/dependency_revision与当前barrier要求完全吻合，result满足本阶段要求，才能计入COMPLETE。",
+    "barrier_revision_rule": "required_role_ids、依赖版本或barrier规则发生变化时，R01必须创建新的barrier_revision并对应正式task revision；禁止静默删角色或静默改变依赖。"
+  },
+  "asset_identity_contract": {
+    "manifest_runtime_path": "生产/资产清单/{CONTENT_ID}/{Vn}/M{manifest_revision}/ASSET_MANIFEST.json",
+    "active_pointer": "生产/当前进度.json.active_asset_manifest_path",
+    "manifest_change_rule": "任一页面实际图片版本变化都必须manifest_revision+1；未变化页面保持原asset_id、asset_revision与fingerprint。",
+    "review_binding_rule": "R10/R11/R12的当前有效证据必须对同一个asset_manifest_id+manifest_revision建立有效绑定，并逐页引用asset_id+asset_revision+fingerprint。",
+    "r13_binding_rule": "R13只接受已经通过IMAGE-QA barrier的同一asset_manifest_id+manifest_revision。",
+    "stale_rule": "页面asset_revision或fingerprint变化时，所有依赖该页面旧版本的审核证据自动STALE，不得继续计入PASS。",
+    "minimal_recheck_rule": "只重新触发依赖发生变化页面的审核。未受影响审核可由系统生成CARRY_FORWARD_BINDING，但前提是其dependency_scope内所有asset_id+asset_revision+fingerprint与旧审核完全一致；原审核结果不可被篡改。",
+    "cross_page_note": "R12属于跨页视觉依赖；任何可能改变整组节奏的图片变化默认视为受影响，除非规则明确证明不影响其dependency_scope。"
+  },
   "stages": [
     {
       "id": "S0_PERSONA_SETUP",
@@ -12,21 +29,47 @@
       "failure": "BLOCKED_PERSONA_MISSING|REVISION_REQUIRED"
     },
     {
-      "id": "S1_DISCOVERY",
+      "id": "S1A_DISCOVERY_SIGNAL",
       "type": "PARALLEL_BARRIER",
       "parallel_group_id": "DISCOVERY-G1",
-      "roles": ["R02", "R03", "R04"],
-      "barrier": "ALL_REQUIRED_COMPLETE",
+      "required_role_ids": ["R02", "R03"],
+      "barrier": "ALL_REQUIRED_COMPLETE_WITH_EVIDENCE",
       "collector": "R01",
-      "on_blocked": "R01 decides wait, minimal补任务, or scope reduction"
+      "output": "热点与市场竞品信号",
+      "scope_reduction_rule": "不得静默修改required_role_ids；任何变更必须barrier_revision/task revision。"
+    },
+    {
+      "id": "S1B_CANDIDATE_SET",
+      "type": "SERIAL_HARD_GATE",
+      "role": "R01",
+      "precondition": "S1A COMPLETE",
+      "output": "candidate_set",
+      "rule": "R01必须把候选商品集写入正式任务/产物并形成dependency_revision，之后R04才能开始。"
+    },
+    {
+      "id": "S1C_PRODUCT_FACT_RESEARCH",
+      "type": "SERIAL_REQUIRED_RESEARCH",
+      "role": "R04",
+      "input": "R01 candidate_set",
+      "rule": "R04必须对候选商品逐个深查官方、电商、淘宝/天猫评价、买家秀、公开测评与事实边界，并输出researched_candidate_ids。此阶段不得因scope reduction跳过。",
+      "on_blocked": "R01补充候选证据/缩小候选集后重新下发R04正式任务，但不得直接进入R05。"
+    },
+    {
+      "id": "S1D_FORMAL_PRODUCT_SELECT",
+      "type": "SERIAL_HARD_GATE",
+      "role": "R01",
+      "precondition": "R04正式交付存在且版本吻合",
+      "rule": "正式商品必须属于R04.researched_candidate_ids。若最终想选的商品不在已研究集合内，必须先新增候选并重新触发R04；禁止直接进入R05。",
+      "output": "formal_selected_product"
     },
     {
       "id": "S2_PRODUCT_LOCK",
       "type": "SERIAL_HARD_GATE",
-      "sequence": ["R01_SELECT_CANDIDATE", "R05_BUILD_DRAFT", "R01_APPROVE_LOCKS"],
+      "sequence": ["R05_BUILD_DRAFT", "R01_APPROVE_LOCKS"],
+      "precondition": "formal_selected_product is covered by current R04 delivery",
       "required_outputs": ["PRODUCT_LOCK", "SKU_LOCK when multi-SKU or SKU-specific content"],
       "on_uncertain": ["BLOCKED_PRODUCT_UNCERTAIN", "BLOCKED_SKU_UNCERTAIN"],
-      "forbidden_transition": "No SKU certainty -> no product-specific copy/image production"
+      "forbidden_transition": "No R04 coverage or no SKU certainty -> no R05 formal draft approval and no downstream product-specific production"
     },
     {
       "id": "S3_PLANNING_COPY",
@@ -36,16 +79,18 @@
     {
       "id": "S4_VISUAL_BUILD",
       "type": "SERIAL",
-      "sequence": ["R08", "R09"],
+      "sequence": ["R08", "R09", "R01_ACTIVATE_ASSET_MANIFEST"],
       "image_transport": ["USER_FILE", "GITHUB_OPTIONAL"],
-      "asset_manifest_required": true
+      "asset_manifest_required": true,
+      "rule": "R09完成实际图片后生成/更新ASSET MANIFEST；R01只激活明确的manifest路径。"
     },
     {
       "id": "S5_IMAGE_QA",
       "type": "PARALLEL_BARRIER",
       "parallel_group_id": "IMAGE-QA-G1",
-      "roles": ["R10", "R11", "R12"],
-      "barrier": "ALL_THREE_PASS",
+      "required_role_ids": ["R10", "R11", "R12"],
+      "barrier": "ALL_THREE_PASS_WITH_DELIVERY_EVIDENCE_AND_SAME_MANIFEST_BINDING",
+      "manifest_rule": "三路有效证据必须绑定同一个当前asset_manifest_id+manifest_revision；任一角色绑定旧manifest或STALE资产时barrier不得COMPLETE。",
       "on_any_fail": "R01_CREATE_MINIMAL_REVISION",
       "on_any_blocked": "ENTER_CORRESPONDING_BLOCKED_STATE",
       "cannot_be_overridden_by_other_passes": true
@@ -53,8 +98,9 @@
     {
       "id": "S6_CONTENT_TRUTH_REVIEW",
       "type": "SERIAL_HARD_GATE",
-      "precondition": "R10=PASS AND R11=PASS AND R12=PASS",
+      "precondition": "IMAGE-QA-G1 COMPLETE on one current manifest",
       "role": "R13",
+      "required_input": "same asset_manifest_id+manifest_revision passed by IMAGE-QA-G1",
       "on_fail": "R01 routes minimum affected upstream role(s)",
       "on_blocked": "corresponding BLOCKED_*"
     },
@@ -62,28 +108,64 @@
       "id": "S7_FINAL_APPROVAL",
       "type": "SERIAL_HARD_GATE",
       "role": "R01",
-      "required_gates": [
-        "PRODUCT_SKU_IMAGE_VERIFY_PASS",
-        "PERSONA_CONSISTENCY_PASS_OR_VALID_NO_PERSONA_CASE",
-        "CROSS_PAGE_VISUAL_PASS",
-        "CONTENT_TRUTHFULNESS_PASS"
-      ],
+      "required_gates": ["PRODUCT_SKU_IMAGE_VERIFY_PASS", "PERSONA_CONSISTENCY_PASS_OR_VALID_NO_PERSONA_CASE", "CROSS_PAGE_VISUAL_PASS", "CONTENT_TRUTHFULNESS_PASS"],
       "output": "CONTENT_LOCK"
     },
     {
-      "id": "S8_PUBLISH_DATA",
-      "type": "SERIAL_PLUS_SCHEDULED_DATA",
+      "id": "S8A_PUBLISH_PACKAGE",
+      "type": "SERIAL_OUTPUT_ONLY",
       "role": "R14",
       "precondition": "CONTENT_LOCK",
-      "outputs": ["PUBLISH_PACKAGE", "PUBLISH_RECEIPT", "24H_SNAPSHOT", "72H_SNAPSHOT", "7D_SNAPSHOT", "FEEDBACK_REPORT"]
+      "output": "PUBLISH_PACKAGE",
+      "main_state_write": false
+    },
+    {
+      "id": "S8B_USER_ACTUAL_PUBLISH",
+      "type": "EXTERNAL_USER_ACTION",
+      "precondition": "PUBLISH_PACKAGE",
+      "output": "actual publish event if user publishes"
+    },
+    {
+      "id": "S8C_PUBLISH_RECEIPT",
+      "type": "SERIAL_OUTPUT_ONLY",
+      "role": "R14",
+      "precondition": "user provides actual publish result/link or verifiable receipt",
+      "output": "PUBLISH_RECEIPT",
+      "main_state_write": false
+    },
+    {
+      "id": "S8D_CONFIRM_PUBLISHED",
+      "type": "SERIAL_STATE_GATE",
+      "role": "R01",
+      "precondition": "valid R14 PUBLISH_RECEIPT",
+      "state_transition": "-> PUBLISHED"
+    },
+    {
+      "id": "S9_DATA_WINDOWS",
+      "type": "MANUAL_TRIGGER_DATA_COLLECTION",
+      "role": "R14",
+      "windows": ["24h", "72h", "7d"],
+      "window_status_enum": ["DUE", "RECORDED", "MISSED"],
+      "normal_chat_rule": "普通聊天模式不会自动在未来醒来。没有外部自动化时，由用户在到点后再次触发R14；若错过则记录MISSED，不补猜数据。",
+      "main_state_write": false
+    },
+    {
+      "id": "S10_CONFIRM_DATA_FEEDBACK",
+      "type": "SERIAL_STATE_GATE",
+      "role": "R01",
+      "precondition": "R14 has submitted required available real data snapshot/report",
+      "state_transition": "-> DATA_FEEDBACK",
+      "next": "R01 after analysis decides NEXT_TASK or CLOSED"
     }
   ],
   "revision_routing_examples": [
     {
       "issue": "only P3 wrong product appearance",
-      "route": ["R01", "R09", "R10"],
+      "asset_rule": "same asset_id for P3, asset_revision+1, new fingerprint, manifest_revision+1; unchanged pages preserve asset_revision/fingerprint",
+      "invalidation": "old P3-dependent review evidence becomes STALE",
+      "route": ["R01", "R09_P3_ONLY", "affected reviewers only"],
       "frozen_pages": "all other PASS pages",
-      "optional_rechecks": ["R11/R12 only if P3 modification affects persona or cross-page rhythm"]
+      "review_rule": "R10必重审若P3含商品；R11仅当P3属于其人物依赖时重审；R12若整组节奏可能受影响则重审。"
     },
     {
       "issue": "P3 visual task itself wrong",
