@@ -1,0 +1,43 @@
+{
+  "schema": "SYS-002_IMAGE_REVIEW_EVIDENCE_V1",
+  "content_id": "CONTENT-000",
+  "review_role_id": "R10|R11|R12",
+  "review_type": "PRODUCT_SKU|PERSONA|CROSS_PAGE_VISUAL",
+  "task_path": "",
+  "delivery_path": "",
+  "task_version": "V1",
+  "input_revision": 1,
+  "revision_round": null,
+  "dependency_revision": "",
+  "asset_manifest_path": "生产/资产清单/CONTENT-000/V1/M1/ASSET_MANIFEST.json",
+  "asset_manifest_id": "ASSET-CONTENT-000",
+  "manifest_revision": 1,
+  "reviewed_assets": [
+    {
+      "page_id": "P1",
+      "asset_id": "CONTENT-000-P1",
+      "asset_revision": 1,
+      "fingerprint": "",
+      "dependency_scope": "IN_SCOPE|NOT_APPLICABLE"
+    }
+  ],
+  "result": "PASS|FAIL|BLOCKED|STALE",
+  "completed_at": null,
+  "delivery_fingerprint_or_commit": "",
+  "effective_binding": {
+    "mode": "FRESH_REVIEW|CARRY_FORWARD_BINDING",
+    "effective_asset_manifest_id": "ASSET-CONTENT-000",
+    "effective_manifest_revision": 1,
+    "source_review_delivery_path": null,
+    "carry_forward_eligibility_proof": []
+  },
+  "hard_rules": [
+    "A FRESH_REVIEW must cite the exact current asset_manifest_id+manifest_revision and the exact asset_id+asset_revision+fingerprint for every page in its dependency scope.",
+    "When any in-scope page fingerprint or asset_revision changes, this evidence automatically becomes STALE.",
+    "CARRY_FORWARD_BINDING does not change the old review. It is permitted only when every asset in this review's dependency scope is byte/version-identical between old and current manifests.",
+    "If the changed page is inside the review dependency scope, carry-forward is forbidden and the affected reviewer must run again.",
+    "R12 cross-page visual review normally depends on the whole visual set; any visual change is presumed in-scope unless the task explicitly proves otherwise.",
+    "IMAGE-QA barrier may report ALL PASS only when R10/R11/R12 each have one valid effective binding to the exact same current asset_manifest_id+manifest_revision."
+  ],
+  "r13_rule": "R13 must cite the same manifest identity that completed IMAGE-QA and may not combine copy review with images from another manifest revision."
+}
