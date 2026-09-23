@@ -1,0 +1,18 @@
+{
+  "schema": "SYS-002_DATA_COLLECTION_PLAN_V1",
+  "content_id": "CONTENT-000",
+  "publish_receipt_path": "",
+  "published_confirmed_by_r01_at": null,
+  "trigger_mode": "USER_RETRIGGER_IN_NORMAL_CHAT|EXTERNAL_AUTOMATION_IF_LATER_CONFIGURED",
+  "windows": [
+    {"window":"24h", "due_at":null, "status":"DUE|RECORDED|MISSED", "recorded_at":null, "delivery_path":null, "missed_reason":null},
+    {"window":"72h", "due_at":null, "status":"DUE|RECORDED|MISSED", "recorded_at":null, "delivery_path":null, "missed_reason":null},
+    {"window":"7d", "due_at":null, "status":"DUE|RECORDED|MISSED", "recorded_at":null, "delivery_path":null, "missed_reason":null}
+  ],
+  "rules": [
+    "R14 only records real supplied/verifiable data and writes data products; missing values are not filled with zero or guesses.",
+    "In normal chat mode no AI claims it will automatically wake at 24h/72h/7d. Without an external automation, the user triggers R14 again when the window is due.",
+    "If a due window is missed, record MISSED rather than fabricating a snapshot.",
+    "R14 cannot set PUBLISHED, DATA_FEEDBACK, NEXT_TASK or CLOSED. After receipt/data delivery, R01 confirms the corresponding main-state transition."
+  ]
+}
