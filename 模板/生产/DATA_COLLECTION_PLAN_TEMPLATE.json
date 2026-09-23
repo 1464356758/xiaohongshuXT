@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-002_DATA_COLLECTION_PLAN_V1",
+  "schema": "SYS-002_DATA_COLLECTION_PLAN_V1_R2",
   "content_id": "CONTENT-000",
   "publish_receipt_path": "",
   "published_confirmed_by_r01_at": null,
@@ -9,10 +9,11 @@
     {"window":"72h", "due_at":null, "status":"DUE|RECORDED|MISSED", "recorded_at":null, "delivery_path":null, "missed_reason":null},
     {"window":"7d", "due_at":null, "status":"DUE|RECORDED|MISSED", "recorded_at":null, "delivery_path":null, "missed_reason":null}
   ],
+  "state_phase_transition_table": "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
   "rules": [
     "R14 only records real supplied/verifiable data and writes data products; missing values are not filled with zero or guesses.",
     "In normal chat mode no AI claims it will automatically wake at 24h/72h/7d. Without an external automation, the user triggers R14 again when the window is due.",
     "If a due window is missed, record MISSED rather than fabricating a snapshot.",
-    "R14 cannot set PUBLISHED, DATA_FEEDBACK, NEXT_TASK or CLOSED. After receipt/data delivery, R01 confirms the corresponding main-state transition."
+    "R14 cannot write main state or business phase. PUBLISHED, DATA_FEEDBACK and CLOSED are phase values only. R01 performs the paired state_transition + phase_transition defined by STATE_PHASE_TRANSITION_TABLE after validating R14 delivery."
   ]
 }
