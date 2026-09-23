@@ -1,0 +1,35 @@
+{
+  "schema": "SYS-002_PARALLEL_BARRIER_TEMPLATE_V1",
+  "content_id": "CONTENT-000",
+  "stage": "IMAGE_REVIEW",
+  "parallel_group_id": "IMAGE-QA-G1",
+  "barrier_revision": 1,
+  "task_revision": 1,
+  "required_role_ids": ["R10", "R11", "R12"],
+  "required_dependency_revision": "",
+  "required_asset_manifest_id": null,
+  "required_manifest_revision": null,
+  "role_results": [
+    {
+      "role_id": "R10",
+      "task_path": "",
+      "delivery_path": "",
+      "result": "PENDING|PASS|FAIL|BLOCKED|COMPLETE|STALE",
+      "task_version": "V1",
+      "input_revision": 1,
+      "revision_round": null,
+      "dependency_revision": "",
+      "completed_at": null,
+      "delivery_fingerprint_or_commit": "",
+      "asset_manifest_id": null,
+      "manifest_revision": null,
+      "evidence_valid": false
+    }
+  ],
+  "barrier_status": "OPEN|COMPLETE|FAIL|BLOCKED",
+  "complete_rule": "For every required_role_id there must be exactly one current valid evidence record with a real task_path and delivery_path, matching task_version/input_revision/dependency_revision and the stage result requirement. For IMAGE-QA, all three effective bindings must also match required_asset_manifest_id+required_manifest_revision.",
+  "existence_rule": "A role is not COMPLETE merely because its id appears in a completed list. The declared delivery_path must exist and its delivery fingerprint/commit must be recorded.",
+  "revision_rule": "Changing required_role_ids, dependency_revision, required_asset_manifest_id, required_manifest_revision or barrier semantics requires barrier_revision+1 and a formal R01 task revision. Silent role removal or dependency change is forbidden.",
+  "carry_forward_rule": "An older PASS can count only through a deterministic CARRY_FORWARD_BINDING for the current dependency revision. This is allowed only when every asset in that review dependency scope has identical asset_id+asset_revision+fingerprint. It never edits the original reviewer result.",
+  "authority": "Only R01 may activate a new barrier revision or declare barrier completion after evidence validation."
+}
