@@ -1,0 +1,73 @@
+{
+  "task_id": "SYS-002",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R1",
+  "role": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "formal_task_path": "任务/SYS-002/V1/任务.json",
+  "source_revision_path": "返修/SYS-002/V1/R1/任务.json",
+  "baseline_fixed_commit": "57de47e58758762ffb904a81823e7242a971fd4d",
+  "build_content_commit_before_delivery": "1731a5a2b78f6a30721d38635d96e8d239773471",
+  "changed_scope": [
+    "正式SYS-002 GitHub任务",
+    "R02/R03→R01候选集→R04→R01正式商品→R05时序",
+    "并行逐角色交付证据与barrier revision",
+    "角色级独立幂等键",
+    "ASSET MANIFEST与页面资产版本身份证",
+    "R10/R11/R12同manifest审核绑定与STALE失效",
+    "R13同manifest前置",
+    "R14→用户→R14回执→R01确认PUBLISHED",
+    "DUE/RECORDED/MISSED数据窗口与R01确认DATA_FEEDBACK"
+  ],
+  "frozen_scope": [
+    "14个角色数量和主体职责",
+    "R01总监独占正式权限",
+    "PRODUCT LOCK",
+    "SKU LOCK",
+    "PERSONA LOCK",
+    "R09图片制作职责",
+    "R10/R11/R12三道图片审核职责",
+    "R13真实性审核职责",
+    "四大发布硬门禁",
+    "局部返修主体规则",
+    "USER_FILE图片传递模式",
+    "SYS-001"
+  ],
+  "deliverables": [
+    "任务/SYS-002/V1/任务.json",
+    "返修/SYS-002/V1/R1/任务.json",
+    "系统/生产架构/SYS-002/WORKFLOW_GRAPH.json",
+    "系统/生产架构/SYS-002/R1修正规则.md",
+    "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
+    "模板/生产/PRODUCTION_TASK_TEMPLATE.json",
+    "模板/生产/PARALLEL_BARRIER_TEMPLATE.json",
+    "模板/生产/ASSET_MANIFEST_TEMPLATE.json",
+    "模板/生产/IMAGE_REVIEW_EVIDENCE_TEMPLATE.json",
+    "模板/生产/DATA_COLLECTION_PLAN_TEMPLATE.json",
+    "交付/SYS-002/V1/交付.json",
+    "交付/SYS-002/V1/R1/交付.json"
+  ],
+  "self_check": {
+    "formal_task_path_not_null": true,
+    "candidate_before_r04": true,
+    "r04_cannot_be_skipped": true,
+    "per_role_delivery_evidence": true,
+    "per_role_idempotency": true,
+    "barrier_revision_required_for_role_set_change": true,
+    "asset_manifest_versioned": true,
+    "user_never_required_to_calculate_sha": true,
+    "three_image_reviews_same_manifest_gate": true,
+    "changed_page_old_review_stale": true,
+    "r13_same_manifest_required": true,
+    "r14_main_state_write_forbidden": true,
+    "data_window_status_due_recorded_missed": true,
+    "scope_not_expanded": true
+  },
+  "review_scope": {
+    "AI系统审核员A": ["正式任务", "并行证据", "幂等键", "R14→R01状态闭环"],
+    "AI系统审核员B": ["商品研究时序", "ASSET MANIFEST", "三审同版图片机制"]
+  },
+  "formal_system_pass_declared": false
+}
