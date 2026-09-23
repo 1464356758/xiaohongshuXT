@@ -1,0 +1,63 @@
+{
+  "task_id": "SYS-002",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R2",
+  "role": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "formal_task_path": "任务/SYS-002/V1/任务.json",
+  "source_revision_path": "返修/SYS-002/V1/R2/任务.json",
+  "r1_fixed_commit": "6e95e466479b0d19b2f7a13c51beaf6c786f4a97",
+  "build_content_commit_before_delivery": "4f8e4b02a0506a0a60e9ac26ea95a002ba1cd8bb",
+  "changed_scope": [
+    "新增STATE_PHASE_TRANSITION_TABLE",
+    "WORKFLOW_GRAPH发布与数据尾段state/phase双迁移",
+    "R1修正规则第7节state/phase澄清",
+    "PRODUCTION_CURRENT_PROGRESS_TEMPLATE合法phase与禁止state值",
+    "DATA_COLLECTION_PLAN_TEMPLATE状态阶段权限表述",
+    "正式SYS-002任务指针切换至R2"
+  ],
+  "frozen_scope": [
+    "14角色架构",
+    "R02/R03/R04研究时序",
+    "PRODUCT/SKU",
+    "PERSONA",
+    "ASSET MANIFEST",
+    "R10/R11/R12图片三审",
+    "并行证据链",
+    "幂等键",
+    "R14权限主体",
+    "局部返修",
+    "SYS-001"
+  ],
+  "deliverables": [
+    "返修/SYS-002/V1/R2/任务.json",
+    "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
+    "系统/生产架构/SYS-002/WORKFLOW_GRAPH.json",
+    "系统/生产架构/SYS-002/R1修正规则.md",
+    "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
+    "模板/生产/DATA_COLLECTION_PLAN_TEMPLATE.json",
+    "任务/SYS-002/V1/任务.json",
+    "交付/SYS-002/V1/R2/交付.json"
+  ],
+  "self_check": {
+    "state_phase_table_exists": true,
+    "published_only_phase": true,
+    "data_feedback_only_phase": true,
+    "closed_only_phase": true,
+    "publish_ready_phase_added": true,
+    "data_waiting_phase_added": true,
+    "data_reviewed_phase_added": true,
+    "next_content_phase_added": true,
+    "tail_transitions_pair_state_and_phase": true,
+    "r14_cannot_write_state_or_phase": true,
+    "r01_only_transition_authority": true,
+    "b_pass_modules_untouched": true
+  },
+  "review_scope": {
+    "AI系统审核员A": ["state与phase是否彻底拆分", "是否仍存在state=PUBLISHED/DATA_FEEDBACK/CLOSED", "尾段迁移表与工作流是否一致"],
+    "AI系统审核员B": "PASS_FROZEN_NO_REVIEW_REQUIRED"
+  },
+  "formal_system_pass_declared": false
+}
