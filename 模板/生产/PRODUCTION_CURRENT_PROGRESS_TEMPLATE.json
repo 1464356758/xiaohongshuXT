@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-002_PRODUCTION_CURRENT_PROGRESS_V1_R2",
+  "schema": "SYS-002_PRODUCTION_CURRENT_PROGRESS_V1_R3",
   "namespace": "生产",
   "content_id": "CONTENT-000",
   "task_id": "CONTENT-000-STAGE-000",
@@ -12,6 +12,7 @@
   "state_owner": "R01",
   "phase_owner": "R01",
   "state_phase_transition_table": "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
+  "asset_identity_gate": "系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json",
   "active_task_path": null,
   "active_revision_path": null,
   "delivery_path": null,
@@ -49,6 +50,7 @@
     "barrier_status": "OPEN|COMPLETE|FAIL|BLOCKED"
   },
   "quality_gates": {
+    "asset_identity_verifiable": {"result":"NOT_STARTED|PASS|BLOCKED", "gate_path":"系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json", "manifest_path":null},
     "product_sku_image_verify": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
     "persona_consistency": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
     "cross_page_visual": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
@@ -74,13 +76,13 @@
   "open_revision_pages": [],
   "unresolved_issues": [],
   "next_role_ids": [],
-  "legal_main_states": ["READY", "BUILDING", "REVIEWING", "REVISION_REQUIRED", "PASS", "LOCKED", "NEXT_TASK", "BLOCKED_INPUT_MISSING", "BLOCKED_PRODUCT_UNCERTAIN", "BLOCKED_SKU_UNCERTAIN", "BLOCKED_PERSONA_MISSING", "BLOCKED_ASSET_MISSING", "BLOCKED_HOT_STALE", "BLOCKED_CONFLICT"],
+  "legal_main_states": ["READY", "BUILDING", "REVIEWING", "REVISION_REQUIRED", "PASS", "LOCKED", "NEXT_TASK", "BLOCKED_INPUT_MISSING", "BLOCKED_PRODUCT_UNCERTAIN", "BLOCKED_SKU_UNCERTAIN", "BLOCKED_PERSONA_MISSING", "BLOCKED_ASSET_MISSING", "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE", "BLOCKED_HOT_STALE", "BLOCKED_CONFLICT"],
   "legal_phases": ["INTAKE", "PERSONA_SETUP", "DISCOVERY", "PRODUCT_LOCK", "PLANNING", "COPY", "VISUAL_PLAN", "IMAGE_BUILD", "IMAGE_REVIEW", "CONTENT_REVIEW", "FINAL_APPROVAL", "PUBLISH_PREP", "PUBLISH_READY", "PUBLISHED", "DATA_WAITING", "DATA_FEEDBACK", "DATA_REVIEWED", "NEXT_CONTENT", "CLOSED"],
   "forbidden_main_state_values": ["PUBLISH_PREP", "PUBLISH_READY", "PUBLISHED", "DATA_WAITING", "DATA_FEEDBACK", "DATA_REVIEWED", "NEXT_CONTENT", "CLOSED"],
   "pointer_rule": "Production roles read only explicit paths in this file; null means no active object. Never scan directories to guess latest task, revision, lock, asset manifest, or delivery.",
   "revision_pointer_rule": "revision_round + active_revision_path + delivery_path move together when entering R1/R2/R3.",
   "lock_pointer_rule": "Only R01 may activate or replace active_*_lock_path after formal approval.",
-  "asset_pointer_rule": "Only R01 activates active_asset_manifest_path/id/revision after R09 creates a valid manifest. Any page asset change requires a new manifest_revision; old dependent review evidence becomes STALE.",
+  "asset_pointer_rule": "R01 may activate active_asset_manifest_path/id/revision only after ASSET_IDENTITY_GATE PASS. Any ACTIVE page without a non-empty verifiable fingerprint forces BLOCKED_ASSET_IDENTITY_UNVERIFIABLE and forbids R10/R11/R12 start.",
   "parallel_rule": "Barrier COMPLETE requires one valid role_results evidence record for every required_role_id. The delivery path must exist and all version/dependency fields must match the current barrier. completed_role_ids alone is not authoritative.",
   "barrier_revision_rule": "Changing required_role_ids or dependencies requires a new barrier_revision and formal task revision; silent removal is forbidden.",
   "state_phase_rule": "state与phase必须分别可回答。PUBLISHED、DATA_FEEDBACK、CLOSED以及其他业务阶段值只能出现在phase，绝不能写入state。生产尾段每次迁移必须同时校验STATE_PHASE_TRANSITION_TABLE中的state_transition与phase_transition。",
