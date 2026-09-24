@@ -1,0 +1,36 @@
+{
+  "schema": "SYS-003_DATA_EXPERIMENT_TEMPLATE_V1",
+  "content_id": "CONTENT-000",
+  "analysis_id": "ANALYSIS-000",
+  "role_id": "R15",
+  "input_snapshot_paths": [],
+  "comparison_cohort": [],
+  "comparison_rule": "same format + comparable publish age + same traffic type",
+  "data_integrity": {
+    "missing_values": "UNKNOWN_NOT_ZERO",
+    "paid_and_organic_separated": true,
+    "timezone_required": true
+  },
+  "baseline": {
+    "sample_count": 0,
+    "confidence": "INSUFFICIENT|EXPLORATORY|STABLE",
+    "metrics": {}
+  },
+  "primary_judgment": "",
+  "hypothesis": "",
+  "single_primary_variable": {
+    "name": "",
+    "current": "",
+    "next_test": ""
+  },
+  "success_metric": "",
+  "failure_or_stop_condition": "",
+  "recommendation_for_next_content": "",
+  "strategy_failure_signal": false,
+  "rules": [
+    "Do not fabricate missing metrics.",
+    "Fewer than 5 comparable posts is exploratory only; 10+ can support a more stable baseline when definitions remain comparable.",
+    "Prefer median over a single viral outlier.",
+    "One cycle should have one primary judgment and at most one primary experiment variable."
+  ]
+}

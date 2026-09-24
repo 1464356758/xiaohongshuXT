@@ -1,0 +1,38 @@
+{
+  "schema": "SYS-003_VOICE_LOCK_TEMPLATE_V1",
+  "voice_lock_id": "VOICE-001",
+  "lock_version": "LOCK-V1",
+  "status": "DRAFT|LOCKED|SUPERSEDED",
+  "account_strategy_lock_ref": "",
+  "source_draft_path": "",
+  "supersedes": null,
+  "approved_by": "R01",
+  "approved_at": null,
+  "voice": {
+    "persona_voice_summary": "",
+    "sentence_length": "",
+    "rhythm": "",
+    "professional_level": "",
+    "emotional_intensity": "",
+    "title_habits": [],
+    "common_sentence_patterns": [],
+    "preferred_words": [],
+    "emoji_rules": [],
+    "allowed_first_person_claims": [
+      "可验证的账号主体真实经历",
+      "用户明确提供并允许使用的真实事实"
+    ],
+    "forbidden_first_person_claims": [
+      "未发生的亲测",
+      "虚构连续使用天数",
+      "虚构回购/空瓶/持妆时长"
+    ],
+    "ad_like_words_to_avoid": [],
+    "ai_like_words_to_avoid": [],
+    "natural_variation_rule": "保持同一语言人格，但禁止每篇机械复制固定句式。"
+  },
+  "enforcement": [
+    "R07 must read current VOICE LOCK before writing.",
+    "R13 checks voice deviation together with truthfulness; voice consistency can never justify fabricated experience."
+  ]
+}

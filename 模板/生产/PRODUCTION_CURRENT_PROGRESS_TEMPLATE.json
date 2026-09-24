@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-002_PRODUCTION_CURRENT_PROGRESS_V1_R3",
+  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_V2",
   "namespace": "生产",
   "content_id": "CONTENT-000",
   "task_id": "CONTENT-000-STAGE-000",
@@ -11,81 +11,49 @@
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "R01",
   "phase_owner": "R01",
-  "state_phase_transition_table": "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
-  "asset_identity_gate": "系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json",
   "active_task_path": null,
   "active_revision_path": null,
   "delivery_path": null,
+  "active_account_strategy_lock_path": null,
+  "active_voice_lock_path": null,
   "active_product_lock_path": null,
   "active_sku_lock_path": null,
   "active_persona_lock_path": null,
   "active_content_lock_path": null,
+  "active_compliance_snapshot_path": null,
   "active_asset_manifest_path": null,
   "active_asset_manifest_id": null,
   "active_manifest_revision": null,
-  "parallel_group": {
-    "parallel_group_id": null,
-    "barrier_revision": 1,
-    "task_revision": 1,
-    "required_role_ids": [],
-    "role_results": [
-      {
-        "role_id": "R00",
-        "task_path": "",
-        "delivery_path": "",
-        "result": "PENDING|PASS|FAIL|BLOCKED|COMPLETE",
-        "task_version": "V1",
-        "input_revision": 1,
-        "dependency_revision": "",
-        "completed_at": null,
-        "delivery_fingerprint_or_commit": "",
-        "effective_asset_manifest_id": null,
-        "effective_manifest_revision": null,
-        "evidence_valid": false
-      }
-    ],
-    "failed_role_ids": [],
-    "blocked_role_ids": [],
-    "barrier_rule": null,
-    "barrier_status": "OPEN|COMPLETE|FAIL|BLOCKED"
+  "latest_r14_raw_data_delivery_path": null,
+  "latest_r15_analysis_delivery_path": null,
+  "content_lock_count_since_strategy_review": 0,
+  "r16_trigger_status": {
+    "triggered": false,
+    "reasons": []
   },
-  "quality_gates": {
-    "asset_identity_verifiable": {"result":"NOT_STARTED|PASS|BLOCKED", "gate_path":"系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json", "manifest_path":null},
-    "product_sku_image_verify": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
-    "persona_consistency": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
-    "cross_page_visual": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null},
-    "content_truthfulness": {"result":"NOT_STARTED|PASS|FAIL|BLOCKED|STALE", "delivery_path":null, "asset_manifest_id":null, "manifest_revision":null}
-  },
-  "publish_flow": {
-    "publish_package_delivery_path": null,
-    "user_actual_publish_confirmed": false,
-    "publish_receipt_delivery_path": null,
-    "published_confirmed_by_r01_at": null,
-    "r14_may_write_main_state": false,
-    "r14_may_write_phase": false
-  },
-  "data_collection": {
-    "24h": {"status":"DUE|RECORDED|MISSED", "due_at":null, "delivery_path":null},
-    "72h": {"status":"DUE|RECORDED|MISSED", "due_at":null, "delivery_path":null},
-    "7d": {"status":"DUE|RECORDED|MISSED", "due_at":null, "delivery_path":null},
-    "normal_chat_trigger_rule": "没有外部自动化时，到点后由用户再次触发R14；普通聊天AI不得宣称会自动醒来。",
-    "data_feedback_confirmed_by_r01_at": null,
-    "data_reviewed_confirmed_by_r01_at": null
-  },
-  "frozen_pages": [],
-  "open_revision_pages": [],
-  "unresolved_issues": [],
-  "next_role_ids": [],
-  "legal_main_states": ["READY", "BUILDING", "REVIEWING", "REVISION_REQUIRED", "PASS", "LOCKED", "NEXT_TASK", "BLOCKED_INPUT_MISSING", "BLOCKED_PRODUCT_UNCERTAIN", "BLOCKED_SKU_UNCERTAIN", "BLOCKED_PERSONA_MISSING", "BLOCKED_ASSET_MISSING", "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE", "BLOCKED_HOT_STALE", "BLOCKED_CONFLICT"],
-  "legal_phases": ["INTAKE", "PERSONA_SETUP", "DISCOVERY", "PRODUCT_LOCK", "PLANNING", "COPY", "VISUAL_PLAN", "IMAGE_BUILD", "IMAGE_REVIEW", "CONTENT_REVIEW", "FINAL_APPROVAL", "PUBLISH_PREP", "PUBLISH_READY", "PUBLISHED", "DATA_WAITING", "DATA_FEEDBACK", "DATA_REVIEWED", "NEXT_CONTENT", "CLOSED"],
-  "forbidden_main_state_values": ["PUBLISH_PREP", "PUBLISH_READY", "PUBLISHED", "DATA_WAITING", "DATA_FEEDBACK", "DATA_REVIEWED", "NEXT_CONTENT", "CLOSED"],
-  "pointer_rule": "Production roles read only explicit paths in this file; null means no active object. Never scan directories to guess latest task, revision, lock, asset manifest, or delivery.",
-  "revision_pointer_rule": "revision_round + active_revision_path + delivery_path move together when entering R1/R2/R3.",
-  "lock_pointer_rule": "Only R01 may activate or replace active_*_lock_path after formal approval.",
-  "asset_pointer_rule": "R01 may activate active_asset_manifest_path/id/revision only after ASSET_IDENTITY_GATE PASS. Any ACTIVE page without a non-empty verifiable fingerprint forces BLOCKED_ASSET_IDENTITY_UNVERIFIABLE and forbids R10/R11/R12 start.",
-  "parallel_rule": "Barrier COMPLETE requires one valid role_results evidence record for every required_role_id. The delivery path must exist and all version/dependency fields must match the current barrier. completed_role_ids alone is not authoritative.",
-  "barrier_revision_rule": "Changing required_role_ids or dependencies requires a new barrier_revision and formal task revision; silent removal is forbidden.",
-  "state_phase_rule": "state与phase必须分别可回答。PUBLISHED、DATA_FEEDBACK、CLOSED以及其他业务阶段值只能出现在phase，绝不能写入state。生产尾段每次迁移必须同时校验STATE_PHASE_TRANSITION_TABLE中的state_transition与phase_transition。",
-  "state_phase_authority_rule": "R14不写state也不写phase。所有正式state/phase迁移只由R01执行。",
-  "updated_at": null
+  "legal_main_states": [
+    "READY",
+    "BUILDING",
+    "REVIEWING",
+    "REVISION_REQUIRED",
+    "PASS",
+    "LOCKED",
+    "NEXT_TASK",
+    "BLOCKED_INPUT_MISSING",
+    "BLOCKED_PRODUCT_UNCERTAIN",
+    "BLOCKED_SKU_UNCERTAIN",
+    "BLOCKED_PERSONA_MISSING",
+    "BLOCKED_ASSET_MISSING",
+    "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
+    "BLOCKED_HOT_STALE",
+    "BLOCKED_COMPLIANCE_STALE",
+    "BLOCKED_COMPLIANCE_UNVERIFIED",
+    "BLOCKED_CONFLICT"
+  ],
+  "pointer_rules": [
+    "R01 is the only writer of active pointers.",
+    "All required locks/snapshots/manifests are explicit paths; null never means scan for latest.",
+    "ACCOUNT_STRATEGY_LOCK and VOICE_LOCK are account-level reusable locks.",
+    "COMPLIANCE_SNAPSHOT is dynamic and must be valid at R13 review and final approval."
+  ]
 }

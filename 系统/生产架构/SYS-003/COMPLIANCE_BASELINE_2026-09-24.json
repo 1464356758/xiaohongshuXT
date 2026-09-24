@@ -1,0 +1,34 @@
+{
+  "schema": "SYS-003_COMPLIANCE_BASELINE_CN_XHS_2026_09_24",
+  "checked_at": "2026-09-24T09:23:00+08:00",
+  "platform": "小红书",
+  "jurisdiction": "中国大陆",
+  "rule_sources": [
+    {
+      "source_type": "LAW_OFFICIAL",
+      "title": "人工智能生成合成内容标识办法",
+      "url": "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm",
+      "effective_date": "2025-09-01",
+      "key_rule": "用户发布生成合成内容时应主动声明并使用服务提供者提供的标识功能；不得恶意删除、篡改、伪造、隐匿规定标识。"
+    },
+    {
+      "source_type": "PLATFORM_PUBLIC_RULE",
+      "title": "小红书「现场」主题规范（可公开检索的社区规则页面）",
+      "url": "https://top.xiaohongshu.com/fe/toph5/rules/subject",
+      "key_rule": "公开规则强调真实体验/兴趣表达，禁止虚假夸张、恶意模仿及违法违规内容。"
+    }
+  ],
+  "platform_ai_label_mechanism_status": "VERIFY_AT_PUBLISH_TIME_FROM_CURRENT_APP_OR_OFFICIAL_HELP",
+  "hard_rule": "未核实当前平台标识/商业披露机制时，不得凭旧记忆自动判定发布合规。",
+  "disclaimer_boundary": "不要把后台研究说明机械塞进正文，与依法/依平台要求使用标识功能是两件不同的事。",
+  "refresh_policy": {
+    "default_valid_days": 7,
+    "refresh_on": [
+      "platform_rule_change_signal",
+      "legal_change_signal",
+      "commercial_content",
+      "AI_label_UI_unknown"
+    ]
+  },
+  "status": "BASELINE_REFERENCE_NOT_A_PERMANENT_PASS"
+}

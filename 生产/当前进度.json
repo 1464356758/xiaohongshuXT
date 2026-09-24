@@ -1,0 +1,42 @@
+{
+  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V2",
+  "namespace": "生产",
+  "runtime_enabled": false,
+  "runtime_block_reason": "SYS-003尚待A/B审核；16角色正式角色指令与CONTENT-TEST-001压力测试尚未完成。",
+  "architecture_version": "SYS-003/V1",
+  "state": "READY",
+  "phase": "STRATEGY_SETUP",
+  "state_owner": "R01",
+  "phase_owner": "R01",
+  "content_id": null,
+  "task_id": null,
+  "task_version": null,
+  "input_revision": null,
+  "revision_round": null,
+  "active_task_path": null,
+  "active_revision_path": null,
+  "delivery_path": null,
+  "active_account_strategy_lock_path": null,
+  "active_voice_lock_path": null,
+  "active_product_lock_path": null,
+  "active_sku_lock_path": null,
+  "active_persona_lock_path": null,
+  "active_content_lock_path": null,
+  "active_compliance_snapshot_path": null,
+  "active_asset_manifest_path": null,
+  "latest_r14_raw_data_delivery_path": null,
+  "latest_r15_analysis_delivery_path": null,
+  "r16_trigger_status": {
+    "triggered": true,
+    "reasons": [
+      "INITIALIZATION"
+    ]
+  },
+  "next_role_ids": [],
+  "activation_gate": [
+    "SYS-003 A/B双审核通过并由AI系统总监验收",
+    "16个正式生产角色指令完成并双审",
+    "CONTENT-TEST-001压力测试通过"
+  ],
+  "pointer_rule": "任何null指针都表示当前无正式对象，禁止扫描目录猜最新版。正式生产启用后仅R01可改active指针/state/phase。"
+}

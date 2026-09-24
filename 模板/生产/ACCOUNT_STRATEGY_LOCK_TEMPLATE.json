@@ -1,0 +1,52 @@
+{
+  "schema": "SYS-003_ACCOUNT_STRATEGY_LOCK_TEMPLATE_V1",
+  "account_strategy_lock_id": "ACCOUNT-STRATEGY-001",
+  "lock_version": "LOCK-V1",
+  "status": "DRAFT|LOCKED|SUPERSEDED",
+  "source_draft_path": "",
+  "supersedes": null,
+  "approved_by": "R01",
+  "approved_at": null,
+  "fields": {
+    "positioning": "",
+    "target_women_segments": [],
+    "growth_stage": "",
+    "content_pillars": [
+      {
+        "pillar": "美妆",
+        "target_ratio": null
+      },
+      {
+        "pillar": "美甲",
+        "target_ratio": null
+      },
+      {
+        "pillar": "护肤",
+        "target_ratio": null
+      }
+    ],
+    "hot_content_ratio": null,
+    "evergreen_content_ratio": null,
+    "persona_face_ratio": null,
+    "product_image_ratio": null,
+    "visual_tone": [],
+    "title_style": [],
+    "language_style": [],
+    "commercial_content_ratio": null,
+    "commercial_stage": "",
+    "differentiation": [],
+    "forbidden_drift": []
+  },
+  "review_triggers": [
+    "INITIALIZATION",
+    "EVERY_10_CONTENT_LOCKS",
+    "POSITIONING_DRIFT",
+    "FOLLOWER_STAGE_CHANGE",
+    "COMMERCIALIZATION_START",
+    "R15_STRATEGY_FAILURE_SIGNAL"
+  ],
+  "rules": [
+    "R16 only drafts/recommends; R01 approves formal lock.",
+    "Any material change creates new LOCK version and supersedes old; never overwrite."
+  ]
+}

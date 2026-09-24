@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-002_PRODUCTION_TASK_TEMPLATE_V1_R3",
+  "schema": "SYS-003_PRODUCTION_TASK_TEMPLATE_V2",
   "content_id": "CONTENT-000",
   "task_id": "CONTENT-000-STAGE-000-R00",
   "stage": "INTAKE",
@@ -9,47 +9,43 @@
   "parent_version": null,
   "revision_round": null,
   "task_lifecycle_status": "ACTIVE",
-  "phase": "INTAKE",
   "state": "READY",
+  "phase": "INTAKE",
   "created_by": "R01",
-  "parallel_group_id": null,
-  "barrier_revision": null,
-  "goal": "",
+  "required_context": {
+    "account_strategy_lock_path": null,
+    "voice_lock_path": null,
+    "product_lock_path": null,
+    "sku_lock_path": null,
+    "persona_lock_path": null,
+    "content_lock_path": null,
+    "compliance_snapshot_path": null,
+    "asset_manifest_path": null,
+    "latest_r15_analysis_path": null
+  },
   "input_paths": [],
-  "required_lock_paths": {"product": null, "sku": null, "persona": null, "content": null},
-  "required_asset_manifest_path": null,
-  "required_asset_manifest_id": null,
-  "required_manifest_revision": null,
-  "required_asset_identity_gate": "系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json",
   "scope": [],
   "frozen_scope": [],
-  "forbidden_changes": [],
   "acceptance_criteria": [],
   "expected_output_paths": [],
   "dependency_revision": "",
   "idempotency_key_formula": "content_id|stage|role_id|task_version|input_revision|revision_round|dependency_revision",
-  "idempotency_key": "CONTENT-000|INTAKE|R00|V1|1|null|dependency_revision",
   "routing": {
-    "on_success": ["R01"],
-    "on_fail": ["R01"],
+    "on_success": [
+      "R01"
+    ],
+    "on_fail": [
+      "R01"
+    ],
     "on_missing_input": "BLOCKED_INPUT_MISSING",
-    "on_product_uncertain": "BLOCKED_PRODUCT_UNCERTAIN",
-    "on_sku_uncertain": "BLOCKED_SKU_UNCERTAIN",
-    "on_persona_missing": "BLOCKED_PERSONA_MISSING",
-    "on_asset_missing": "BLOCKED_ASSET_MISSING",
     "on_asset_identity_unverifiable": "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
-    "on_hot_stale": "BLOCKED_HOT_STALE",
+    "on_compliance_stale": "BLOCKED_COMPLIANCE_STALE",
+    "on_compliance_unverified": "BLOCKED_COMPLIANCE_UNVERIFIED",
     "on_conflict": "BLOCKED_CONFLICT"
   },
   "rules": [
-    "Formal production tasks are created only by R01.",
-    "Every executable task belongs to exactly one role_id. Parallel roles receive separate task files even when they share a parent stage.",
-    "R02/R03/R04 and R10/R11/R12 therefore never share an idempotency_key.",
-    "Parallel roles write separate output paths and never overwrite each other.",
-    "If an identical idempotency_key already has a valid COMPLETE delivery and dependencies are unchanged, do not regenerate.",
-    "dependency_revision must identify the exact upstream candidate set, lock/input set, or asset manifest dependency consumed by this role.",
-    "Any task that consumes actual images must verify ASSET_IDENTITY_GATE. If a required ACTIVE asset lacks a non-empty verifiable fingerprint, route to BLOCKED_ASSET_IDENTITY_UNVERIFIABLE before review execution.",
-    "User substantive requirement change increments input_revision and creates a new task_version; old task becomes SUPERSEDED.",
-    "No role may infer missing locks, assets, tasks, or deliveries by scanning directories."
+    "One executable role per task identity.",
+    "No scanning for missing context.",
+    "R14/R15/R16 never directly modify formal state/phase or locks."
   ]
 }

@@ -1,0 +1,170 @@
+{
+  "schema": "SYS-003_WORKFLOW_GRAPH_V2",
+  "formal_router": "R01",
+  "active_lock_types": [
+    "ACCOUNT_STRATEGY",
+    "VOICE",
+    "PRODUCT",
+    "SKU",
+    "PERSONA",
+    "CONTENT"
+  ],
+  "dynamic_pointer_types": [
+    "COMPLIANCE_SNAPSHOT",
+    "ASSET_MANIFEST"
+  ],
+  "stages": [
+    {
+      "id": "S0_STRATEGY_SETUP",
+      "type": "CONDITIONAL",
+      "trigger": "no ACCOUNT_STRATEGY_LOCK or R16 trigger",
+      "sequence": [
+        "R16_DRAFT",
+        "R01_APPROVE_ACCOUNT_STRATEGY_LOCK"
+      ]
+    },
+    {
+      "id": "S0B_VOICE_SETUP",
+      "type": "CONDITIONAL",
+      "trigger": "no VOICE_LOCK or strategy changes voice domain",
+      "sequence": [
+        "R07_VOICE_DRAFT",
+        "R13_TRUTH_COMPLIANCE_CHECK",
+        "R01_APPROVE_VOICE_LOCK"
+      ]
+    },
+    {
+      "id": "S1_DISCOVERY",
+      "type": "PARALLEL_BARRIER",
+      "roles": [
+        "R02",
+        "R03"
+      ],
+      "barrier": "ALL_REQUIRED_COMPLETE_WITH_EVIDENCE",
+      "reads": [
+        "ACCOUNT_STRATEGY_LOCK",
+        "R15 latest report if valid"
+      ]
+    },
+    {
+      "id": "S2_PRODUCT_RESEARCH",
+      "type": "SERIAL",
+      "sequence": [
+        "R01_CANDIDATE_SET",
+        "R04_DEEP_RESEARCH",
+        "R01_FORMAL_PRODUCT_SELECT",
+        "R05_PRODUCT_SKU_DRAFT",
+        "R01_APPROVE_PRODUCT_SKU_LOCK"
+      ],
+      "rule": "formal product must exist in R04 researched set"
+    },
+    {
+      "id": "S3_CONTENT",
+      "type": "SERIAL",
+      "sequence": [
+        "R06",
+        "R01_STAGE_APPROVAL",
+        "R07"
+      ],
+      "required": [
+        "ACCOUNT_STRATEGY_LOCK",
+        "VOICE_LOCK",
+        "PRODUCT/SKU LOCK where applicable"
+      ]
+    },
+    {
+      "id": "S4_VISUAL",
+      "type": "SERIAL",
+      "sequence": [
+        "R08",
+        "R09",
+        "ASSET_IDENTITY_GATE",
+        "R01_ACTIVATE_MANIFEST"
+      ]
+    },
+    {
+      "id": "S5_IMAGE_QA",
+      "type": "PARALLEL_BARRIER",
+      "roles": [
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "barrier": "ALL_THREE_PASS_SAME_MANIFEST"
+    },
+    {
+      "id": "S6_COMPLIANCE",
+      "type": "SERIAL_HARD_GATE",
+      "role": "R13",
+      "precondition": "current COMPLIANCE_SNAPSHOT valid; if stale refresh before review",
+      "output": "truthfulness+platform_compliance_review"
+    },
+    {
+      "id": "S7_CONTENT_LOCK",
+      "type": "SERIAL_HARD_GATE",
+      "role": "R01",
+      "precondition": "all four publish gates PASS + current compliance snapshot valid"
+    },
+    {
+      "id": "S8_PUBLISH",
+      "type": "SERIAL",
+      "sequence": [
+        "R14_PUBLISH_PACKAGE",
+        "USER_ACTUAL_PUBLISH",
+        "R14_PUBLISH_RECEIPT",
+        "R01_CONFIRM_PUBLISHED"
+      ]
+    },
+    {
+      "id": "S9_RAW_DATA",
+      "type": "MANUAL_TRIGGER_WINDOWS",
+      "role": "R14",
+      "windows": [
+        "24h",
+        "72h",
+        "7d"
+      ],
+      "status": [
+        "DUE",
+        "RECORDED",
+        "MISSED"
+      ],
+      "rule": "normal chat never claims automatic wake"
+    },
+    {
+      "id": "S10_ANALYSIS",
+      "type": "SERIAL",
+      "sequence": [
+        "R15_ANALYZE",
+        "R01_CONFIRM_DATA_REVIEWED"
+      ],
+      "output": [
+        "baseline_update",
+        "primary_judgment",
+        "single_next_experiment"
+      ]
+    },
+    {
+      "id": "S11_STRATEGY_REVIEW",
+      "type": "CONDITIONAL",
+      "role": "R16",
+      "trigger": "R16 trigger conditions met",
+      "output": "strategy revision proposal"
+    },
+    {
+      "id": "S12_NEXT",
+      "type": "R01_DECISION",
+      "options": [
+        "NEXT_TASK/NEXT_CONTENT",
+        "LOCKED/CLOSED"
+      ]
+    }
+  ],
+  "invariants": [
+    "R14只采集/运营，不做最终数据判断；R15不发布、不改主状态。",
+    "R16不进入每篇固定关键路径。",
+    "VOICE LOCK和ACCOUNT_STRATEGY_LOCK修改必须新版本+supersedes，不覆盖旧LOCK。",
+    "COMPLIANCE_SNAPSHOT过期或关键平台规则无法确认时进入BLOCKED_COMPLIANCE_STALE或BLOCKED_COMPLIANCE_UNVERIFIED。",
+    "公开文案不机械塞后台制作说明，不等于绕过依法或平台要求的AI标识/商业披露。"
+  ]
+}

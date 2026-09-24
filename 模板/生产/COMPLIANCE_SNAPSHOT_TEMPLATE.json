@@ -1,0 +1,51 @@
+{
+  "schema": "SYS-003_COMPLIANCE_SNAPSHOT_TEMPLATE_V1",
+  "compliance_snapshot_id": "COMPLIANCE-XHS-0001",
+  "snapshot_revision": 1,
+  "platform": "小红书",
+  "jurisdiction": "中国大陆",
+  "checked_at": null,
+  "valid_until": null,
+  "status": "VALID|STALE|UNVERIFIED|BLOCKED",
+  "rule_sources": [
+    {
+      "title": "",
+      "url": "",
+      "source_type": "LAW_OFFICIAL|PLATFORM_OFFICIAL|PLATFORM_CURRENT_UI_EVIDENCE",
+      "checked_at": null,
+      "effective_date": null
+    }
+  ],
+  "checks": {
+    "AI_label_requirement": {
+      "status": "VERIFIED|NOT_APPLICABLE|UNVERIFIED",
+      "requirement": "",
+      "platform_mechanism_evidence": ""
+    },
+    "commercial_disclosure_requirement": {
+      "status": "VERIFIED|NOT_APPLICABLE|UNVERIFIED",
+      "requirement": ""
+    },
+    "prohibited_or_high_risk_claims": {
+      "status": "VERIFIED|UNVERIFIED",
+      "rules": []
+    },
+    "authenticity_rules": {
+      "status": "VERIFIED|UNVERIFIED",
+      "rules": []
+    }
+  },
+  "refresh_triggers": [
+    "valid_until reached",
+    "platform UI/rule changed",
+    "law/regulation changed",
+    "commercial collaboration starts",
+    "R13 finds conflicting rule evidence"
+  ],
+  "blocking_rules": [
+    "Expired snapshot => BLOCKED_COMPLIANCE_STALE.",
+    "A required rule cannot be verified => BLOCKED_COMPLIANCE_UNVERIFIED.",
+    "R13 cannot PASS final compliance using stale/unverified required fields."
+  ],
+  "boundary": "公开内容不机械展示后台研究说明，不代表可以规避法律/平台要求的AI标识、广告披露或其他合规功能。"
+}

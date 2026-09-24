@@ -1,42 +1,39 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V1.0",
+  "system_version": "V2.0-CANDIDATE",
   "repository": "https://github.com/1464356758/xiaohongshuXT",
   "branch": "main",
   "single_source_of_truth": "GitHub文字资料",
-  "image_transport": "USER_FILE_ALLOWED_NOT_REQUIRED_IN_GITHUB",
   "current_progress": "当前进度.json",
-  "active_task": "任务/SYS-002/V1/任务.json",
-  "active_revision": "返修/SYS-002/V1/R3/任务.json",
-  "active_delivery": "交付/SYS-002/V1/R3/交付.json",
-  "system_architecture": "系统/生产架构/SYS-002/",
+  "active_task": "任务/SYS-003/V1/任务.json",
+  "active_revision": null,
+  "active_delivery": "交付/SYS-003/V1/交付.json",
+  "active_system_architecture": "系统/生产架构/SYS-003/",
+  "previous_architecture_baseline": "系统/生产架构/SYS-002/",
   "production_namespace": "生产/",
-  "production_database_entry_template": "模板/生产/PRODUCTION_DATABASE_ENTRY_TEMPLATE.json",
-  "production_current_progress_template": "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
-  "active_lock_pointer_source": "当前进度.json",
-  "lock_roots": {
-    "product": "生产/批准/PRODUCT/",
-    "sku": "生产/批准/SKU/",
-    "persona": "生产/批准/PERSONA/",
-    "content": "生产/批准/CONTENT/"
-  },
-  "production_roots": {
-    "tasks": "生产/任务/",
-    "revisions": "生产/返修/",
-    "outputs": "生产/产物/",
-    "reviews": "生产/审核/",
-    "asset_manifests": "生产/资产清单/",
-    "approvals": "生产/批准/",
-    "deliveries": "生产/交付/",
-    "publish_packages": "生产/发布包/",
-    "data": "生产/数据/"
-  },
+  "production_database_entry": "生产/数据库入口.json",
+  "production_current_progress": "生产/当前进度.json",
+  "role_registry": "系统/生产架构/SYS-003/ROLE_REGISTRY.json",
+  "workflow_graph": "系统/生产架构/SYS-003/WORKFLOW_GRAPH.json",
+  "lock_types": [
+    "ACCOUNT_STRATEGY",
+    "VOICE",
+    "PRODUCT",
+    "SKU",
+    "PERSONA",
+    "CONTENT"
+  ],
+  "dynamic_pointers": [
+    "COMPLIANCE_SNAPSHOT",
+    "ASSET_MANIFEST"
+  ],
   "formal_authority": {
     "system_build_task": "AI系统总监",
     "system_build_state": "AI系统总监",
+    "system_final_acceptance": "AI系统总监",
     "production_formal_task": "R01运营总监AI",
-    "production_main_state": "R01运营总监AI",
+    "production_state_phase": "R01运营总监AI",
     "production_lock_approval": "R01运营总监AI"
   },
-  "read_rule": "系统建设新会话必须先读本文件→当前进度.json→active_task_path→active_revision_path（非null）→delivery_path。日常内容生产启用后使用生产/数据库入口.json与生产/当前进度.json，不得回退到旧根级产物/审核/发布包目录猜当前生产状态。"
+  "read_rule": "系统建设新会话：本文件→当前进度.json→active_task_path→active_revision_path(非null)→delivery_path。真实生产启用后：生产/数据库入口.json→生产/当前进度.json→明确active指针。禁止扫描目录猜当前版本。"
 }

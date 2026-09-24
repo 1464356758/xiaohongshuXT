@@ -1,34 +1,36 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V1.0",
-  "task_id": "SYS-002",
+  "system_version": "V2.0-CANDIDATE",
+  "task_id": "SYS-003",
   "task_version": "V1",
   "input_revision": 1,
-  "revision_round": "R3",
+  "revision_round": null,
   "state": "REVIEWING",
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "AI系统总监",
-  "build_result": "R3_BUILD_COMPLETE_PENDING_A_B_FOCUSED_REVIEW",
+  "build_result": "V1_BUILD_COMPLETE_PENDING_A_B_REVIEW",
   "builder": "AI系统制作员",
-  "active_task_path": "任务/SYS-002/V1/任务.json",
-  "active_revision_path": "返修/SYS-002/V1/R3/任务.json",
-  "delivery_path": "交付/SYS-002/V1/R3/交付.json",
-  "active_system_architecture_path": "系统/生产架构/SYS-002/",
+  "active_task_path": "任务/SYS-003/V1/任务.json",
+  "active_revision_path": null,
+  "delivery_path": "交付/SYS-003/V1/交付.json",
+  "active_system_architecture_path": "系统/生产架构/SYS-003/",
   "production_namespace": "生产/",
-  "active_product_lock_path": null,
-  "active_sku_lock_path": null,
-  "active_persona_lock_path": null,
-  "active_content_lock_path": null,
+  "previous_system_baseline": {
+    "task_id": "SYS-002",
+    "fixed_commit": "6204f284ef6dc6c473ea9112af611d9e9051f8dd",
+    "status": "BASELINE_RETAINED_NOT_ACTIVE"
+  },
   "review_status": {
-    "AI系统审核员A_previous": "PASS_FROZEN",
-    "AI系统审核员A_R3": "PENDING_ROOT_ENTRY_CONSISTENCY_ONLY",
-    "AI系统审核员B_previous": "FAIL_ONE_P1",
-    "AI系统审核员B_R3": "PENDING_ASSET_FINGERPRINT_ONLY"
+    "AI系统审核员A": "PENDING_SYS003_FULL_REVIEW",
+    "AI系统审核员B": "PENDING_SYS003_FULL_REVIEW"
   },
   "lock_status": "UNLOCKED",
-  "next_roles": ["AI系统审核员A", "AI系统审核员B"],
-  "pointer_rule": "系统建设恢复只认数据库入口.json→当前进度.json→active_task_path→active_revision_path（非null时）→delivery_path。当前SYS-002/V1/R3不得扫描目录或使用旧聊天猜状态。",
-  "production_rule": "SYS-002正式生产架构使用生产/命名空间；日常CONTENT启用后读取生产/数据库入口.json与生产/当前进度.json，不得回退到旧根级产物/审核/发布包路径。",
-  "bootstrap_note": "SYS-002 R3仅修复根入口漂移与资产fingerprint硬阻塞。R15/R16、VOICE LOCK、动态合规等属于后续SYS-003，不在本轮修改。",
-  "updated_at": "2026-09-24T07:42:00+08:00"
+  "next_roles": [
+    "AI系统审核员A",
+    "AI系统审核员B"
+  ],
+  "scope_note": "本轮允许整体升级。SYS-002历史保留审计，不再作为当前运行架构。",
+  "bootstrap_note": "SYS-003新增R15/R16、ACCOUNT_STRATEGY_LOCK、VOICE_LOCK、动态COMPLIANCE_SNAPSHOT，并重分R13/R14职责。正式生产仍未启用，待角色指令与压力测试。",
+  "pointer_rule": "恢复只认数据库入口.json→当前进度.json→active_task_path→delivery_path；active_revision_path为null表示SYS-003 V1首轮，无返修。",
+  "updated_at": "2026-09-24T09:23:00+08:00"
 }
