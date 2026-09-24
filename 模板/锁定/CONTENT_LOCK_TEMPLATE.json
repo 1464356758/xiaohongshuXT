@@ -1,0 +1,60 @@
+{
+  "schema": "SYS-003_CONTENT_LOCK_TEMPLATE_V1",
+  "lock_type": "CONTENT_LOCK",
+  "content_lock_id": "CONTENT-000-LOCK-V1",
+  "content_id": "CONTENT-000",
+  "lock_version": "LOCK-V1",
+  "status": "DRAFT|LOCKED|SUPERSEDED",
+  "provenance": {
+    "source_task_path": "",
+    "task_version": "V1",
+    "input_revision": 1,
+    "source_delivery_path": "",
+    "supersedes": null
+  },
+  "final_copy": {
+    "path": "",
+    "revision": "",
+    "fingerprint_type": "SHA256_UTF8|GIT_BLOB_SHA_PLUS_SHA256",
+    "fingerprint": "REQUIRED_NON_EMPTY"
+  },
+  "asset_manifest": {
+    "path": "",
+    "asset_manifest_id": "",
+    "manifest_revision": null
+  },
+  "locks": {
+    "product_lock_path": null,
+    "sku_lock_path": null,
+    "persona_lock_path": null,
+    "account_strategy_lock_path": "",
+    "voice_lock_path": ""
+  },
+  "reviews": {
+    "active_image_qa_barrier_path": "",
+    "active_r10_review_path": "",
+    "active_r11_review_path": "",
+    "active_r12_review_path": "",
+    "active_r13_review_path": ""
+  },
+  "compliance": {
+    "snapshot_path": "",
+    "snapshot_revision": null,
+    "compliance_scope_fingerprint": ""
+  },
+  "approval": {
+    "approved_by": "R01",
+    "approved_at": null
+  },
+  "mechanical_checks": [
+    "final_copy fingerprint matches exact final copy",
+    "manifest path/id/revision matches active R10/R11/R12",
+    "R10/R11/R12 PASS and barrier COMPLETE on same manifest",
+    "R13 PASS cites same copy+manifest",
+    "PRODUCT/SKU/PERSONA/ACCOUNT_STRATEGY/VOICE refs equal current active locks",
+    "compliance snapshot VALID, time-valid and exact scope fingerprint match",
+    "no cited evidence is STALE/SUPERSEDED"
+  ],
+  "on_any_mismatch": "BLOCKED_CONFLICT",
+  "immutable_rule": "LOCKED不可覆盖；任何最终绑定变化必须新LOCK版本并supersedes旧LOCK。"
+}

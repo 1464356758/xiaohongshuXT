@@ -1,11 +1,16 @@
 {
-  "schema": "SYS-003_VOICE_LOCK_TEMPLATE_V1",
+  "schema": "SYS-003_VOICE_LOCK_TEMPLATE_V2",
   "voice_lock_id": "VOICE-001",
   "lock_version": "LOCK-V1",
   "status": "DRAFT|LOCKED|SUPERSEDED",
+  "provenance": {
+    "source_task_path": "",
+    "task_version": "V1",
+    "input_revision": 1,
+    "source_delivery_path": "",
+    "supersedes": null
+  },
   "account_strategy_lock_ref": "",
-  "source_draft_path": "",
-  "supersedes": null,
   "approved_by": "R01",
   "approved_at": null,
   "voice": {
@@ -18,21 +23,31 @@
     "common_sentence_patterns": [],
     "preferred_words": [],
     "emoji_rules": [],
+    "first_person_experience_gate": {
+      "rule": "仅当事实真实+经历主体就是当前公开博主人格+存在experience_subject_ref与evidence_ref三者同时成立，才允许第一人称个人经历。",
+      "required_fields": [
+        "experience_subject_ref",
+        "evidence_ref"
+      ],
+      "allowed_subject_relation": "CURRENT_PUBLIC_BLOGGER_PERSONA_ONLY",
+      "on_missing_or_mismatch": "FORBID_FIRST_PERSON_EXPERIENCE_REWRITE_AS_ATTRIBUTED_OR_GENERAL_OBSERVATION"
+    },
     "allowed_first_person_claims": [
-      "可验证的账号主体真实经历",
-      "用户明确提供并允许使用的真实事实"
+      "满足first_person_experience_gate的当前公开博主人格真实经历"
     ],
     "forbidden_first_person_claims": [
+      "他人真实经历改写成我",
+      "仅因用户知道某事实就写成我经历",
       "未发生的亲测",
       "虚构连续使用天数",
       "虚构回购/空瓶/持妆时长"
     ],
     "ad_like_words_to_avoid": [],
     "ai_like_words_to_avoid": [],
-    "natural_variation_rule": "保持同一语言人格，但禁止每篇机械复制固定句式。"
+    "natural_variation_rule": "同一语言人格但不机械复制句式。"
   },
   "enforcement": [
-    "R07 must read current VOICE LOCK before writing.",
-    "R13 checks voice deviation together with truthfulness; voice consistency can never justify fabricated experience."
+    "R07写第一人称前校验subject/evidence refs。",
+    "R13独立复核主体身份，VOICE一致性不能为虚构经历开绿灯。"
   ]
 }

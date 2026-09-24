@@ -1,13 +1,13 @@
 {
-  "schema": "SYS-003_ROLE_REGISTRY_V2",
-  "production_namespace": "生产/",
+  "schema": "SYS-003_ROLE_REGISTRY_V3",
   "formal_task_and_lock_authority": "R01",
   "roles": [
     {
       "id": "R01",
       "name": "运营总监AI",
-      "mode": "ALWAYS",
-      "core": "总调度、正式任务/状态/LOCK/返修/阶段批准；维护所有active指针。",
+      "reads": [
+        "全部正式生产状态/任务/产物/审核/LOCK/快照"
+      ],
       "writes": [
         "生产/任务/",
         "生产/当前进度.json",
@@ -16,183 +16,249 @@
         "生产/产物/总监/"
       ],
       "cannot": [
-        "伪造专业角色研究审核",
-        "FAIL时强行LOCK"
+        "伪造专业角色产物",
+        "扫描目录猜当前证据"
+      ],
+      "exclusive": [
+        "formal_task",
+        "state",
+        "phase",
+        "active_pointers",
+        "lock_approval",
+        "revision_scope"
       ]
     },
     {
       "id": "R02",
       "name": "热点侦察AI",
-      "mode": "ALWAYS",
-      "core": "近期热点、新品、妆容、美甲、节日趋势、争议与时效。",
       "reads": [
+        "R01任务",
         "ACCOUNT_STRATEGY_LOCK",
-        "历史R15报告"
+        "R15报告"
       ],
       "writes": [
         "生产/产物/热点研究/"
+      ],
+      "cannot": [
+        "定最终商品",
+        "建LOCK"
       ]
     },
     {
       "id": "R03",
       "name": "市场与竞品研究AI",
-      "mode": "ALWAYS",
-      "core": "拆热门笔记、账号打法、首图/构图/收藏点/评论需求。",
       "reads": [
+        "R01任务",
         "ACCOUNT_STRATEGY_LOCK",
-        "历史R15报告"
+        "R15报告"
       ],
       "writes": [
         "生产/产物/竞品研究/"
+      ],
+      "cannot": [
+        "复制同行",
+        "定发布版"
       ]
     },
     {
       "id": "R04",
       "name": "商品事实研究AI",
-      "mode": "ALWAYS",
-      "core": "对R01候选商品集逐项研究官方、电商、评价、买家秀、公开测评与事实边界。",
+      "reads": [
+        "候选商品集",
+        "官方/电商/公开反馈"
+      ],
       "writes": [
         "生产/产物/商品事实/"
       ],
       "cannot": [
-        "候选集形成前启动",
-        "把他人反馈冒充亲测"
+        "候选集前启动",
+        "他人反馈冒充亲测",
+        "猜SKU"
       ]
     },
     {
       "id": "R05",
       "name": "商品与SKU管理员AI",
-      "mode": "ALWAYS",
-      "core": "建立PRODUCT/SKU草案、防多SKU串款。",
+      "reads": [
+        "R04交付",
+        "证据",
+        "R01选品"
+      ],
       "writes": [
         "生产/产物/锁定草案/"
       ],
-      "approval_required_from": "R01"
+      "cannot": [
+        "猜SKU",
+        "批准LOCK"
+      ]
     },
     {
       "id": "R06",
       "name": "选题策划AI",
-      "mode": "ALWAYS",
-      "core": "把热点、商品、竞品、账号战略、历史数据组合成选题与页序。",
       "reads": [
+        "R02/R03/R04",
         "ACCOUNT_STRATEGY_LOCK",
-        "R15实验建议",
-        "PRODUCT/SKU LOCK"
+        "PRODUCT/SKU LOCK",
+        "R15实验建议"
+      ],
+      "writes": [
+        "生产/产物/策划/"
+      ],
+      "cannot": [
+        "改LOCK",
+        "发明亲测"
       ]
     },
     {
       "id": "R07",
       "name": "文案脚本AI",
-      "mode": "ALWAYS",
-      "core": "标题、正文、逐页文字；严格执行VOICE LOCK和真实性边界。",
       "reads": [
-        "VOICE_LOCK",
-        "ACCOUNT_STRATEGY_LOCK",
         "策划",
-        "PRODUCT/SKU LOCK"
+        "VOICE/ACCOUNT_STRATEGY/PRODUCT/SKU LOCK",
+        "experience_subject_ref",
+        "evidence_ref"
+      ],
+      "writes": [
+        "生产/产物/文案/",
+        "生产/产物/VOICE草案/"
       ],
       "cannot": [
-        "虚构个人经历",
-        "脱离VOICE LOCK随意换人格"
+        "借他人经历写我",
+        "改LOCK"
       ]
     },
     {
       "id": "R08",
       "name": "视觉总策划AI",
-      "mode": "ALWAYS",
-      "core": "整组视觉策略与逐页图片任务。",
       "reads": [
-        "ACCOUNT_STRATEGY_LOCK",
-        "PERSONA LOCK",
         "策划",
         "文案",
-        "PRODUCT/SKU LOCK"
+        "PRODUCT/SKU/PERSONA/ACCOUNT_STRATEGY LOCK"
+      ],
+      "writes": [
+        "生产/产物/视觉策划/",
+        "生产/产物/图片任务/",
+        "生产/产物/PERSONA草案/"
+      ],
+      "cannot": [
+        "批准PERSONA LOCK",
+        "擅改身份"
       ]
     },
     {
       "id": "R09",
       "name": "图片制作AI",
-      "mode": "ALWAYS",
-      "core": "逐页执行图片任务并建立资产清单输入。",
-      "asset_transport": [
-        "USER_FILE",
-        "GITHUB_OPTIONAL"
+      "reads": [
+        "图片任务",
+        "PRODUCT/SKU/PERSONA LOCK"
+      ],
+      "writes": [
+        "生产/产物/图片执行/",
+        "生产/资产清单/"
       ],
       "cannot": [
-        "换SKU",
-        "换人物身份",
-        "自审"
+        "换SKU/人物",
+        "自审",
+        "绕过资产门禁"
       ]
     },
     {
       "id": "R10",
       "name": "商品图片核验AI",
-      "mode": "ALWAYS",
-      "core": "独立核验图片PRODUCT/SKU/包装/色号/版本。",
-      "independent_from_generator": true
+      "reads": [
+        "active manifest",
+        "PRODUCT/SKU LOCK",
+        "资产门禁"
+      ],
+      "writes": [
+        "生产/审核/商品核验/"
+      ],
+      "cannot": [
+        "改图片/LOCK",
+        "消费非active manifest"
+      ]
     },
     {
       "id": "R11",
       "name": "人物一致性审核AI",
-      "mode": "ALWAYS",
-      "core": "独立核验PERSONA身份与跨页一致性。",
-      "independent_from_generator": true
+      "reads": [
+        "active manifest",
+        "PERSONA LOCK/草案",
+        "人物锚点",
+        "资产门禁"
+      ],
+      "writes": [
+        "生产/审核/人物一致性/"
+      ],
+      "cannot": [
+        "改人物图/LOCK",
+        "消费非active manifest"
+      ]
     },
     {
       "id": "R12",
       "name": "图片终审AI",
-      "mode": "ALWAYS",
-      "core": "整组视觉质量、异常、重复度、构图和跨页节奏。",
-      "independent_from_generator": true
+      "reads": [
+        "active manifest",
+        "视觉策划",
+        "资产门禁"
+      ],
+      "writes": [
+        "生产/审核/图片终审/"
+      ],
+      "cannot": [
+        "改图",
+        "消费非active manifest",
+        "忽略跨页变化"
+      ]
     },
     {
       "id": "R13",
       "name": "内容真实性与平台合规审核AI",
-      "mode": "ALWAYS",
-      "core": "审核文案事实、商品事实、图文对应、虚构体验、品牌表达及当前平台/法律合规。",
       "reads": [
-        "最终内容",
-        "四类内容相关LOCK",
-        "VOICE_LOCK",
-        "COMPLIANCE_SNAPSHOT",
-        "R10/R11/R12"
+        "active final copy",
+        "active manifest",
+        "全部相关LOCK",
+        "active R10/R11/R12",
+        "active compliance snapshot",
+        "required scope"
       ],
       "writes": [
         "生产/审核/内容合规/",
         "生产/产物/合规快照草案/"
       ],
       "cannot": [
-        "使用过期合规快照放行",
-        "把后台说明等同于平台依法要求的标识",
-        "自行建立CONTENT LOCK"
+        "使用过期/未核实/scope不匹配快照PASS",
+        "批准CONTENT LOCK"
       ]
     },
     {
       "id": "R14",
       "name": "发布与社群运营AI",
-      "mode": "ALWAYS",
-      "core": "CONTENT LOCK后组发布包、发布回执、评论区运营、社群反馈和24h/72h/7d原始数据快照。",
+      "reads": [
+        "CONTENT LOCK",
+        "真实发布回执",
+        "真实后台数据"
+      ],
       "writes": [
         "生产/发布包/",
         "生产/数据/快照/",
         "生产/产物/社群反馈/"
       ],
       "cannot": [
-        "做最终数据结论",
-        "缺数据补0",
-        "修改正式state/phase"
+        "做最终数据判断",
+        "缺数补0",
+        "改state/phase/LOCK"
       ]
     },
     {
       "id": "R15",
       "name": "数据分析与实验AI",
-      "mode": "AFTER_REAL_DATA",
-      "core": "分析真实数据、建立同口径基线、形成一个主要判断和一个主要实验变量，向下一篇提供实验建议。",
       "reads": [
-        "R14真实快照",
+        "R14快照",
         "发布回执",
         "ACCOUNT_STRATEGY_LOCK",
-        "历史同口径数据"
+        "可比历史数据"
       ],
       "writes": [
         "生产/数据/报告/",
@@ -200,50 +266,60 @@
       ],
       "cannot": [
         "伪造数据",
-        "用不可比窗口下确定性结论",
-        "直接改账号战略LOCK"
+        "改策略LOCK/state/phase"
       ]
     },
     {
       "id": "R16",
       "name": "账号策略与增长规划AI",
-      "mode": "PERIODIC_CONDITIONAL",
-      "core": "维护账号长期定位、内容支柱、比例、视觉/语言方向、商业阶段与增长策略草案。",
-      "triggers": [
-        "INITIALIZATION",
-        "EVERY_10_CONTENT_LOCKS",
-        "POSITIONING_DRIFT",
-        "FOLLOWER_STAGE_CHANGE",
-        "COMMERCIALIZATION_START",
-        "R15_STRATEGY_FAILURE_SIGNAL"
+      "reads": [
+        "ACCOUNT_STRATEGY_LOCK",
+        "R15报告",
+        "内容历史",
+        "增长阶段"
       ],
       "writes": [
         "生产/产物/账号策略草案/"
       ],
       "cannot": [
         "每篇强制运行",
-        "自己批准ACCOUNT_STRATEGY_LOCK",
-        "篡改单篇事实或SKU"
-      ]
+        "批准策略LOCK",
+        "重复消费CONSUMED事件",
+        "改state/phase"
+      ],
+      "trigger_lifecycle": "仅消费R01当前PENDING trigger_event_id；交付后由R01置CONSUMED并按规则重置计数。"
     }
   ],
   "conditional_roles": [
     {
       "id": "C1",
       "name": "增长投放AI",
-      "trigger": [
-        "CONTENT_LOCK有效",
-        "真实自然数据基线",
-        "平台资格已核实",
-        "用户明确批准预算/对象/目标"
+      "reads": [
+        "CONTENT LOCK",
+        "真实基线",
+        "用户预算批准"
+      ],
+      "writes": [
+        "生产/产物/投放/",
+        "生产/数据/投放/"
+      ],
+      "cannot": [
+        "缺预算批准启动"
       ]
     },
     {
       "id": "C2",
       "name": "商务合作AI",
-      "trigger": [
-        "真实品牌询盘/brief/报价/合同/授权/回款",
-        "或R01正式商务任务"
+      "reads": [
+        "真实品牌事件",
+        "R01商务任务"
+      ],
+      "writes": [
+        "生产/产物/商务/",
+        "生产/财务/脱敏/"
+      ],
+      "cannot": [
+        "伪造合作"
       ]
     }
   ]

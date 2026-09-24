@@ -1,39 +1,28 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V2.0-CANDIDATE",
+  "system_version": "V2.0-CANDIDATE-R1",
   "repository": "https://github.com/1464356758/xiaohongshuXT",
   "branch": "main",
   "single_source_of_truth": "GitHub文字资料",
   "current_progress": "当前进度.json",
   "active_task": "任务/SYS-003/V1/任务.json",
-  "active_revision": null,
-  "active_delivery": "交付/SYS-003/V1/交付.json",
+  "active_revision": "返修/SYS-003/V1/R1/任务.json",
+  "active_delivery": "交付/SYS-003/V1/R1/交付.json",
   "active_system_architecture": "系统/生产架构/SYS-003/",
-  "previous_architecture_baseline": "系统/生产架构/SYS-002/",
+  "audit_policy": "系统/建设审核协议V2.json",
   "production_namespace": "生产/",
   "production_database_entry": "生产/数据库入口.json",
   "production_current_progress": "生产/当前进度.json",
   "role_registry": "系统/生产架构/SYS-003/ROLE_REGISTRY.json",
   "workflow_graph": "系统/生产架构/SYS-003/WORKFLOW_GRAPH.json",
-  "lock_types": [
-    "ACCOUNT_STRATEGY",
-    "VOICE",
-    "PRODUCT",
-    "SKU",
-    "PERSONA",
-    "CONTENT"
-  ],
-  "dynamic_pointers": [
-    "COMPLIANCE_SNAPSHOT",
-    "ASSET_MANIFEST"
-  ],
   "formal_authority": {
     "system_build_task": "AI系统总监",
     "system_build_state": "AI系统总监",
-    "system_final_acceptance": "AI系统总监",
-    "production_formal_task": "R01运营总监AI",
-    "production_state_phase": "R01运营总监AI",
-    "production_lock_approval": "R01运营总监AI"
+    "system_module_lock": "AI系统总监 after A+B+C PASS",
+    "production_runtime_enable": "AI系统总监",
+    "production_formal_task": "R01",
+    "production_state_phase": "R01",
+    "production_lock_approval": "R01"
   },
-  "read_rule": "系统建设新会话：本文件→当前进度.json→active_task_path→active_revision_path(非null)→delivery_path。真实生产启用后：生产/数据库入口.json→生产/当前进度.json→明确active指针。禁止扫描目录猜当前版本。"
+  "read_rule": "系统建设恢复：本文件→当前进度→active_task→active_revision→active_delivery。生产恢复：生产/数据库入口→生产/当前进度→runtime/active指针。禁止扫描。"
 }

@@ -2,22 +2,63 @@
   "lock_type": "PERSONA_LOCK",
   "lock_id": "PERSONA-000-LOCK-V1",
   "status": "DRAFT|LOCKED|SUPERSEDED",
-  "identity_rule": "核心人脸必须保持同一人物身份，不要求造型固定。",
+  "provenance": {
+    "source_task_path": "",
+    "task_version": "V1",
+    "input_revision": 1,
+    "source_delivery_path": "",
+    "supersedes": null
+  },
+  "identity_rule": "核心人脸保持同一人物身份，不要求造型固定。",
   "anchors": {
-    "front": {"transport":"GITHUB|USER_FILE","location":""},
-    "angle_45": {"transport":"GITHUB|USER_FILE","location":""},
-    "halfbody": {"transport":"GITHUB|USER_FILE","location":""},
-    "detail": {"transport":"GITHUB|USER_FILE|OPTIONAL","location":""}
+    "front": {
+      "transport": "GITHUB|USER_FILE",
+      "location": ""
+    },
+    "angle_45": {
+      "transport": "GITHUB|USER_FILE",
+      "location": ""
+    },
+    "halfbody": {
+      "transport": "GITHUB|USER_FILE",
+      "location": ""
+    },
+    "detail": {
+      "transport": "GITHUB|USER_FILE|OPTIONAL",
+      "location": ""
+    }
   },
   "face_shape": "",
-  "feature_proportions": {"eyes":"","nose":"","lips":"","brows":"","jaw":""},
+  "feature_proportions": {
+    "eyes": "",
+    "nose": "",
+    "lips": "",
+    "brows": "",
+    "jaw": ""
+  },
   "recognition_features": [],
   "skin_tone_range": "",
-  "must_keep": ["人物身份","核心脸型","关键五官比例","识别特征"],
-  "allowed_to_change": ["散发","扎发","半扎","盘发","衣服","妆容","首饰","环境","表情","姿势"],
-  "forbidden_identity_drift": ["换脸","五官比例明显漂移","脸型变成另一人","关键识别特征消失"],
-  "page_rule": "每页显式设置persona_required；false时可为产品静物/局部/信息图等。",
-  "approved_by": "AI系统总监",
-  "approved_at": null,
-  "supersedes": null
+  "must_keep": [
+    "人物身份",
+    "核心脸型",
+    "关键五官比例",
+    "识别特征"
+  ],
+  "allowed_to_change": [
+    "发型",
+    "衣服",
+    "妆容",
+    "首饰",
+    "环境",
+    "表情",
+    "姿势"
+  ],
+  "forbidden_identity_drift": [
+    "换脸",
+    "五官比例明显漂移",
+    "关键识别特征消失"
+  ],
+  "page_rule": "每页显式persona_required；false可为产品静物/局部/信息图。",
+  "approved_by": "R01",
+  "approved_at": null
 }

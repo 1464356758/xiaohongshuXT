@@ -1,0 +1,70 @@
+{
+  "task_id": "SYS-003",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R1",
+  "role": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "formal_task_path": "任务/SYS-003/V1/任务.json",
+  "source_revision_path": "返修/SYS-003/V1/R1/任务.json",
+  "baseline_fixed_commit": "ea63c3ace3e20671e33669664e39c493f122a5e6",
+  "changed_scope": [
+    "runtime硬门禁+TEST_ONLY",
+    "CURRENT_PROGRESS恢复barrier/quality_gates/active reviews/page revision",
+    "TASK实际idempotency和完整依赖/BLOCKED",
+    "SYS-003资产身份门唯一地址",
+    "state/phase from-to",
+    "完整角色权限",
+    "合规scope生命周期",
+    "R16计数/事件/消费/清零",
+    "第一人称主体证据",
+    "PERSONA初始化链",
+    "CONTENT LOCK最终成品身份证",
+    "策略比例窗口/容差",
+    "LOCK来源链",
+    "COMPLIANCE前代引用",
+    "A/B/C三审核制度"
+  ],
+  "production_runtime_enabled": false,
+  "self_check": {
+    "runtime_unbypassable": true,
+    "progress_contract_restored": true,
+    "concrete_idempotency_key": true,
+    "asset_gate_unique_path": true,
+    "state_phase_from_to": true,
+    "permissions_complete": true,
+    "compliance_lifecycle_and_scope": true,
+    "r16_lifecycle": true,
+    "first_person_subject_gate": true,
+    "active_review_pointers": true,
+    "persona_setup_restored": true,
+    "content_lock_identity": true,
+    "a_b_c_required": true
+  },
+  "review_scope": {
+    "A": [
+      "runtime",
+      "current progress/task/barrier",
+      "paths",
+      "state/phase",
+      "permissions",
+      "R16 lifecycle"
+    ],
+    "B": [
+      "第一人称真实性",
+      "合规scope/lifecycle",
+      "active审核证据",
+      "PERSONA/CONTENT LOCK实战安全"
+    ],
+    "C": [
+      "SYS-002强项回归",
+      "从0初始化",
+      "跨模块绑定",
+      "最终LOCK身份证",
+      "异常路径",
+      "A/B组合总成"
+    ]
+  },
+  "formal_system_pass_declared": false
+}

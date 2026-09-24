@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_STATE_PHASE_TRANSITION_TABLE_V2",
+  "schema": "SYS-003_STATE_PHASE_TRANSITION_TABLE_V3",
   "authority": "R01",
   "legal_main_states": [
     "READY",
@@ -9,6 +9,7 @@
     "PASS",
     "LOCKED",
     "NEXT_TASK",
+    "BLOCKED_RUNTIME_DISABLED",
     "BLOCKED_INPUT_MISSING",
     "BLOCKED_PRODUCT_UNCERTAIN",
     "BLOCKED_SKU_UNCERTAIN",
@@ -18,12 +19,14 @@
     "BLOCKED_HOT_STALE",
     "BLOCKED_COMPLIANCE_STALE",
     "BLOCKED_COMPLIANCE_UNVERIFIED",
+    "BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
     "BLOCKED_CONFLICT"
   ],
   "legal_phases": [
     "INTAKE",
     "STRATEGY_SETUP",
     "VOICE_SETUP",
+    "PERSONA_SETUP",
     "DISCOVERY",
     "PRODUCT_LOCK",
     "PLANNING",
@@ -31,7 +34,7 @@
     "VISUAL_PLAN",
     "IMAGE_BUILD",
     "IMAGE_REVIEW",
-    "CONTENT_REVIEW",
+    "COMPLIANCE_REFRESH",
     "COMPLIANCE_REVIEW",
     "FINAL_APPROVAL",
     "PUBLISH_PREP",
@@ -44,67 +47,179 @@
     "NEXT_CONTENT",
     "CLOSED"
   ],
-  "rules": [
-    "phase values are never main state values",
-    "R14/R15/R16 cannot directly mutate formal state/phase",
-    "only R01 confirms formal transitions"
-  ],
-  "tail": [
+  "transitions": [
     {
+      "id": "T01",
+      "from": {
+        "state": "READY",
+        "phase": "INTAKE"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "STRATEGY_SETUP"
+      },
+      "actor": "R01"
+    },
+    {
+      "id": "T02",
+      "from": {
+        "state": "PASS",
+        "phase": "STRATEGY_SETUP"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "VOICE_SETUP"
+      },
+      "actor": "R01"
+    },
+    {
+      "id": "T03",
+      "from": {
+        "state": "PASS",
+        "phase": "VOICE_SETUP"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "PERSONA_SETUP"
+      },
+      "actor": "R01"
+    },
+    {
+      "id": "T04",
+      "from": {
+        "state": "PASS",
+        "phase": "PERSONA_SETUP"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "DISCOVERY"
+      },
+      "actor": "R01"
+    },
+    {
+      "id": "T05",
+      "from": {
+        "state": "PASS",
+        "phase": "FINAL_APPROVAL"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "PUBLISH_PREP"
+      },
+      "actor": "R01"
+    },
+    {
+      "id": "T06",
+      "from": {
+        "state": "BUILDING",
+        "phase": "PUBLISH_PREP"
+      },
+      "to": {
+        "state": "READY",
+        "phase": "PUBLISH_READY"
+      },
+      "actor": "R01"
+    },
+    {
+      "id": "T07",
+      "from": {
+        "state": "READY",
+        "phase": "PUBLISH_READY"
+      },
       "to": {
         "state": "PASS",
         "phase": "PUBLISHED"
       },
-      "actor": "R01",
-      "trigger": "valid R14 publish receipt"
+      "actor": "R01"
     },
     {
+      "id": "T08",
+      "from": {
+        "state": "PASS",
+        "phase": "PUBLISHED"
+      },
       "to": {
         "state": "READY",
         "phase": "DATA_WAITING"
       },
-      "actor": "R01",
-      "trigger": "data collection required"
+      "actor": "R01"
     },
     {
+      "id": "T09",
+      "from": {
+        "state": "READY",
+        "phase": "DATA_WAITING"
+      },
       "to": {
         "state": "BUILDING",
         "phase": "DATA_ANALYSIS"
       },
-      "actor": "R01",
-      "trigger": "valid R14 data snapshot available for analysis"
+      "actor": "R01"
     },
     {
+      "id": "T10",
+      "from": {
+        "state": "BUILDING",
+        "phase": "DATA_ANALYSIS"
+      },
       "to": {
         "state": "PASS",
         "phase": "DATA_REVIEWED"
       },
-      "actor": "R01",
-      "trigger": "valid R15 analysis delivered"
+      "actor": "R01"
     },
     {
+      "id": "T11",
+      "from": {
+        "state": "PASS",
+        "phase": "DATA_REVIEWED"
+      },
       "to": {
         "state": "BUILDING",
         "phase": "STRATEGY_REVIEW"
       },
-      "actor": "R01",
-      "trigger": "R16 trigger condition met"
+      "actor": "R01"
     },
     {
+      "id": "T12",
+      "from": {
+        "state": "PASS",
+        "phase": "DATA_REVIEWED"
+      },
       "to": {
         "state": "NEXT_TASK",
         "phase": "NEXT_CONTENT"
       },
-      "actor": "R01",
-      "trigger": "continue next content"
+      "actor": "R01"
     },
     {
+      "id": "T13",
+      "from": {
+        "state": "PASS",
+        "phase": "STRATEGY_REVIEW"
+      },
+      "to": {
+        "state": "NEXT_TASK",
+        "phase": "NEXT_CONTENT"
+      },
+      "actor": "R01"
+    },
+    {
+      "id": "T14",
+      "from": {
+        "state": "PASS",
+        "phase": "DATA_REVIEWED"
+      },
       "to": {
         "state": "LOCKED",
         "phase": "CLOSED"
       },
-      "actor": "R01",
-      "trigger": "close current content lifecycle"
+      "actor": "R01"
     }
+  ],
+  "rules": [
+    "from和to都必须存在",
+    "phase不能当state",
+    "R14/R15/R16不能直接改正式state/phase"
   ]
 }

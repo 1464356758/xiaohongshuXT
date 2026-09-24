@@ -1,0 +1,19 @@
+{
+  "schema": "SYS-003_CONTENT_LOCK_GATE_V1",
+  "authority": "R01",
+  "template_path": "模板/锁定/CONTENT_LOCK_TEMPLATE.json",
+  "required_bindings": [
+    "final_copy.path/revision/fingerprint",
+    "asset_manifest.path/id/revision",
+    "PRODUCT/SKU/PERSONA/ACCOUNT_STRATEGY/VOICE active locks as applicable",
+    "active_image_qa_barrier_path",
+    "active_r10_review_path",
+    "active_r11_review_path",
+    "active_r12_review_path",
+    "active_r13_review_path",
+    "active compliance snapshot revision+scope fingerprint"
+  ],
+  "pass_rule": "Every binding must equal current production pointers and all cited evidence must be current/non-STALE. R10/R11/R12 must bind same manifest; R13 must bind exact final copy+same manifest+exact compliance scope.",
+  "on_fail": "BLOCKED_CONFLICT",
+  "immutable_rule": "Once LOCKED, any bound artifact/evidence change requires new CONTENT LOCK version with supersedes; never mutate old lock."
+}

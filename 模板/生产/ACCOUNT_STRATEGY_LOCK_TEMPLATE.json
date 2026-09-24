@@ -1,12 +1,22 @@
 {
-  "schema": "SYS-003_ACCOUNT_STRATEGY_LOCK_TEMPLATE_V1",
+  "schema": "SYS-003_ACCOUNT_STRATEGY_LOCK_TEMPLATE_V2",
   "account_strategy_lock_id": "ACCOUNT-STRATEGY-001",
   "lock_version": "LOCK-V1",
   "status": "DRAFT|LOCKED|SUPERSEDED",
-  "source_draft_path": "",
-  "supersedes": null,
+  "provenance": {
+    "source_task_path": "",
+    "task_version": "V1",
+    "input_revision": 1,
+    "source_delivery_path": "",
+    "supersedes": null
+  },
   "approved_by": "R01",
   "approved_at": null,
+  "measurement": {
+    "default_window": "LAST_10_CONTENT_LOCKS",
+    "ratio_interpretation": "ACCOUNT_WINDOW_NOT_SINGLE_POST",
+    "default_tolerance": 0.15
+  },
   "fields": {
     "positioning": "",
     "target_women_segments": [],
@@ -14,25 +24,43 @@
     "content_pillars": [
       {
         "pillar": "美妆",
-        "target_ratio": null
+        "target_ratio": null,
+        "tolerance": 0.15
       },
       {
         "pillar": "美甲",
-        "target_ratio": null
+        "target_ratio": null,
+        "tolerance": 0.15
       },
       {
         "pillar": "护肤",
-        "target_ratio": null
+        "target_ratio": null,
+        "tolerance": 0.15
       }
     ],
-    "hot_content_ratio": null,
-    "evergreen_content_ratio": null,
-    "persona_face_ratio": null,
-    "product_image_ratio": null,
+    "hot_content_ratio": {
+      "target": null,
+      "tolerance": 0.15
+    },
+    "evergreen_content_ratio": {
+      "target": null,
+      "tolerance": 0.15
+    },
+    "persona_face_ratio": {
+      "target": null,
+      "tolerance": 0.15
+    },
+    "product_image_ratio": {
+      "target": null,
+      "tolerance": 0.15
+    },
     "visual_tone": [],
     "title_style": [],
     "language_style": [],
-    "commercial_content_ratio": null,
+    "commercial_content_ratio": {
+      "target": null,
+      "tolerance": 0.1
+    },
     "commercial_stage": "",
     "differentiation": [],
     "forbidden_drift": []
@@ -46,7 +74,8 @@
     "R15_STRATEGY_FAILURE_SIGNAL"
   ],
   "rules": [
-    "R16 only drafts/recommends; R01 approves formal lock.",
-    "Any material change creates new LOCK version and supersedes old; never overwrite."
+    "R16只提草案；R01批准正式LOCK。",
+    "比例按measurement window评估，禁止机械约束单篇。",
+    "实质变化必须新版本，旧LOCK不可覆盖。"
   ]
 }

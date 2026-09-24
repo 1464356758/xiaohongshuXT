@@ -2,6 +2,13 @@
   "lock_type": "PRODUCT_LOCK",
   "lock_id": "PRODUCT-000-LOCK-V1",
   "status": "DRAFT|LOCKED|SUPERSEDED",
+  "provenance": {
+    "source_task_path": "",
+    "task_version": "V1",
+    "input_revision": 1,
+    "source_delivery_path": "",
+    "supersedes": null
+  },
   "brand": "",
   "formal_product_name": "",
   "series": "",
@@ -12,15 +19,24 @@
   "official_url": "",
   "ecommerce_urls": [],
   "reference_images": [
-    {"ref_id":"REF-01","transport":"GITHUB|USER_FILE|URL","location":"","purpose":"产品身份锚点"}
+    {
+      "ref_id": "REF-01",
+      "transport": "GITHUB|USER_FILE|URL",
+      "location": "",
+      "purpose": "产品身份锚点"
+    }
   ],
   "known_sku_count_or_options": [],
   "sku_lock_required": true,
   "do_not_confuse_with": [],
-  "identity_checks": ["品牌","正式名称","系列","型号","包装版本"],
+  "identity_checks": [
+    "品牌",
+    "正式名称",
+    "系列",
+    "型号",
+    "包装版本"
+  ],
   "source_paths": [],
-  "input_revision": 1,
-  "approved_by": "AI系统总监",
-  "approved_at": null,
-  "supersedes": null
+  "approved_by": "R01",
+  "approved_at": null
 }

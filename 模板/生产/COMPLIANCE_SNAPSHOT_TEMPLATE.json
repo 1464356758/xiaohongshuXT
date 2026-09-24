@@ -1,12 +1,31 @@
 {
-  "schema": "SYS-003_COMPLIANCE_SNAPSHOT_TEMPLATE_V1",
+  "schema": "SYS-003_COMPLIANCE_SNAPSHOT_TEMPLATE_V2",
   "compliance_snapshot_id": "COMPLIANCE-XHS-0001",
   "snapshot_revision": 1,
+  "provenance": {
+    "source_task_path": "",
+    "task_version": "V1",
+    "input_revision": 1,
+    "source_delivery_path": "",
+    "supersedes_snapshot_path": null
+  },
   "platform": "小红书",
   "jurisdiction": "中国大陆",
   "checked_at": null,
   "valid_until": null,
-  "status": "VALID|STALE|UNVERIFIED|BLOCKED",
+  "status": "DRAFT|VALID|STALE|UNVERIFIED|SUPERSEDED|BLOCKED",
+  "compliance_scope": {
+    "content_mode": "ORGANIC_SHARE|BRAND_COLLAB|PAID_PROMOTION|OTHER",
+    "commercial_status": "NON_COMMERCIAL|GIFTED|PAID|AFFILIATE|UNKNOWN",
+    "product_category": "BEAUTY|NAIL|SKINCARE|OTHER",
+    "AI_modalities": [
+      "TEXT",
+      "IMAGE"
+    ],
+    "claims_risk": "LOW|MEDIUM|HIGH",
+    "account_type": "PERSONAL_CREATOR|BUSINESS|OTHER",
+    "scope_fingerprint": "REQUIRED_MACHINE_GENERATED_FROM_CANONICAL_SCOPE_JSON"
+  },
   "rule_sources": [
     {
       "title": "",
@@ -35,17 +54,27 @@
       "rules": []
     }
   },
+  "lifecycle": {
+    "draft_creator": "R13",
+    "activation_authority": "R01",
+    "activation_requirements": [
+      "checked_at/valid_until存在",
+      "scope字段具体且scope_fingerprint非空",
+      "必要检查VERIFIED或NOT_APPLICABLE",
+      "来源足以支持当前任务"
+    ],
+    "consumer_rule": "R13最终审核只消费active pointer对应、status=VALID、时间有效且scope_fingerprint精确匹配的快照。",
+    "on_time_mismatch": "BLOCKED_COMPLIANCE_STALE",
+    "on_scope_mismatch": "BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
+    "on_unverified": "BLOCKED_COMPLIANCE_UNVERIFIED"
+  },
   "refresh_triggers": [
     "valid_until reached",
-    "platform UI/rule changed",
-    "law/regulation changed",
-    "commercial collaboration starts",
-    "R13 finds conflicting rule evidence"
+    "scope mismatch",
+    "平台规则/UI变化",
+    "法律变化",
+    "商业状态变化",
+    "R13发现冲突证据"
   ],
-  "blocking_rules": [
-    "Expired snapshot => BLOCKED_COMPLIANCE_STALE.",
-    "A required rule cannot be verified => BLOCKED_COMPLIANCE_UNVERIFIED.",
-    "R13 cannot PASS final compliance using stale/unverified required fields."
-  ],
-  "boundary": "公开内容不机械展示后台研究说明，不代表可以规避法律/平台要求的AI标识、广告披露或其他合规功能。"
+  "boundary": "公开内容不机械展示后台研究说明，不代表可规避法律/平台要求的AI标识、广告披露或其他合规功能。"
 }

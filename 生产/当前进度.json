@@ -1,18 +1,28 @@
 {
-  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V2",
+  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V3",
   "namespace": "生产",
   "runtime_enabled": false,
-  "runtime_block_reason": "SYS-003尚待A/B审核；16角色正式角色指令与CONTENT-TEST-001压力测试尚未完成。",
-  "architecture_version": "SYS-003/V1",
-  "state": "READY",
-  "phase": "STRATEGY_SETUP",
-  "state_owner": "R01",
-  "phase_owner": "R01",
+  "runtime_mode": "DISABLED",
+  "runtime_enable_authority": "AI系统总监",
+  "runtime_activation": {
+    "module_lock_path": null,
+    "required": [
+      "SYS-003 A/B/C PASS + 总监MODULE LOCK",
+      "16角色正式指令A/B/C审完",
+      "CONTENT-TEST-001压力测试PASS"
+    ],
+    "hard_rule": "当前禁止真实CONTENT生产；完成三项后才可切LIVE。"
+  },
   "content_id": null,
   "task_id": null,
   "task_version": null,
   "input_revision": null,
   "revision_round": null,
+  "state": "READY",
+  "phase": "STRATEGY_SETUP",
+  "task_lifecycle_status": "ACTIVE",
+  "state_owner": "R01",
+  "phase_owner": "R01",
   "active_task_path": null,
   "active_revision_path": null,
   "delivery_path": null,
@@ -23,20 +33,68 @@
   "active_persona_lock_path": null,
   "active_content_lock_path": null,
   "active_compliance_snapshot_path": null,
+  "active_compliance_scope_fingerprint": null,
   "active_asset_manifest_path": null,
+  "active_asset_manifest_id": null,
+  "active_manifest_revision": null,
+  "active_image_qa_barrier_path": null,
+  "active_r10_review_path": null,
+  "active_r11_review_path": null,
+  "active_r12_review_path": null,
+  "active_r13_review_path": null,
+  "active_pre_publish_gate_path": null,
+  "active_copy_path": null,
+  "active_copy_revision": null,
+  "active_copy_fingerprint": null,
+  "parallel_group": {
+    "parallel_group_id": null,
+    "barrier_revision": null,
+    "task_revision": null,
+    "required_role_ids": [],
+    "required_dependency_revision": null,
+    "required_asset_manifest_id": null,
+    "required_manifest_revision": null,
+    "role_results": [],
+    "barrier_status": "OPEN"
+  },
+  "quality_gates": {
+    "product_sku_image_verify": {
+      "result": "NOT_STARTED",
+      "active_review_path": null
+    },
+    "persona_consistency": {
+      "result": "NOT_STARTED",
+      "active_review_path": null
+    },
+    "cross_page_visual": {
+      "result": "NOT_STARTED",
+      "active_review_path": null
+    },
+    "content_truthfulness_compliance": {
+      "result": "NOT_STARTED",
+      "active_review_path": null
+    }
+  },
+  "frozen_pages": [],
+  "open_revision_pages": [],
+  "invalidated_review_paths": [],
+  "unresolved_issues": [],
   "latest_r14_raw_data_delivery_path": null,
   "latest_r15_analysis_delivery_path": null,
-  "r16_trigger_status": {
-    "triggered": true,
-    "reasons": [
+  "r16_lifecycle": {
+    "content_lock_count_total": 0,
+    "content_lock_count_since_last_strategy_review": 0,
+    "last_strategy_review_content_lock_count": 0,
+    "trigger_event_id": "R16-INIT-001",
+    "trigger_status": "PENDING",
+    "trigger_reasons": [
       "INITIALIZATION"
-    ]
+    ],
+    "trigger_created_at": "2026-09-24T11:23:00+08:00",
+    "trigger_task_path": null,
+    "consumed_at": null,
+    "rule": "同一事件只能消费一次。"
   },
   "next_role_ids": [],
-  "activation_gate": [
-    "SYS-003 A/B双审核通过并由AI系统总监验收",
-    "16个正式生产角色指令完成并双审",
-    "CONTENT-TEST-001压力测试通过"
-  ],
-  "pointer_rule": "任何null指针都表示当前无正式对象，禁止扫描目录猜最新版。正式生产启用后仅R01可改active指针/state/phase。"
+  "pointer_rule": "null表示无正式对象；禁止扫描目录猜最新版。"
 }

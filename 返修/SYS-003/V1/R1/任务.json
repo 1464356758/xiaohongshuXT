@@ -1,0 +1,58 @@
+{
+  "task_id": "SYS-003",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R1",
+  "task_lifecycle_status": "ACTIVE",
+  "source": "A/B/C三方审核合并返修",
+  "baseline_fixed_commit": "ea63c3ace3e20671e33669664e39c493f122a5e6",
+  "audit_summary": {
+    "A": {
+      "p1": 8
+    },
+    "B": {
+      "p1": 3
+    },
+    "C": {
+      "p1": 2
+    },
+    "P2": 3
+  },
+  "must_fix": [
+    "runtime硬启用门禁",
+    "恢复CURRENT_PROGRESS barrier/quality_gates/active审核证据/返修页",
+    "TASK实际idempotency_key+并行/manifest/compliance依赖+完整BLOCKED",
+    "SYS-003 ASSET_IDENTITY_GATE唯一地址",
+    "state/phase from+to",
+    "完整角色权限",
+    "COMPLIANCE初始化-草案-激活-消费闭环",
+    "R16计数-事件-消费-清零",
+    "第一人称经历主体+证据绑定",
+    "当前有效审核唯一指针",
+    "PERSONA初始化生命周期",
+    "CONTENT LOCK最终成品身份证",
+    "A/B/C三审核制度"
+  ],
+  "p2": [
+    "ACCOUNT_STRATEGY比例窗口+容差",
+    "LOCK统一来源链",
+    "COMPLIANCE前代引用"
+  ],
+  "acceptance_criteria": [
+    "runtime=false禁止真实CONTENT生产",
+    "zero-state可创建PERSONA LOCK",
+    "第一人称不能借用他人经历",
+    "R13要求时间有效+scope匹配",
+    "R01只读当前审核指针",
+    "CONTENT LOCK锁定唯一最终版本",
+    "R16事件不可重复消费",
+    "A+B+C PASS才可模块LOCK"
+  ],
+  "delivery_path": "交付/SYS-003/V1/R1/交付.json",
+  "reviewers": [
+    "AI系统审核员A",
+    "AI系统审核员B",
+    "AI系统审核员C"
+  ]
+}

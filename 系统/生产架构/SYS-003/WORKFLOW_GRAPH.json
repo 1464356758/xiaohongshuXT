@@ -1,37 +1,43 @@
 {
-  "schema": "SYS-003_WORKFLOW_GRAPH_V2",
+  "schema": "SYS-003_WORKFLOW_GRAPH_V3",
   "formal_router": "R01",
-  "active_lock_types": [
-    "ACCOUNT_STRATEGY",
-    "VOICE",
-    "PRODUCT",
-    "SKU",
-    "PERSONA",
-    "CONTENT"
-  ],
-  "dynamic_pointer_types": [
-    "COMPLIANCE_SNAPSHOT",
-    "ASSET_MANIFEST"
-  ],
+  "formal_paths": {
+    "asset_identity_gate": "系统/生产架构/SYS-003/ASSET_IDENTITY_GATE.json",
+    "audit_policy": "系统/建设审核协议V2.json",
+    "state_phase_table": "系统/生产架构/SYS-003/STATE_PHASE_TRANSITION_TABLE.json",
+    "content_lock_template": "模板/锁定/CONTENT_LOCK_TEMPLATE.json",
+    "compliance_snapshot_template": "模板/生产/COMPLIANCE_SNAPSHOT_TEMPLATE.json"
+  },
+  "runtime_gate": "真实CONTENT-*要求生产/当前进度.runtime_enabled=true；CONTENT-TEST-*仅可在TEST_ONLY。",
   "stages": [
     {
-      "id": "S0_STRATEGY_SETUP",
+      "id": "S0A_STRATEGY_SETUP",
       "type": "CONDITIONAL",
-      "trigger": "no ACCOUNT_STRATEGY_LOCK or R16 trigger",
       "sequence": [
         "R16_DRAFT",
-        "R01_APPROVE_ACCOUNT_STRATEGY_LOCK"
+        "R01_APPROVE_OR_REJECT_STRATEGY",
+        "R01_CONSUME_TRIGGER"
       ]
     },
     {
       "id": "S0B_VOICE_SETUP",
       "type": "CONDITIONAL",
-      "trigger": "no VOICE_LOCK or strategy changes voice domain",
       "sequence": [
         "R07_VOICE_DRAFT",
-        "R13_TRUTH_COMPLIANCE_CHECK",
+        "R13_TRUTH_CHECK",
         "R01_APPROVE_VOICE_LOCK"
       ]
+    },
+    {
+      "id": "S0C_PERSONA_SETUP",
+      "type": "CONDITIONAL_SERIAL",
+      "trigger": "active_persona_lock_path == null OR user_requests_persona_change",
+      "sequence": [
+        "R08_PERSONA_DRAFT",
+        "R11_INDEPENDENT_PERSONA_REVIEW",
+        "R01_APPROVE_NEW_PERSONA_LOCK"
+      ],
+      "rule": "换人必须新PERSONA LOCK版本+supersedes，禁止覆盖旧LOCK。"
     },
     {
       "id": "S1_DISCOVERY",
@@ -40,11 +46,7 @@
         "R02",
         "R03"
       ],
-      "barrier": "ALL_REQUIRED_COMPLETE_WITH_EVIDENCE",
-      "reads": [
-        "ACCOUNT_STRATEGY_LOCK",
-        "R15 latest report if valid"
-      ]
+      "barrier": "ALL_REQUIRED_COMPLETE_WITH_EVIDENCE"
     },
     {
       "id": "S2_PRODUCT_RESEARCH",
@@ -55,8 +57,7 @@
         "R01_FORMAL_PRODUCT_SELECT",
         "R05_PRODUCT_SKU_DRAFT",
         "R01_APPROVE_PRODUCT_SKU_LOCK"
-      ],
-      "rule": "formal product must exist in R04 researched set"
+      ]
     },
     {
       "id": "S3_CONTENT",
@@ -90,20 +91,29 @@
         "R11",
         "R12"
       ],
-      "barrier": "ALL_THREE_PASS_SAME_MANIFEST"
+      "barrier": "ALL_THREE_PASS_SAME_MANIFEST_WITH_ACTIVE_POINTERS"
     },
     {
-      "id": "S6_COMPLIANCE",
+      "id": "S6A_COMPLIANCE_REFRESH",
+      "type": "CONDITIONAL_SERIAL",
+      "trigger": "无active快照/过期/未核实/scope不匹配",
+      "sequence": [
+        "R01_REFRESH_TASK",
+        "R13_DRAFT_OR_REFRESH",
+        "R01_ACTIVATE_SNAPSHOT"
+      ]
+    },
+    {
+      "id": "S6B_CONTENT_COMPLIANCE",
       "type": "SERIAL_HARD_GATE",
       "role": "R13",
-      "precondition": "current COMPLIANCE_SNAPSHOT valid; if stale refresh before review",
-      "output": "truthfulness+platform_compliance_review"
+      "precondition": "快照VALID+时间有效+scope fingerprint精确匹配+当前图片三审"
     },
     {
       "id": "S7_CONTENT_LOCK",
       "type": "SERIAL_HARD_GATE",
       "role": "R01",
-      "precondition": "all four publish gates PASS + current compliance snapshot valid"
+      "precondition": "CONTENT_LOCK机械检查全部通过"
     },
     {
       "id": "S8_PUBLISH",
@@ -128,8 +138,7 @@
         "DUE",
         "RECORDED",
         "MISSED"
-      ],
-      "rule": "normal chat never claims automatic wake"
+      ]
     },
     {
       "id": "S10_ANALYSIS",
@@ -137,34 +146,23 @@
       "sequence": [
         "R15_ANALYZE",
         "R01_CONFIRM_DATA_REVIEWED"
-      ],
-      "output": [
-        "baseline_update",
-        "primary_judgment",
-        "single_next_experiment"
       ]
     },
     {
-      "id": "S11_STRATEGY_REVIEW",
+      "id": "S11_STRATEGY_TRIGGER",
       "type": "CONDITIONAL",
-      "role": "R16",
-      "trigger": "R16 trigger conditions met",
-      "output": "strategy revision proposal"
+      "rule": "R01按CONTENT LOCK计数/其他信号生成唯一PENDING trigger_event_id；CONSUMED后不可重复消费。"
     },
     {
       "id": "S12_NEXT",
-      "type": "R01_DECISION",
-      "options": [
-        "NEXT_TASK/NEXT_CONTENT",
-        "LOCKED/CLOSED"
-      ]
+      "type": "R01_DECISION"
     }
   ],
-  "invariants": [
-    "R14只采集/运营，不做最终数据判断；R15不发布、不改主状态。",
-    "R16不进入每篇固定关键路径。",
-    "VOICE LOCK和ACCOUNT_STRATEGY_LOCK修改必须新版本+supersedes，不覆盖旧LOCK。",
-    "COMPLIANCE_SNAPSHOT过期或关键平台规则无法确认时进入BLOCKED_COMPLIANCE_STALE或BLOCKED_COMPLIANCE_UNVERIFIED。",
-    "公开文案不机械塞后台制作说明，不等于绕过依法或平台要求的AI标识/商业披露。"
+  "hard_invariants": [
+    "禁止扫描目录找PASS",
+    "第一人称经历必须绑定当前公开博主人格及证据",
+    "合规=时间有效+scope匹配",
+    "runtime=false阻止真实生产",
+    "A/B/C系统审核全部PASS后才可模块LOCK"
   ]
 }

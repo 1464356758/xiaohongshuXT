@@ -1,36 +1,33 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V2.0-CANDIDATE",
+  "system_version": "V2.0-CANDIDATE-R1",
   "task_id": "SYS-003",
   "task_version": "V1",
   "input_revision": 1,
-  "revision_round": null,
+  "revision_round": "R1",
   "state": "REVIEWING",
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "AI系统总监",
-  "build_result": "V1_BUILD_COMPLETE_PENDING_A_B_REVIEW",
+  "build_result": "R1_BUILD_COMPLETE_PENDING_A_B_C_REVIEW",
   "builder": "AI系统制作员",
   "active_task_path": "任务/SYS-003/V1/任务.json",
-  "active_revision_path": null,
-  "delivery_path": "交付/SYS-003/V1/交付.json",
+  "active_revision_path": "返修/SYS-003/V1/R1/任务.json",
+  "delivery_path": "交付/SYS-003/V1/R1/交付.json",
   "active_system_architecture_path": "系统/生产架构/SYS-003/",
+  "audit_policy_path": "系统/建设审核协议V2.json",
   "production_namespace": "生产/",
-  "previous_system_baseline": {
-    "task_id": "SYS-002",
-    "fixed_commit": "6204f284ef6dc6c473ea9112af611d9e9051f8dd",
-    "status": "BASELINE_RETAINED_NOT_ACTIVE"
-  },
   "review_status": {
-    "AI系统审核员A": "PENDING_SYS003_FULL_REVIEW",
-    "AI系统审核员B": "PENDING_SYS003_FULL_REVIEW"
+    "AI系统审核员A": "PENDING_R1_FULL_REVIEW",
+    "AI系统审核员B": "PENDING_R1_FULL_REVIEW",
+    "AI系统审核员C": "PENDING_R1_INTEGRATION_REGRESSION_REVIEW"
   },
   "lock_status": "UNLOCKED",
   "next_roles": [
     "AI系统审核员A",
-    "AI系统审核员B"
+    "AI系统审核员B",
+    "AI系统审核员C"
   ],
-  "scope_note": "本轮允许整体升级。SYS-002历史保留审计，不再作为当前运行架构。",
-  "bootstrap_note": "SYS-003新增R15/R16、ACCOUNT_STRATEGY_LOCK、VOICE_LOCK、动态COMPLIANCE_SNAPSHOT，并重分R13/R14职责。正式生产仍未启用，待角色指令与压力测试。",
-  "pointer_rule": "恢复只认数据库入口.json→当前进度.json→active_task_path→delivery_path；active_revision_path为null表示SYS-003 V1首轮，无返修。",
-  "updated_at": "2026-09-24T09:23:00+08:00"
+  "module_lock_rule": "仅AI系统总监可在A/B/C全部PASS后建立SYSTEM MODULE LOCK。",
+  "bootstrap_note": "SYS-003 R1合并A8+B3+C2 P1及3个P2；生产runtime仍关闭。",
+  "updated_at": "2026-09-24T11:23:00+08:00"
 }

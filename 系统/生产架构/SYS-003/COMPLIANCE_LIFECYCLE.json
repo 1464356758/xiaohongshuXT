@@ -1,0 +1,57 @@
+{
+  "schema": "SYS-003_COMPLIANCE_LIFECYCLE_V1",
+  "lifecycle": [
+    {
+      "step": "INIT_OR_REFRESH_TASK",
+      "actor": "R01",
+      "condition": "active snapshot null/stale/unverified/scope mismatch",
+      "output": "formal R13 compliance refresh task"
+    },
+    {
+      "step": "DRAFT",
+      "actor": "R13",
+      "output": "COMPLIANCE_SNAPSHOT DRAFT with sources, checked_at, valid_until, compliance_scope, scope_fingerprint"
+    },
+    {
+      "step": "ACTIVATE",
+      "actor": "R01",
+      "preconditions": [
+        "required sources present",
+        "required checks VERIFIED or NOT_APPLICABLE",
+        "time validity present",
+        "scope concrete",
+        "scope_fingerprint non-empty"
+      ],
+      "output": "active_compliance_snapshot_path + active_compliance_scope_fingerprint"
+    },
+    {
+      "step": "CONSUME",
+      "actor": "R13",
+      "preconditions": [
+        "active pointer exact",
+        "status VALID",
+        "now <= valid_until",
+        "required scope fingerprint exact match"
+      ],
+      "output": "R13 review evidence binds snapshot revision+scope fingerprint"
+    },
+    {
+      "step": "INVALIDATE_REFRESH",
+      "actor": "R01/R13",
+      "triggers": [
+        "expired",
+        "scope mismatch",
+        "platform/law change",
+        "commercial mode change",
+        "conflicting evidence"
+      ],
+      "output": "STALE/UNVERIFIED and refresh task"
+    }
+  ],
+  "blocked": {
+    "expired": "BLOCKED_COMPLIANCE_STALE",
+    "unverified": "BLOCKED_COMPLIANCE_UNVERIFIED",
+    "scope_mismatch": "BLOCKED_COMPLIANCE_SCOPE_MISMATCH"
+  },
+  "hard_rule": "快照新鲜但scope不匹配仍然不能用于当前内容；scope匹配但过期也不能用。"
+}

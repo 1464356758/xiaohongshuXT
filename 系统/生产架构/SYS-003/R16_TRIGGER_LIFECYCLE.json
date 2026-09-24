@@ -1,0 +1,54 @@
+{
+  "schema": "SYS-003_R16_TRIGGER_LIFECYCLE_V1",
+  "authority": "R01",
+  "counters": [
+    "content_lock_count_total",
+    "content_lock_count_since_last_strategy_review",
+    "last_strategy_review_content_lock_count"
+  ],
+  "triggers": [
+    "INITIALIZATION",
+    "EVERY_10_CONTENT_LOCKS",
+    "POSITIONING_DRIFT",
+    "FOLLOWER_STAGE_CHANGE",
+    "COMMERCIALIZATION_START",
+    "R15_STRATEGY_FAILURE_SIGNAL"
+  ],
+  "event_states": [
+    "IDLE",
+    "PENDING",
+    "IN_PROGRESS",
+    "CONSUMED"
+  ],
+  "transitions": [
+    {
+      "from": "IDLE",
+      "to": "PENDING",
+      "actor": "R01",
+      "action": "create unique trigger_event_id with reasons"
+    },
+    {
+      "from": "PENDING",
+      "to": "IN_PROGRESS",
+      "actor": "R01",
+      "action": "dispatch one R16 task bound to exact trigger_event_id"
+    },
+    {
+      "from": "IN_PROGRESS",
+      "to": "CONSUMED",
+      "actor": "R01",
+      "action": "after R16 delivery accepted/rejected, record consumed_at"
+    },
+    {
+      "from": "CONSUMED",
+      "to": "IDLE",
+      "actor": "R01",
+      "action": "archive event fields; if successful periodic strategy review reset since_last=0"
+    }
+  ],
+  "hard_rules": [
+    "same trigger_event_id cannot be dispatched twice",
+    "EVERY_10_CONTENT_LOCKS uses counter threshold, not chat memory",
+    "R16 cannot create/consume/reset its own trigger event"
+  ]
+}

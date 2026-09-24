@@ -1,0 +1,45 @@
+{
+  "schema": "SYSTEM_BUILD_AUDIT_POLICY_V2",
+  "effective_from": "SYS-003/R1",
+  "reviewers": {
+    "A": {
+      "name": "AI系统审核员A",
+      "focus": [
+        "状态",
+        "权限",
+        "版本",
+        "路径",
+        "并行",
+        "恢复",
+        "幂等",
+        "唯一指针"
+      ]
+    },
+    "B": {
+      "name": "AI系统审核员B",
+      "focus": [
+        "图片",
+        "商品",
+        "人物",
+        "真实性",
+        "平台合规实用性",
+        "真实操作体验"
+      ]
+    },
+    "C": {
+      "name": "AI系统审核员C",
+      "focus": [
+        "新版本回归",
+        "跨模块证据绑定",
+        "从0初始化",
+        "最终LOCK完整性",
+        "异常路径",
+        "用户操作成本",
+        "压力测试总成"
+      ]
+    }
+  },
+  "pass_rule": "A=PASS AND B=PASS AND C=PASS",
+  "module_lock_authority": "AI系统总监",
+  "hard_rule": "任一FAIL都禁止SYSTEM MODULE LOCK；审核员只审核不修改生产产物。"
+}

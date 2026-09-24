@@ -3,52 +3,22 @@
   "task_version": "V1",
   "input_revision": 1,
   "task_lifecycle_status": "ACTIVE",
-  "source": "用户转交的AI系统总监全系统整合升级决定",
-  "baseline_fixed_commit": "6204f284ef6dc6c473ea9112af611d9e9051f8dd",
-  "goal": "在保留SYS-002已验证强项的基础上，把生产系统升级为可长期运行的16个正式生产角色+2个条件角色，并补齐账号长期战略、VOICE LOCK、数据实验、动态合规和统一运行入口。",
-  "unlocked_scope": "ALL_SYSTEM_FILES_EXCEPT_HISTORY_MUST_REMAIN_AUDITABLE",
-  "must_build": [
-    "R15数据分析与实验AI",
-    "R16账号策略与增长规划AI",
-    "R13升级为内容真实性与平台合规审核AI",
-    "R14收敛为发布与社群运营AI",
-    "ACCOUNT_STRATEGY_LOCK",
-    "VOICE_LOCK",
-    "COMPLIANCE_SNAPSHOT",
-    "R14原始数据采集→R15分析→R01决策闭环",
-    "周期性R16策略复盘触发器",
-    "SYS-003 V2生产入口与恢复链"
-  ],
-  "preserve_strengths": [
-    "R01独占正式任务/状态/LOCK/返修路由",
-    "R02/R03→R01候选集→R04→R01正式选品→R05时序",
-    "PRODUCT/SKU/PERSONA/CONTENT LOCK",
-    "ASSET MANIFEST与BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
-    "R10/R11/R12三审同版门禁",
-    "局部返修",
-    "USER_FILE模式",
-    "state/phase分离"
-  ],
-  "not_in_this_task": [
-    "16角色完整最终角色Prompt",
-    "CONTENT-TEST-001真实压力测试"
-  ],
+  "source": "用户转交的AI系统总监全系统整合升级 + A/B/C三方R1合并返修",
+  "baseline_fixed_commit": "ea63c3ace3e20671e33669664e39c493f122a5e6",
+  "current_revision_round": "R1",
+  "active_revision_path": "返修/SYS-003/V1/R1/任务.json",
+  "delivery_path": "交付/SYS-003/V1/R1/交付.json",
+  "goal": "保留SYS-003长期账号能力，同时恢复SYS-002成熟运行契约并补齐PERSONA初始化、第一人称主体、合规scope、最终CONTENT身份证。",
+  "architecture_target": "16正式生产AI+2条件AI",
+  "module_lock_policy": "A+B+C全部PASS后仅AI系统总监可LOCK",
+  "production_activation_policy": "系统模块LOCK + 16角色指令三审 + CONTENT-TEST-001压力测试PASS后才可runtime_enabled=true",
   "acceptance": [
-    "新AI只读根入口即可进入SYS-003而非旧SYS任务",
-    "生产入口只指向SYS-003角色注册表和工作流",
-    "每篇文案必须受ACCOUNT_STRATEGY_LOCK与VOICE_LOCK约束",
-    "R13发布前必须使用未过期COMPLIANCE_SNAPSHOT",
-    "R14不再承担分析结论；R15基于真实数据形成基线/判断/实验建议",
-    "R16仅按条件触发，不进入每篇固定关键路径",
-    "所有新LOCK和动态快照都有明确唯一指针、版本和失效规则"
-  ],
-  "delivery_path": "交付/SYS-003/V1/交付.json",
-  "review_after_build": {
-    "AI系统审核员A": [
-      "架构/权限/状态/版本/入口/LOCK指针/R15-R16触发"
-    ],
-    "AI系统审核员B": [
-      "长期账号实用性/VOICE一致性/动态合规/数据闭环/用户操作成本"
-    ]
-  }
+    "runtime硬门禁",
+    "完整current progress/task/barrier/active review契约",
+    "PERSONA从0启动",
+    "合规time+scope双匹配",
+    "CONTENT LOCK最终身份证",
+    "R16触发消费闭环",
+    "三审核制度"
+  ]
 }
