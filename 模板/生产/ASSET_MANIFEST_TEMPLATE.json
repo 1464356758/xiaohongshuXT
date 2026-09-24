@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-002_ASSET_MANIFEST_TEMPLATE_V1",
+  "schema": "SYS-002_ASSET_MANIFEST_TEMPLATE_V1_R3",
   "asset_manifest_id": "ASSET-CONTENT-000",
   "manifest_revision": 1,
   "content_id": "CONTENT-000",
@@ -12,6 +12,7 @@
   "created_at": null,
   "previous_manifest_path": null,
   "changed_pages": [],
+  "manifest_identity_status": "VALID|BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
   "runtime_path_template": "生产/资产清单/{CONTENT_ID}/{Vn}/M{manifest_revision}/ASSET_MANIFEST.json",
   "pages": [
     {
@@ -22,29 +23,39 @@
       "input_revision": 1,
       "revision_round": null,
       "fingerprint_type": "SHA256|GIT_BLOB_SHA_PLUS_SHA256|PLATFORM_IMMUTABLE_FILE_ID",
-      "fingerprint": "",
+      "fingerprint": "REQUIRED_NON_EMPTY_FOR_ACTIVE_ASSET",
       "sha256": null,
       "git_blob_sha": null,
       "asset_ref": "",
       "asset_transport": "USER_FILE|GITHUB",
-      "status": "ACTIVE|SUPERSEDED|MISSING",
+      "status": "ACTIVE|SUPERSEDED|MISSING|BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
       "persona_required": false,
       "product_required": false
     }
   ],
   "fingerprint_policy": {
-    "if_binary_readable": "AI/tool automatically computes SHA-256 from actual image bytes.",
-    "if_github_asset": "Record Git blob SHA and compute SHA-256 when bytes are accessible.",
-    "if_user_file_without_raw_hash_access": "Use an immutable platform-provided file/attachment identifier as fingerprint if available. Never ask the user to manually calculate SHA.",
-    "manual_user_hash_required": false
+    "if_binary_readable": "AI/tool MUST automatically compute SHA-256 from actual image bytes and use it as the fingerprint basis.",
+    "if_github_asset": "Record Git blob SHA and compute SHA-256 when bytes are accessible; a stable Git blob SHA may be retained as additional identity evidence.",
+    "if_user_file_without_raw_hash_access": "Use a platform-provided immutable attachment/file identifier only when it is stable for that exact uploaded binary/version.",
+    "if_no_reliable_fingerprint_available": "Set page status and manifest_identity_status to BLOCKED_ASSET_IDENTITY_UNVERIFIABLE. Do not activate this manifest and do not start or continue R10/R11/R12 review on this asset version.",
+    "empty_fingerprint_allowed_for_active_asset": false,
+    "manual_user_hash_required": false,
+    "manual_user_hash_forbidden_as_requirement": true
+  },
+  "activation_gate": {
+    "required": true,
+    "rule": "Every page with status=ACTIVE must have a non-empty verifiable fingerprint and asset_ref. If any required ACTIVE page lacks verifiable identity, the whole manifest is not activatable and production enters BLOCKED_ASSET_IDENTITY_UNVERIFIABLE.",
+    "on_fail": "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
+    "review_start_allowed_on_fail": false
   },
   "revision_rules": [
     "Any actual image byte/content change requires manifest_revision+1.",
-    "For a changed page keep the stable asset_id, increment only that page's asset_revision, and generate a new fingerprint.",
+    "For a changed page keep the stable asset_id, increment only that page's asset_revision, and generate a new non-empty fingerprint.",
     "Unchanged pages preserve asset_id, asset_revision and fingerprint exactly.",
     "Previous manifest files are immutable and must remain readable; never overwrite an old manifest revision.",
-    "R01 activates only one exact manifest path/id/revision in production current progress."
+    "R01 activates only one exact manifest path/id/revision after activation_gate PASS."
   ],
   "review_invalidation_rule": "If a page asset_revision or fingerprint differs from the version cited by a review, that page-dependent review evidence is automatically STALE and cannot count toward a PASS barrier.",
-  "example_p3_only_revision": "If P3 changes: manifest_revision+1; P3 asset_revision+1 and new fingerprint; P1/P2/P4/P5/P6 keep their previous asset revisions and fingerprints."
+  "review_identity_rule": "R10/R11/R12 evidence is invalid if any in-scope ACTIVE asset has an empty/unverifiable fingerprint or the manifest_identity_status is BLOCKED_ASSET_IDENTITY_UNVERIFIABLE.",
+  "example_p3_only_revision": "If P3 changes: manifest_revision+1; P3 asset_revision+1 and new non-empty fingerprint; P1/P2/P4/P5/P6 keep their previous asset revisions and fingerprints."
 }
