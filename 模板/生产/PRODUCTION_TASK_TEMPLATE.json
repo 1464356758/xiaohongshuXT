@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-002_PRODUCTION_TASK_TEMPLATE_V1_R1",
+  "schema": "SYS-002_PRODUCTION_TASK_TEMPLATE_V1_R3",
   "content_id": "CONTENT-000",
   "task_id": "CONTENT-000-STAGE-000-R00",
   "stage": "INTAKE",
@@ -20,6 +20,7 @@
   "required_asset_manifest_path": null,
   "required_asset_manifest_id": null,
   "required_manifest_revision": null,
+  "required_asset_identity_gate": "系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json",
   "scope": [],
   "frozen_scope": [],
   "forbidden_changes": [],
@@ -36,6 +37,7 @@
     "on_sku_uncertain": "BLOCKED_SKU_UNCERTAIN",
     "on_persona_missing": "BLOCKED_PERSONA_MISSING",
     "on_asset_missing": "BLOCKED_ASSET_MISSING",
+    "on_asset_identity_unverifiable": "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
     "on_hot_stale": "BLOCKED_HOT_STALE",
     "on_conflict": "BLOCKED_CONFLICT"
   },
@@ -46,6 +48,7 @@
     "Parallel roles write separate output paths and never overwrite each other.",
     "If an identical idempotency_key already has a valid COMPLETE delivery and dependencies are unchanged, do not regenerate.",
     "dependency_revision must identify the exact upstream candidate set, lock/input set, or asset manifest dependency consumed by this role.",
+    "Any task that consumes actual images must verify ASSET_IDENTITY_GATE. If a required ACTIVE asset lacks a non-empty verifiable fingerprint, route to BLOCKED_ASSET_IDENTITY_UNVERIFIABLE before review execution.",
     "User substantive requirement change increments input_revision and creates a new task_version; old task becomes SUPERSEDED.",
     "No role may infer missing locks, assets, tasks, or deliveries by scanning directories."
   ]
