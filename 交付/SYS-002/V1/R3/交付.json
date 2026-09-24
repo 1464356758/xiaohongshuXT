@@ -1,0 +1,72 @@
+{
+  "task_id": "SYS-002",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R3",
+  "role": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "formal_task_path": "任务/SYS-002/V1/任务.json",
+  "source_revision_path": "返修/SYS-002/V1/R3/任务.json",
+  "r2_fixed_commit": "2c35d66bf3246c688a19a83bc15907a877dad0c5",
+  "build_content_commit_before_delivery": "c2547215f0aceb25087da948b09dc11b5d2839e0",
+  "changed_scope": [
+    "根数据库入口.json切换到SYS-002与生产/命名空间",
+    "根当前进度.json切换到SYS-002/V1/R3复审链",
+    "ASSET_MANIFEST ACTIVE资产fingerprint强制非空且可验证",
+    "新增ASSET_IDENTITY_GATE",
+    "新增BLOCKED_ASSET_IDENTITY_UNVERIFIABLE合法主状态",
+    "生产任务路由接入资产身份不可验证BLOCKED",
+    "三审证据模板禁止消费空/不可验证fingerprint",
+    "SYS-002正式任务指针切换到R3"
+  ],
+  "frozen_scope": [
+    "14角色数量和主体职责",
+    "R02/R03/R04研究时序",
+    "PRODUCT LOCK",
+    "SKU LOCK",
+    "PERSONA LOCK",
+    "R09职责主体",
+    "R10/R11/R12审核主体",
+    "并行证据链主体",
+    "幂等键",
+    "R13主体",
+    "R14主体",
+    "state/phase尾段迁移主体",
+    "局部返修主体规则",
+    "SYS-001历史文件",
+    "R15/R16、VOICE LOCK、动态合规（留待SYS-003）"
+  ],
+  "deliverables": [
+    "返修/SYS-002/V1/R3/任务.json",
+    "数据库入口.json",
+    "当前进度.json",
+    "任务/SYS-002/V1/任务.json",
+    "模板/生产/ASSET_MANIFEST_TEMPLATE.json",
+    "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
+    "模板/生产/PRODUCTION_TASK_TEMPLATE.json",
+    "模板/生产/IMAGE_REVIEW_EVIDENCE_TEMPLATE.json",
+    "系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json",
+    "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
+    "交付/SYS-002/V1/R3/交付.json"
+  ],
+  "self_check": {
+    "root_database_points_to_sys002": true,
+    "root_progress_points_to_sys002_r3": true,
+    "production_namespace_used": true,
+    "active_asset_empty_fingerprint_forbidden": true,
+    "automatic_sha_when_bytes_readable": true,
+    "immutable_platform_id_allowed_when_stable": true,
+    "manual_user_sha_not_required": true,
+    "blocked_asset_identity_state_defined": true,
+    "unverifiable_manifest_activation_forbidden": true,
+    "r10_r11_r12_start_forbidden_on_unverifiable_identity": true,
+    "old_unverifiable_pass_cannot_count": true,
+    "scope_not_expanded_to_sys003": true
+  },
+  "review_scope": {
+    "AI系统审核员A": ["根数据库入口.json", "根当前进度.json", "新聊天恢复链是否准确指向SYS-002/V1/R3"],
+    "AI系统审核员B": ["ASSET MANIFEST fingerprint非空硬门禁", "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE", "三审无法消费不可验证资产身份"]
+  },
+  "formal_system_pass_declared": false
+}
