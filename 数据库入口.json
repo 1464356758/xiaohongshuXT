@@ -6,40 +6,37 @@
   "single_source_of_truth": "GitHub文字资料",
   "image_transport": "USER_FILE_ALLOWED_NOT_REQUIRED_IN_GITHUB",
   "current_progress": "当前进度.json",
-  "current_progress_template": "模板/状态/CURRENT_PROGRESS_TEMPLATE.json",
-  "core_rules": "系统/系统核心规则V1.0.md",
-  "active_task": "任务/SYS-001/V1/任务.json",
+  "active_task": "任务/SYS-002/V1/任务.json",
+  "active_revision": "返修/SYS-002/V1/R3/任务.json",
+  "active_delivery": "交付/SYS-002/V1/R3/交付.json",
+  "system_architecture": "系统/生产架构/SYS-002/",
+  "production_namespace": "生产/",
+  "production_database_entry_template": "模板/生产/PRODUCTION_DATABASE_ENTRY_TEMPLATE.json",
+  "production_current_progress_template": "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
   "active_lock_pointer_source": "当前进度.json",
   "lock_roots": {
-    "product": "批准/PRODUCT/",
-    "sku": "批准/SKU/",
-    "persona": "批准/PERSONA/",
-    "content": "批准/CONTENT/"
-  },
-  "template_roots": {
-    "status": "模板/状态/",
-    "task": "模板/任务/",
-    "research": "模板/研究/",
-    "locks": "模板/锁定/",
-    "image": "模板/图片/",
-    "review": "模板/审核/",
-    "revision": "模板/返修/",
-    "delivery": "模板/交付/"
+    "product": "生产/批准/PRODUCT/",
+    "sku": "生产/批准/SKU/",
+    "persona": "生产/批准/PERSONA/",
+    "content": "生产/批准/CONTENT/"
   },
   "production_roots": {
-    "hot_research": "产物/热点研究/",
-    "product_research": "产物/商品研究/",
-    "copy": "产物/文案/",
-    "image_tasks": "产物/图片任务/",
-    "reviews": "审核/",
-    "revisions": "返修/{TASK_ID}/{Vn}/{Rn}/",
-    "publish_packages": "发布包/"
+    "tasks": "生产/任务/",
+    "revisions": "生产/返修/",
+    "outputs": "生产/产物/",
+    "reviews": "生产/审核/",
+    "asset_manifests": "生产/资产清单/",
+    "approvals": "生产/批准/",
+    "deliveries": "生产/交付/",
+    "publish_packages": "生产/发布包/",
+    "data": "生产/数据/"
   },
   "formal_authority": {
-    "formal_task": "AI系统总监",
-    "formal_state": "AI系统总监",
-    "lock_approval": "AI系统总监",
-    "final_system_acceptance": "AI系统总监"
+    "system_build_task": "AI系统总监",
+    "system_build_state": "AI系统总监",
+    "production_formal_task": "R01运营总监AI",
+    "production_main_state": "R01运营总监AI",
+    "production_lock_approval": "R01运营总监AI"
   },
-  "read_rule": "每轮先读本文件，再读当前进度，再读当前任务；LOCK只读当前进度四个active_*_lock_path明确指向的文件，null即无有效LOCK，禁止扫描目录猜最新。"
+  "read_rule": "系统建设新会话必须先读本文件→当前进度.json→active_task_path→active_revision_path（非null）→delivery_path。日常内容生产启用后使用生产/数据库入口.json与生产/当前进度.json，不得回退到旧根级产物/审核/发布包目录猜当前生产状态。"
 }
