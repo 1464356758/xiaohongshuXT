@@ -1,0 +1,28 @@
+{
+  "schema": "SYS-002_ASSET_IDENTITY_GATE_V1",
+  "gate_id": "ASSET_IDENTITY_VERIFIABLE",
+  "applies_to": ["USER_FILE", "GITHUB"],
+  "required_for": ["R01_ACTIVATE_ASSET_MANIFEST", "R10", "R11", "R12", "IMAGE_QA_BARRIER", "R13_IMAGE_BINDING"],
+  "pass_rule": "Every ACTIVE page in the exact manifest revision has a non-empty verifiable fingerprint tied to that exact asset_id+asset_revision+asset_ref.",
+  "accepted_identity_sources": [
+    "SHA256_COMPUTED_FROM_ACTUAL_BYTES",
+    "GIT_BLOB_SHA_WITH_SHA256_WHEN_BYTES_ACCESSIBLE",
+    "PLATFORM_IMMUTABLE_FILE_OR_ATTACHMENT_ID_FOR_EXACT_VERSION"
+  ],
+  "forbidden": [
+    "EMPTY_FINGERPRINT",
+    "MUTABLE_FILENAME_ONLY",
+    "CHAT_DESCRIPTION_ONLY",
+    "USER_MANUALLY_CALCULATED_SHA_AS_REQUIRED_STEP",
+    "REVIEWING_AN_ASSET_VERSION_WITHOUT_VERIFIABLE_IDENTITY"
+  ],
+  "on_fail_state": "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
+  "on_fail_actions": [
+    "do_not_activate_manifest",
+    "do_not_start_R10_R11_R12",
+    "invalidate_any_claimed_PASS_that_depends_on_unverifiable_asset_identity",
+    "request_a_machine-verifiable_asset_reference_or_reprovide_asset_through_a_supported_file_channel"
+  ],
+  "user_rule": "The user is never required to calculate SHA-256 manually. Hashing is automatic when bytes are readable; otherwise use a stable platform/Git identity if available.",
+  "recovery_rule": "After verifiable identity becomes available, create/update the current manifest revision according to normal immutable revision rules, then R01 may clear the block and route only the affected downstream checks."
+}
