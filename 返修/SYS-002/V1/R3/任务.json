@@ -1,0 +1,58 @@
+{
+  "task_id": "SYS-002",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R3",
+  "task_lifecycle_status": "ACTIVE",
+  "source_review_A": {
+    "result": "PASS_FROZEN",
+    "summary": "A已通过state/phase等既有模块；本轮只复审新发现的根数据库入口/当前进度一致性。"
+  },
+  "source_review_B": {
+    "result": "FAIL",
+    "summary": "剩余1个P1：ASSET MANIFEST允许fingerprint为空，且缺少无法取得可靠资产身份时的硬阻塞。"
+  },
+  "new_director_p1": "根数据库入口.json与当前进度.json仍指向SYS-001，导致新AI无法进入当前SYS-002单一真源。",
+  "revision_scope": [
+    "USER_FILE/GITHUB图片资产fingerprint不可为空的硬门禁",
+    "新增BLOCKED_ASSET_IDENTITY_UNVERIFIABLE并接入资产身份链直接依赖",
+    "根数据库入口.json切换到SYS-002与生产/命名空间",
+    "根当前进度.json切换到SYS-002/V1/R3当前复审链",
+    "SYS-002正式任务指针切换到R3"
+  ],
+  "frozen_scope": [
+    "14角色主体架构",
+    "R02/R03/R04研究时序",
+    "PRODUCT LOCK",
+    "SKU LOCK",
+    "PERSONA LOCK",
+    "R09职责主体",
+    "R10/R11/R12审核主体",
+    "并行证据链",
+    "幂等键",
+    "R13主体",
+    "R14主体",
+    "state/phase已通过规则",
+    "局部返修",
+    "SYS-001历史文件"
+  ],
+  "must_fix": [
+    "ASSET MANIFEST任何ACTIVE页面不得存在空fingerprint。",
+    "能读取图片字节时由AI/工具自动计算SHA-256；GitHub资产可同时记录Git blob SHA；USER_FILE可用平台不可变附件/文件ID。",
+    "若上述可靠fingerprint均无法取得，必须进入BLOCKED_ASSET_IDENTITY_UNVERIFIABLE，禁止激活manifest、禁止进入R10/R11/R12。",
+    "绝不要求用户手工计算SHA。",
+    "根数据库入口与根当前进度必须把新AI准确导向SYS-002/V1/R3，而不是SYS-001。",
+    "数据库入口的生产目录必须采用生产/命名空间。"
+  ],
+  "acceptance_criteria": [
+    "ACTIVE资产fingerprint非空且可验证，否则硬BLOCKED。",
+    "无法可靠识别图片版本时三审不能启动或继续PASS。",
+    "新AI按数据库入口→当前进度→active_task_path→active_revision_path→delivery_path可恢复SYS-002 R3。",
+    "审核A只复审根入口/当前进度一致性；审核B只复审fingerprint硬门禁及直接依赖。"
+  ],
+  "baseline_fixed_commit": "2c35d66bf3246c688a19a83bc15907a877dad0c5",
+  "formal_task_path": "任务/SYS-002/V1/任务.json",
+  "delivery_path": "交付/SYS-002/V1/R3/交付.json",
+  "assigned_to": "AI系统制作员"
+}
