@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_V3",
+  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_V4",
   "namespace": "生产",
   "runtime_enabled": false,
   "runtime_mode": "DISABLED|TEST_ONLY|LIVE",
@@ -101,7 +101,9 @@
     "trigger_created_at": null,
     "trigger_task_path": null,
     "consumed_at": null,
-    "rule": "每10个CONTENT LOCK或其他触发条件由R01创建唯一trigger_event_id置PENDING；R16开始置IN_PROGRESS；R01处理结果后置CONSUMED；成功复盘后since_last归零，事件归档后清空，禁止重复消费。"
+    "rule": "每10个CONTENT LOCK或其他触发条件由R01创建唯一trigger_event_id置PENDING；R16开始置IN_PROGRESS；R01处理结果后置CONSUMED；成功复盘后since_last归零，事件归档后清空，禁止重复消费。",
+    "content_count_event_ledger": [],
+    "counting_rule": "Use content_count_event_id = CONTENT_COUNT::{content_id}. Only first valid event for a content_id increments counters. Re-locking CONTENT-xxx as LOCK-V2/V3 never increments again."
   },
   "next_role_ids": [],
   "legal_main_states": [
@@ -123,9 +125,34 @@
     "BLOCKED_COMPLIANCE_STALE",
     "BLOCKED_COMPLIANCE_UNVERIFIED",
     "BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
+    "BLOCKED_ROLE_NOT_READY",
     "BLOCKED_CONFLICT"
   ],
   "pointer_rule": "所有当前任务/LOCK/快照/manifest/审核只认显式active指针；null即无，禁止扫描目录。",
   "revision_rule": "revision_round+active_revision_path+delivery_path同步；页级返修记录frozen/open并仅失效受依赖影响证据。",
-  "updated_at": null
+  "updated_at": null,
+  "active_publish_compliance_gate_path": null,
+  "active_publish_scope_fingerprint": null,
+  "publish_compliance_gate": {
+    "result": "NOT_STARTED|PASS|FAIL_REFRESH_ONLY|FAIL_CONTENT_CHANGE_REQUIRED|BLOCKED_COMPLIANCE_STALE|BLOCKED_COMPLIANCE_UNVERIFIED|BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
+    "evidence_path": null,
+    "content_lock_path": null,
+    "compliance_snapshot_path": null,
+    "actual_publish_scope_fingerprint": null,
+    "checked_at": null
+  },
+  "conditional_role_readiness": {
+    "C1": {
+      "status": "NOT_READY|READY",
+      "instruction_path": null,
+      "audit_status": "NOT_REVIEWED|PASS",
+      "on_trigger_if_not_ready": "BLOCKED_ROLE_NOT_READY"
+    },
+    "C2": {
+      "status": "NOT_READY|READY",
+      "instruction_path": null,
+      "audit_status": "NOT_REVIEWED|PASS",
+      "on_trigger_if_not_ready": "BLOCKED_ROLE_NOT_READY"
+    }
+  }
 }

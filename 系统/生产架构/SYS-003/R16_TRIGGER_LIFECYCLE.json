@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_R16_TRIGGER_LIFECYCLE_V1",
+  "schema": "SYS-003_R16_TRIGGER_LIFECYCLE_V2",
   "authority": "R01",
   "counters": [
     "content_lock_count_total",
@@ -49,6 +49,21 @@
   "hard_rules": [
     "same trigger_event_id cannot be dispatched twice",
     "EVERY_10_CONTENT_LOCKS uses counter threshold, not chat memory",
-    "R16 cannot create/consume/reset its own trigger event"
-  ]
+    "R16 cannot create/consume/reset its own trigger event",
+    "content count is idempotent by content_id; lock-version changes cannot create extra counts"
+  ],
+  "content_count_idempotency": {
+    "event_id_formula": "CONTENT_COUNT::{content_id}",
+    "ledger_path": "生产/当前进度.json.r16_lifecycle.content_count_event_ledger",
+    "increment_rule": "If event_id has never been recorded, record it once and increment content_lock_count_total and content_lock_count_since_last_strategy_review by 1.",
+    "duplicate_rule": "If event_id already exists, do not increment any counter. CONTENT LOCK V2/V3 for same content_id remains the same content count event.",
+    "evidence_fields": [
+      "content_count_event_id",
+      "content_id",
+      "first_counted_content_lock_id",
+      "first_counted_content_lock_path",
+      "counted_at",
+      "event_fingerprint_or_commit"
+    ]
+  }
 }

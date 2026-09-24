@@ -1,0 +1,37 @@
+{
+  "schema": "SYS-003_PUBLISH_COMPLIANCE_GATE_V1",
+  "gate_id": "PUBLISH_COMPLIANCE_GATE",
+  "authority": "R01",
+  "position": "R14_PUBLISH_PACKAGE -> PUBLISH_COMPLIANCE_GATE -> PUBLISH_READY -> USER_ACTUAL_PUBLISH",
+  "required_inputs": [
+    "active_content_lock_path",
+    "R14 publish package",
+    "active_compliance_snapshot_path",
+    "actual_publish_scope"
+  ],
+  "checks": [
+    "current_time <= active compliance snapshot.valid_until",
+    "active compliance snapshot.status == VALID",
+    "actual_publish_scope.scope_fingerprint == active_compliance_scope_fingerprint",
+    "actual_publish_scope.commercial_status matches active snapshot scope",
+    "actual_publish_scope.AI_modalities matches active snapshot scope",
+    "AI_label_requirement is VERIFIED or NOT_APPLICABLE for actual publish mode and current mechanism evidence remains current",
+    "commercial_disclosure_requirement is VERIFIED or NOT_APPLICABLE for actual publish mode"
+  ],
+  "outputs": {
+    "evidence_path_template": "生产/审核/{CONTENT_ID}/{Vn}/发布合规/PUBLISH_COMPLIANCE_GATE_EVIDENCE.json",
+    "active_pointer": "生产/当前进度.json.active_publish_compliance_gate_path",
+    "result_enum": [
+      "PASS",
+      "FAIL_REFRESH_ONLY",
+      "FAIL_CONTENT_CHANGE_REQUIRED",
+      "BLOCKED_COMPLIANCE_STALE",
+      "BLOCKED_COMPLIANCE_UNVERIFIED",
+      "BLOCKED_COMPLIANCE_SCOPE_MISMATCH"
+    ]
+  },
+  "refresh_only_rule": "若仅规则/机制刷新且R13确认最终正文、图片、商业披露内容无需变化：R13刷新COMPLIANCE_SNAPSHOT -> R01激活新快照 -> 重新运行本Gate；原CONTENT LOCK保持历史不可改，发布授权以新Gate evidence为准。",
+  "content_change_rule": "若刷新后要求修改正文/图片/披露表达：旧R13 PASS标记STALE；旧CONTENT LOCK仅保留历史；进入REVISION_REQUIRED，完成受影响审核并建立新CONTENT LOCK版本后再运行本Gate。",
+  "publish_ready_rule": "只有当前active_publish_compliance_gate_path存在且result=PASS，并绑定当前active_content_lock_path与当前actual_publish_scope，R01才可进入READY/PUBLISH_READY。",
+  "r14_rule": "R14只生成发布包/提供实际发布模式信息，不得自行PASS本Gate或修改state/phase。"
+}

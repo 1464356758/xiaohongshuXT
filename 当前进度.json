@@ -1,33 +1,34 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V2.0-CANDIDATE-R1",
+  "system_version": "V2.0-CANDIDATE-R2",
   "task_id": "SYS-003",
   "task_version": "V1",
   "input_revision": 1,
-  "revision_round": "R1",
+  "revision_round": "R2",
   "state": "REVIEWING",
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "AI系统总监",
-  "build_result": "R1_BUILD_COMPLETE_PENDING_A_B_C_REVIEW",
+  "build_result": "R2_BUILD_COMPLETE_PENDING_A_B_C_REVIEW",
   "builder": "AI系统制作员",
   "active_task_path": "任务/SYS-003/V1/任务.json",
-  "active_revision_path": "返修/SYS-003/V1/R1/任务.json",
-  "delivery_path": "交付/SYS-003/V1/R1/交付.json",
+  "active_revision_path": "返修/SYS-003/V1/R2/任务.json",
+  "delivery_path": "交付/SYS-003/V1/R2/交付.json",
   "active_system_architecture_path": "系统/生产架构/SYS-003/",
   "audit_policy_path": "系统/建设审核协议V2.json",
   "production_namespace": "生产/",
   "review_status": {
-    "AI系统审核员A": "PENDING_R1_FULL_REVIEW",
-    "AI系统审核员B": "PENDING_R1_FULL_REVIEW",
-    "AI系统审核员C": "PENDING_R1_INTEGRATION_REGRESSION_REVIEW"
+    "AI系统审核员A": "PENDING_R2_REVIEW",
+    "AI系统审核员B": "PENDING_R2_REVIEW",
+    "AI系统审核员C": "PENDING_R2_INTEGRATION_REGRESSION_REVIEW"
   },
   "lock_status": "UNLOCKED",
+  "runtime_enabled": false,
   "next_roles": [
     "AI系统审核员A",
     "AI系统审核员B",
     "AI系统审核员C"
   ],
   "module_lock_rule": "仅AI系统总监可在A/B/C全部PASS后建立SYSTEM MODULE LOCK。",
-  "bootstrap_note": "SYS-003 R1合并A8+B3+C2 P1及3个P2；生产runtime仍关闭。",
-  "updated_at": "2026-09-24T11:23:00+08:00"
+  "bootstrap_note": "SYS-003 R2精确关闭B/C提出的4个P1+3个P2；不扩展角色数量，生产runtime继续关闭。",
+  "updated_at": "2026-09-24T15:25:00+08:00"
 }

@@ -1,0 +1,36 @@
+{
+  "schema": "SYS-003_PUBLISH_COMPLIANCE_GATE_EVIDENCE_TEMPLATE_V1",
+  "content_id": "CONTENT-000",
+  "task_version": "V1",
+  "input_revision": 1,
+  "content_lock_path": "",
+  "content_lock_id": "",
+  "publish_package_path": "",
+  "actual_publish_scope": {
+    "content_mode": "",
+    "commercial_status": "",
+    "product_category": "",
+    "AI_modalities": [],
+    "claims_risk": "",
+    "account_type": "",
+    "scope_fingerprint": ""
+  },
+  "compliance_snapshot_path": "",
+  "compliance_snapshot_revision": null,
+  "active_compliance_scope_fingerprint": "",
+  "checks": {
+    "time_valid": false,
+    "snapshot_status_valid": false,
+    "scope_match": false,
+    "commercial_status_unchanged": false,
+    "ai_modalities_unchanged": false,
+    "ai_label_requirement_current": false,
+    "commercial_disclosure_requirement_current": false
+  },
+  "result": "PASS|FAIL_REFRESH_ONLY|FAIL_CONTENT_CHANGE_REQUIRED|BLOCKED_COMPLIANCE_STALE|BLOCKED_COMPLIANCE_UNVERIFIED|BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
+  "refresh_only": false,
+  "content_change_required": false,
+  "checked_by": "R01 with current R13 compliance evidence",
+  "checked_at": null,
+  "hard_rule": "R01 may transition to PUBLISH_READY only when this exact active evidence result=PASS and it binds current CONTENT LOCK + actual publish scope."
+}

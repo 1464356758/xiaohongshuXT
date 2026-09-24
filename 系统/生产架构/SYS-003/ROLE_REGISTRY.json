@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_ROLE_REGISTRY_V3",
+  "schema": "SYS-003_ROLE_REGISTRY_V4",
   "formal_task_and_lock_authority": "R01",
   "roles": [
     {
@@ -116,7 +116,8 @@
         "策划",
         "VOICE/ACCOUNT_STRATEGY/PRODUCT/SKU LOCK",
         "experience_subject_ref",
-        "evidence_ref"
+        "evidence_ref",
+        "active PERSONA LOCK persona_subject_type/first_person_experience_eligible"
       ],
       "writes": [
         "生产/产物/文案/",
@@ -124,7 +125,8 @@
       ],
       "cannot": [
         "借他人经历写我",
-        "改LOCK"
+        "改LOCK",
+        "SYNTHETIC_VISUAL_PERSONA写现实产品使用经历"
       ]
     },
     {
@@ -138,11 +140,13 @@
       "writes": [
         "生产/产物/视觉策划/",
         "生产/产物/图片任务/",
-        "生产/产物/PERSONA草案/"
+        "生产/产物/PERSONA草案/",
+        "PERSONA锚点身份草案：anchor_id/revision/fingerprint"
       ],
       "cannot": [
         "批准PERSONA LOCK",
-        "擅改身份"
+        "擅改身份",
+        "在LOCKED PERSONA同路径静默换锚点图片"
       ]
     },
     {
@@ -185,14 +189,16 @@
         "active manifest",
         "PERSONA LOCK/草案",
         "人物锚点",
-        "资产门禁"
+        "资产门禁",
+        "PERSONA anchor fingerprints/revisions"
       ],
       "writes": [
         "生产/审核/人物一致性/"
       ],
       "cannot": [
         "改人物图/LOCK",
-        "消费非active manifest"
+        "消费非active manifest",
+        "接受锚点路径相同但fingerprint变化且未新建PERSONA LOCK"
       ]
     },
     {
@@ -221,15 +227,18 @@
         "全部相关LOCK",
         "active R10/R11/R12",
         "active compliance snapshot",
-        "required scope"
+        "required scope",
+        "PERSONA subject type/experience eligibility"
       ],
       "writes": [
         "生产/审核/内容合规/",
-        "生产/产物/合规快照草案/"
+        "生产/产物/合规快照草案/",
+        "发布前合规刷新/核验交付（按R01任务）"
       ],
       "cannot": [
         "使用过期/未核实/scope不匹配快照PASS",
-        "批准CONTENT LOCK"
+        "批准CONTENT LOCK",
+        "允许虚拟PERSONA声称现实产品使用经历"
       ]
     },
     {
@@ -243,12 +252,14 @@
       "writes": [
         "生产/发布包/",
         "生产/数据/快照/",
-        "生产/产物/社群反馈/"
+        "生产/产物/社群反馈/",
+        "生产/审核/{CONTENT_ID}/{Vn}/发布合规/所需实际发布模式输入"
       ],
       "cannot": [
         "做最终数据判断",
         "缺数补0",
-        "改state/phase/LOCK"
+        "改state/phase/LOCK",
+        "绕过PUBLISH_COMPLIANCE_GATE直接声明PUBLISH_READY"
       ]
     },
     {
@@ -276,7 +287,8 @@
         "ACCOUNT_STRATEGY_LOCK",
         "R15报告",
         "内容历史",
-        "增长阶段"
+        "增长阶段",
+        "R01 content_count_event ledger"
       ],
       "writes": [
         "生产/产物/账号策略草案/"
@@ -285,7 +297,8 @@
         "每篇强制运行",
         "批准策略LOCK",
         "重复消费CONSUMED事件",
-        "改state/phase"
+        "改state/phase",
+        "把同一content_id的CONTENT LOCK版本升级计为新内容"
       ],
       "trigger_lifecycle": "仅消费R01当前PENDING trigger_event_id；交付后由R01置CONSUMED并按规则重置计数。"
     }
@@ -305,7 +318,10 @@
       ],
       "cannot": [
         "缺预算批准启动"
-      ]
+      ],
+      "instruction_readiness_required": true,
+      "on_instruction_not_ready": "BLOCKED_ROLE_NOT_READY",
+      "live_activation_note": "该条件角色未就绪不阻塞普通CONTENT LIVE；只有触发本角色时阻塞本条件分支。"
     },
     {
       "id": "C2",
@@ -320,7 +336,10 @@
       ],
       "cannot": [
         "伪造合作"
-      ]
+      ],
+      "instruction_readiness_required": true,
+      "on_instruction_not_ready": "BLOCKED_ROLE_NOT_READY",
+      "live_activation_note": "该条件角色未就绪不阻塞普通CONTENT LIVE；只有触发本角色时阻塞本条件分支。"
     }
   ]
 }

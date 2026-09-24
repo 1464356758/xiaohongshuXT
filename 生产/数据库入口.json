@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_PRODUCTION_DATABASE_ENTRY_V3",
+  "schema": "SYS-003_PRODUCTION_DATABASE_ENTRY_V4",
   "namespace": "生产",
   "repository": "https://github.com/1464356758/xiaohongshuXT",
   "branch": "main",
@@ -21,7 +21,9 @@
     "account_strategy_lock": "模板/生产/ACCOUNT_STRATEGY_LOCK_TEMPLATE.json",
     "voice_lock": "模板/生产/VOICE_LOCK_TEMPLATE.json",
     "compliance_snapshot": "模板/生产/COMPLIANCE_SNAPSHOT_TEMPLATE.json",
-    "content_lock": "模板/锁定/CONTENT_LOCK_TEMPLATE.json"
+    "content_lock": "模板/锁定/CONTENT_LOCK_TEMPLATE.json",
+    "publish_compliance_gate": "模板/生产/PUBLISH_COMPLIANCE_GATE_TEMPLATE.json",
+    "partial_revision": "模板/返修/PARTIAL_REVISION_TEMPLATE.json"
   },
   "roots": {
     "tasks": "生产/任务/",
@@ -44,6 +46,7 @@
     "active compliance snapshot+scope",
     "active asset manifest",
     "active QA/review pointers",
+    "active publish compliance gate when in publish flow",
     "role instruction",
     "declared inputs"
   ],
@@ -56,5 +59,6 @@
     "lock_approval": "R01",
     "active_pointer_changes": "R01",
     "revision_scope": "R01"
-  }
+  },
+  "publish_compliance_gate": "系统/生产架构/SYS-003/PUBLISH_COMPLIANCE_GATE.json"
 }

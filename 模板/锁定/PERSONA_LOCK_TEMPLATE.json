@@ -1,6 +1,8 @@
 {
+  "schema": "SYS-003_PERSONA_LOCK_TEMPLATE_V4",
   "lock_type": "PERSONA_LOCK",
   "lock_id": "PERSONA-000-LOCK-V1",
+  "lock_version": "LOCK-V1",
   "status": "DRAFT|LOCKED|SUPERSEDED",
   "provenance": {
     "source_task_path": "",
@@ -9,25 +11,64 @@
     "source_delivery_path": "",
     "supersedes": null
   },
+  "persona_subject_type": "SYNTHETIC_VISUAL_PERSONA|REAL_HUMAN_PUBLIC_SUBJECT",
+  "first_person_experience_eligible": false,
+  "first_person_opinion_eligible": true,
+  "experience_rule": "SYNTHETIC_VISUAL_PERSONA必须first_person_experience_eligible=false。它可表达当前账号的审美/观点偏好，但不得拥有现实产品使用、购买、回购、空瓶、持妆时长等经历。",
   "identity_rule": "核心人脸保持同一人物身份，不要求造型固定。",
+  "anchor_identity_status": "VALID|BLOCKED_PERSONA_ANCHOR_IDENTITY_UNVERIFIABLE",
   "anchors": {
     "front": {
+      "anchor_id": "PERSONA-000-FRONT",
+      "anchor_revision": 1,
       "transport": "GITHUB|USER_FILE",
-      "location": ""
+      "location": "",
+      "fingerprint_type": "SHA256|GIT_BLOB_SHA_PLUS_SHA256|PLATFORM_IMMUTABLE_FILE_ID",
+      "fingerprint": "REQUIRED_NON_EMPTY",
+      "sha256": null,
+      "git_blob_sha": null,
+      "immutable_attachment_id": null,
+      "source_commit": null
     },
     "angle_45": {
+      "anchor_id": "PERSONA-000-45",
+      "anchor_revision": 1,
       "transport": "GITHUB|USER_FILE",
-      "location": ""
+      "location": "",
+      "fingerprint_type": "SHA256|GIT_BLOB_SHA_PLUS_SHA256|PLATFORM_IMMUTABLE_FILE_ID",
+      "fingerprint": "REQUIRED_NON_EMPTY",
+      "sha256": null,
+      "git_blob_sha": null,
+      "immutable_attachment_id": null,
+      "source_commit": null
     },
     "halfbody": {
+      "anchor_id": "PERSONA-000-HALF",
+      "anchor_revision": 1,
       "transport": "GITHUB|USER_FILE",
-      "location": ""
+      "location": "",
+      "fingerprint_type": "SHA256|GIT_BLOB_SHA_PLUS_SHA256|PLATFORM_IMMUTABLE_FILE_ID",
+      "fingerprint": "REQUIRED_NON_EMPTY",
+      "sha256": null,
+      "git_blob_sha": null,
+      "immutable_attachment_id": null,
+      "source_commit": null
     },
     "detail": {
+      "anchor_id": "PERSONA-000-DETAIL",
+      "anchor_revision": 1,
       "transport": "GITHUB|USER_FILE|OPTIONAL",
-      "location": ""
+      "location": "",
+      "fingerprint_type": "SHA256|GIT_BLOB_SHA_PLUS_SHA256|PLATFORM_IMMUTABLE_FILE_ID",
+      "fingerprint": null,
+      "sha256": null,
+      "git_blob_sha": null,
+      "immutable_attachment_id": null,
+      "source_commit": null
     }
   },
+  "anchor_activation_gate": "Every required anchor must have a non-empty machine-verifiable fingerprint. GitHub anchors should bind source_commit/blob SHA and SHA-256 when bytes accessible; USER_FILE uses actual-byte SHA-256 or stable immutable attachment ID.",
+  "anchor_change_rule": "Any required anchor byte/content change, including same location/path with new bytes, requires a new PERSONA LOCK version. Never mutate a LOCKED persona anchor in place.",
   "face_shape": "",
   "feature_proportions": {
     "eyes": "",

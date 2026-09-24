@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V3",
+  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V4",
   "namespace": "生产",
   "runtime_enabled": false,
   "runtime_mode": "DISABLED",
@@ -93,8 +93,34 @@
     "trigger_created_at": "2026-09-24T11:23:00+08:00",
     "trigger_task_path": null,
     "consumed_at": null,
-    "rule": "同一事件只能消费一次。"
+    "rule": "同一事件只能消费一次。",
+    "content_count_event_ledger": [],
+    "counting_rule": "CONTENT_COUNT::{content_id} unique. Same content re-lock does not increment."
   },
   "next_role_ids": [],
-  "pointer_rule": "null表示无正式对象；禁止扫描目录猜最新版。"
+  "pointer_rule": "null表示无正式对象；禁止扫描目录猜最新版。",
+  "active_publish_compliance_gate_path": null,
+  "active_publish_scope_fingerprint": null,
+  "publish_compliance_gate": {
+    "result": "NOT_STARTED",
+    "evidence_path": null,
+    "content_lock_path": null,
+    "compliance_snapshot_path": null,
+    "actual_publish_scope_fingerprint": null,
+    "checked_at": null
+  },
+  "conditional_role_readiness": {
+    "C1": {
+      "status": "NOT_READY",
+      "instruction_path": null,
+      "audit_status": "NOT_REVIEWED",
+      "on_trigger_if_not_ready": "BLOCKED_ROLE_NOT_READY"
+    },
+    "C2": {
+      "status": "NOT_READY",
+      "instruction_path": null,
+      "audit_status": "NOT_REVIEWED",
+      "on_trigger_if_not_ready": "BLOCKED_ROLE_NOT_READY"
+    }
+  }
 }

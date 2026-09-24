@@ -1,0 +1,52 @@
+{
+  "task_id": "SYS-003",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R2",
+  "task_lifecycle_status": "ACTIVE",
+  "source": "AI系统总监正式SYS-003｜R2精确返修任务",
+  "baseline_fixed_commit": "a87b94fad30e24c4d212f15f5c0b09bacf12f45d",
+  "current_status": {
+    "score": 88,
+    "r1_result": "FAIL",
+    "module_lock": "FORBIDDEN",
+    "runtime_enabled": false
+  },
+  "scope": {
+    "P1": [
+      "新增PUBLISH_COMPLIANCE_GATE，必须位于R14发布包之后、PUBLISH_READY之前；校验时间、scope、commercial_status、AI modalities、AI标识机制、商业披露。",
+      "PERSONA新增persona_subject_type与first_person_experience_eligible；SYNTHETIC_VISUAL_PERSONA默认禁止现实产品使用经历。",
+      "STATE_PHASE_TRANSITION_TABLE补齐完整主链、条件跳过及NEXT_CONTENT→新CONTENT INTAKE。",
+      "PERSONA每个锚点增加不可变资产身份证；锚点内容改变必须新PERSONA LOCK版本。"
+    ],
+    "P2": [
+      "PARTIAL_REVISION_TEMPLATE切到生产/返修/并标记SYS-003 runtime。",
+      "R16 CONTENT计数加入幂等事件，CONTENT同篇重锁不得重复+1。",
+      "C1/C2若正式角色指令未就绪，触发时进入BLOCKED_ROLE_NOT_READY；不阻塞普通CONTENT LIVE。"
+    ]
+  },
+  "forbidden_scope": [
+    "不新增生产角色",
+    "不改变16正式+2条件角色数量",
+    "不改R02/R03/R04研究时序",
+    "不改R10/R11/R12三审主体",
+    "不推翻R1 CONTENT LOCK/COMPLIANCE scope/asset identity底盘"
+  ],
+  "acceptance": [
+    "发布包后必须存在active_publish_compliance_gate_path且PASS后才能PUBLISH_READY。",
+    "快照过期或实际发布scope变化必须阻断旧发布授权；纯规则刷新且不影响成品可重授权，影响正文/图片则必须新CONTENT LOCK版本。",
+    "SYNTHETIC_VISUAL_PERSONA的first_person_experience_eligible=false，现实产品使用经历无法通过R07/R13。",
+    "所有PERSONA ACTIVE锚点必须有不可变fingerprint身份；同路径换图被识别为新资产并要求新PERSONA LOCK。",
+    "完整生产阶段都有合法state/phase迁移，并支持已有策略/VOICE/PERSONA时直接INTAKE→DISCOVERY。",
+    "NEXT_TASK/NEXT_CONTENT能合法创建新CONTENT并进入READY/INTAKE。",
+    "同一content_id无论CONTENT LOCK重建多少版本，R16内容计数最多+1。",
+    "C1/C2未就绪只在被触发时BLOCKED_ROLE_NOT_READY。"
+  ],
+  "delivery_path": "交付/SYS-003/V1/R2/交付.json",
+  "reviewers": [
+    "AI系统审核员A",
+    "AI系统审核员B",
+    "AI系统审核员C"
+  ]
+}

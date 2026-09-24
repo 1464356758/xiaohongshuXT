@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_PRODUCTION_TASK_TEMPLATE_V3",
+  "schema": "SYS-003_PRODUCTION_TASK_TEMPLATE_V4",
   "content_id": "CONTENT-000",
   "task_id": "CONTENT-000-STAGE-000-R00",
   "stage": "INTAKE",
@@ -36,7 +36,11 @@
     "asset_manifest_id": null,
     "manifest_revision": null,
     "active_image_qa_barrier_path": null,
-    "latest_r15_analysis_path": null
+    "latest_r15_analysis_path": null,
+    "publish_compliance_gate_path": null,
+    "persona_subject_type": null,
+    "first_person_experience_eligible": null,
+    "actual_publish_scope_fingerprint": null
   },
   "input_paths": [],
   "scope": [],
@@ -64,13 +68,17 @@
     "on_compliance_stale": "BLOCKED_COMPLIANCE_STALE",
     "on_compliance_unverified": "BLOCKED_COMPLIANCE_UNVERIFIED",
     "on_compliance_scope_mismatch": "BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
-    "on_conflict": "BLOCKED_CONFLICT"
+    "on_conflict": "BLOCKED_CONFLICT",
+    "on_role_not_ready": "BLOCKED_ROLE_NOT_READY"
   },
   "rules": [
     "每个可执行任务只属一个role_id且idempotency_key必须非空。",
     "并行角色拥有独立task/delivery/idempotency。",
     "图片审核绑定exact manifest id+revision+dependency_revision。",
     "合规任务绑定exact required_compliance_scope_fingerprint。",
-    "禁止扫描目录补上下文。"
+    "禁止扫描目录补上下文。",
+    "R07/R13 experiential first-person tasks must bind active persona_subject_type and first_person_experience_eligible.",
+    "Publish-ready tasks must bind active_publish_compliance_gate_path and actual_publish_scope_fingerprint.",
+    "C1/C2 tasks require READY role instruction + audited PASS; otherwise BLOCKED_ROLE_NOT_READY."
   ]
 }

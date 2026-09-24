@@ -6,9 +6,15 @@
   "revision_round": "R1",
   "task_lifecycle_status": "ACTIVE",
   "state": "REVISION_REQUIRED",
-  "revision_path": "返修/CONTENT-000/V1/R1/",
-  "scope": ["P3"],
-  "frozen_pages": ["P1", "P2", "P4"],
+  "revision_path": "生产/返修/CONTENT-000/V1/R1/",
+  "scope": [
+    "P3"
+  ],
+  "frozen_pages": [
+    "P1",
+    "P2",
+    "P4"
+  ],
   "issues": [
     {
       "page_id": "P3",
@@ -17,13 +23,30 @@
       "required_fix": ""
     }
   ],
-  "allowed_changes": ["仅P3与其直接依赖"],
-  "forbidden_changes": ["不得改P1/P2/P4", "不得顺手改未被点名模块"],
-  "re_review_scope": ["P3", "P3直接依赖"],
+  "allowed_changes": [
+    "仅P3与其直接依赖"
+  ],
+  "forbidden_changes": [
+    "不得改P1/P2/P4",
+    "不得顺手改未被点名模块"
+  ],
+  "re_review_scope": [
+    "P3",
+    "P3直接依赖"
+  ],
   "traceability": {
-    "required_fields_in_every_delivery": ["task_version", "input_revision", "parent_version", "revision_round"],
-    "must_not_overwrite_previous_v_or_r": true
+    "required_fields_in_every_delivery": [
+      "task_version",
+      "input_revision",
+      "parent_version",
+      "revision_round"
+    ],
+    "must_not_overwrite_previous_v_or_r": true,
+    "must_not_use_legacy_root_revision_path": true
   },
   "max_same_issue_revision_rounds": 3,
-  "on_same_issue_after_R3": "BLOCKED_CONFLICT"
+  "on_same_issue_after_R3": "BLOCKED_CONFLICT",
+  "schema": "SYS-003_PARTIAL_REVISION_TEMPLATE_V2",
+  "runtime_namespace": "生产",
+  "legacy_root_path_forbidden": true
 }

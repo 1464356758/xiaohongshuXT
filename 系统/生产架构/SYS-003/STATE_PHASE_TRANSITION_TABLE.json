@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_STATE_PHASE_TRANSITION_TABLE_V3",
+  "schema": "SYS-003_STATE_PHASE_TRANSITION_TABLE_V4",
   "authority": "R01",
   "legal_main_states": [
     "READY",
@@ -20,6 +20,7 @@
     "BLOCKED_COMPLIANCE_STALE",
     "BLOCKED_COMPLIANCE_UNVERIFIED",
     "BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
+    "BLOCKED_ROLE_NOT_READY",
     "BLOCKED_CONFLICT"
   ],
   "legal_phases": [
@@ -38,6 +39,7 @@
     "COMPLIANCE_REVIEW",
     "FINAL_APPROVAL",
     "PUBLISH_PREP",
+    "PUBLISH_COMPLIANCE_CHECK",
     "PUBLISH_READY",
     "PUBLISHED",
     "DATA_WAITING",
@@ -49,7 +51,7 @@
   ],
   "transitions": [
     {
-      "id": "T01",
+      "id": "I01",
       "from": {
         "state": "READY",
         "phase": "INTAKE"
@@ -58,10 +60,58 @@
         "state": "BUILDING",
         "phase": "STRATEGY_SETUP"
       },
-      "actor": "R01"
+      "condition": "strategy lock missing or R16 strategy trigger must run"
     },
     {
-      "id": "T02",
+      "id": "I02",
+      "from": {
+        "state": "READY",
+        "phase": "INTAKE"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "VOICE_SETUP"
+      },
+      "condition": "strategy lock valid AND voice lock missing/stale"
+    },
+    {
+      "id": "I03",
+      "from": {
+        "state": "READY",
+        "phase": "INTAKE"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "PERSONA_SETUP"
+      },
+      "condition": "strategy+voice valid AND persona missing/change requested"
+    },
+    {
+      "id": "I04",
+      "from": {
+        "state": "READY",
+        "phase": "INTAKE"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "DISCOVERY"
+      },
+      "condition": "strategy+voice+persona all valid and no setup required"
+    },
+    {
+      "id": "S01C",
+      "from": {
+        "state": "BUILDING",
+        "phase": "STRATEGY_SETUP"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "STRATEGY_SETUP"
+      },
+      "condition": "strategy stage complete"
+    },
+    {
+      "id": "S01V",
       "from": {
         "state": "PASS",
         "phase": "STRATEGY_SETUP"
@@ -70,10 +120,46 @@
         "state": "BUILDING",
         "phase": "VOICE_SETUP"
       },
-      "actor": "R01"
+      "condition": "voice setup required"
     },
     {
-      "id": "T03",
+      "id": "S01P",
+      "from": {
+        "state": "PASS",
+        "phase": "STRATEGY_SETUP"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "PERSONA_SETUP"
+      },
+      "condition": "voice already valid; persona setup required"
+    },
+    {
+      "id": "S01D",
+      "from": {
+        "state": "PASS",
+        "phase": "STRATEGY_SETUP"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "DISCOVERY"
+      },
+      "condition": "voice+persona already valid"
+    },
+    {
+      "id": "V01C",
+      "from": {
+        "state": "BUILDING",
+        "phase": "VOICE_SETUP"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "VOICE_SETUP"
+      },
+      "condition": "voice stage complete"
+    },
+    {
+      "id": "V01P",
       "from": {
         "state": "PASS",
         "phase": "VOICE_SETUP"
@@ -82,10 +168,34 @@
         "state": "BUILDING",
         "phase": "PERSONA_SETUP"
       },
-      "actor": "R01"
+      "condition": "persona setup required"
     },
     {
-      "id": "T04",
+      "id": "V01D",
+      "from": {
+        "state": "PASS",
+        "phase": "VOICE_SETUP"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "DISCOVERY"
+      },
+      "condition": "persona already valid"
+    },
+    {
+      "id": "P01C",
+      "from": {
+        "state": "BUILDING",
+        "phase": "PERSONA_SETUP"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "PERSONA_SETUP"
+      },
+      "condition": "persona stage complete"
+    },
+    {
+      "id": "P01D",
       "from": {
         "state": "PASS",
         "phase": "PERSONA_SETUP"
@@ -93,11 +203,240 @@
       "to": {
         "state": "BUILDING",
         "phase": "DISCOVERY"
-      },
-      "actor": "R01"
+      }
     },
     {
-      "id": "T05",
+      "id": "D01C",
+      "from": {
+        "state": "BUILDING",
+        "phase": "DISCOVERY"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "DISCOVERY"
+      },
+      "condition": "R02/R03 barrier complete"
+    },
+    {
+      "id": "D02",
+      "from": {
+        "state": "PASS",
+        "phase": "DISCOVERY"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "PRODUCT_LOCK"
+      }
+    },
+    {
+      "id": "PRC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "PRODUCT_LOCK"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "PRODUCT_LOCK"
+      },
+      "condition": "R04 coverage + R05 locks approved"
+    },
+    {
+      "id": "PRP",
+      "from": {
+        "state": "PASS",
+        "phase": "PRODUCT_LOCK"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "PLANNING"
+      }
+    },
+    {
+      "id": "PLC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "PLANNING"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "PLANNING"
+      }
+    },
+    {
+      "id": "PCP",
+      "from": {
+        "state": "PASS",
+        "phase": "PLANNING"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "COPY"
+      }
+    },
+    {
+      "id": "CPC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "COPY"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "COPY"
+      },
+      "condition": "final copy identity recorded"
+    },
+    {
+      "id": "CVP",
+      "from": {
+        "state": "PASS",
+        "phase": "COPY"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "VISUAL_PLAN"
+      }
+    },
+    {
+      "id": "VPC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "VISUAL_PLAN"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "VISUAL_PLAN"
+      }
+    },
+    {
+      "id": "VPI",
+      "from": {
+        "state": "PASS",
+        "phase": "VISUAL_PLAN"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "IMAGE_BUILD"
+      }
+    },
+    {
+      "id": "IBC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "IMAGE_BUILD"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "IMAGE_BUILD"
+      },
+      "condition": "asset identity gate pass + manifest activated"
+    },
+    {
+      "id": "IBR",
+      "from": {
+        "state": "PASS",
+        "phase": "IMAGE_BUILD"
+      },
+      "to": {
+        "state": "REVIEWING",
+        "phase": "IMAGE_REVIEW"
+      }
+    },
+    {
+      "id": "IRC",
+      "from": {
+        "state": "REVIEWING",
+        "phase": "IMAGE_REVIEW"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "IMAGE_REVIEW"
+      },
+      "condition": "R10/R11/R12 current barrier complete"
+    },
+    {
+      "id": "IRF",
+      "from": {
+        "state": "PASS",
+        "phase": "IMAGE_REVIEW"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "COMPLIANCE_REFRESH"
+      },
+      "condition": "compliance refresh required"
+    },
+    {
+      "id": "IRR",
+      "from": {
+        "state": "PASS",
+        "phase": "IMAGE_REVIEW"
+      },
+      "to": {
+        "state": "REVIEWING",
+        "phase": "COMPLIANCE_REVIEW"
+      },
+      "condition": "current compliance snapshot time-valid and scope-match"
+    },
+    {
+      "id": "CRC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "COMPLIANCE_REFRESH"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "COMPLIANCE_REFRESH"
+      },
+      "condition": "R01 activates valid refreshed snapshot"
+    },
+    {
+      "id": "CRR",
+      "from": {
+        "state": "PASS",
+        "phase": "COMPLIANCE_REFRESH"
+      },
+      "to": {
+        "state": "REVIEWING",
+        "phase": "COMPLIANCE_REVIEW"
+      }
+    },
+    {
+      "id": "COC",
+      "from": {
+        "state": "REVIEWING",
+        "phase": "COMPLIANCE_REVIEW"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "COMPLIANCE_REVIEW"
+      },
+      "condition": "R13 current review PASS"
+    },
+    {
+      "id": "COF",
+      "from": {
+        "state": "PASS",
+        "phase": "COMPLIANCE_REVIEW"
+      },
+      "to": {
+        "state": "BUILDING",
+        "phase": "FINAL_APPROVAL"
+      }
+    },
+    {
+      "id": "FAC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "FINAL_APPROVAL"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "FINAL_APPROVAL"
+      },
+      "condition": "new immutable CONTENT LOCK established"
+    },
+    {
+      "id": "FPP",
       "from": {
         "state": "PASS",
         "phase": "FINAL_APPROVAL"
@@ -105,23 +444,57 @@
       "to": {
         "state": "BUILDING",
         "phase": "PUBLISH_PREP"
-      },
-      "actor": "R01"
+      }
     },
     {
-      "id": "T06",
+      "id": "PPC",
       "from": {
         "state": "BUILDING",
         "phase": "PUBLISH_PREP"
       },
       "to": {
+        "state": "PASS",
+        "phase": "PUBLISH_PREP"
+      },
+      "condition": "R14 publish package complete"
+    },
+    {
+      "id": "PPG",
+      "from": {
+        "state": "PASS",
+        "phase": "PUBLISH_PREP"
+      },
+      "to": {
+        "state": "REVIEWING",
+        "phase": "PUBLISH_COMPLIANCE_CHECK"
+      }
+    },
+    {
+      "id": "PGC",
+      "from": {
+        "state": "REVIEWING",
+        "phase": "PUBLISH_COMPLIANCE_CHECK"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "PUBLISH_COMPLIANCE_CHECK"
+      },
+      "condition": "current PUBLISH_COMPLIANCE_GATE PASS"
+    },
+    {
+      "id": "PGR",
+      "from": {
+        "state": "PASS",
+        "phase": "PUBLISH_COMPLIANCE_CHECK"
+      },
+      "to": {
         "state": "READY",
         "phase": "PUBLISH_READY"
       },
-      "actor": "R01"
+      "condition": "gate binds current content lock and actual publish scope"
     },
     {
-      "id": "T07",
+      "id": "PUB",
       "from": {
         "state": "READY",
         "phase": "PUBLISH_READY"
@@ -130,10 +503,10 @@
         "state": "PASS",
         "phase": "PUBLISHED"
       },
-      "actor": "R01"
+      "condition": "user actual publish + R14 receipt + R01 confirmation"
     },
     {
-      "id": "T08",
+      "id": "PDW",
       "from": {
         "state": "PASS",
         "phase": "PUBLISHED"
@@ -141,11 +514,10 @@
       "to": {
         "state": "READY",
         "phase": "DATA_WAITING"
-      },
-      "actor": "R01"
+      }
     },
     {
-      "id": "T09",
+      "id": "DWA",
       "from": {
         "state": "READY",
         "phase": "DATA_WAITING"
@@ -154,10 +526,10 @@
         "state": "BUILDING",
         "phase": "DATA_ANALYSIS"
       },
-      "actor": "R01"
+      "condition": "valid R14 raw data delivery exists"
     },
     {
-      "id": "T10",
+      "id": "DAC",
       "from": {
         "state": "BUILDING",
         "phase": "DATA_ANALYSIS"
@@ -166,10 +538,10 @@
         "state": "PASS",
         "phase": "DATA_REVIEWED"
       },
-      "actor": "R01"
+      "condition": "valid R15 analysis"
     },
     {
-      "id": "T11",
+      "id": "DSR",
       "from": {
         "state": "PASS",
         "phase": "DATA_REVIEWED"
@@ -178,10 +550,10 @@
         "state": "BUILDING",
         "phase": "STRATEGY_REVIEW"
       },
-      "actor": "R01"
+      "condition": "R16 trigger pending"
     },
     {
-      "id": "T12",
+      "id": "DSN",
       "from": {
         "state": "PASS",
         "phase": "DATA_REVIEWED"
@@ -190,10 +562,22 @@
         "state": "NEXT_TASK",
         "phase": "NEXT_CONTENT"
       },
-      "actor": "R01"
+      "condition": "continue and no strategy review"
     },
     {
-      "id": "T13",
+      "id": "SRC",
+      "from": {
+        "state": "BUILDING",
+        "phase": "STRATEGY_REVIEW"
+      },
+      "to": {
+        "state": "PASS",
+        "phase": "STRATEGY_REVIEW"
+      },
+      "condition": "R16 event consumed"
+    },
+    {
+      "id": "SRN",
       "from": {
         "state": "PASS",
         "phase": "STRATEGY_REVIEW"
@@ -202,10 +586,10 @@
         "state": "NEXT_TASK",
         "phase": "NEXT_CONTENT"
       },
-      "actor": "R01"
+      "condition": "continue"
     },
     {
-      "id": "T14",
+      "id": "DCL",
       "from": {
         "state": "PASS",
         "phase": "DATA_REVIEWED"
@@ -214,12 +598,58 @@
         "state": "LOCKED",
         "phase": "CLOSED"
       },
-      "actor": "R01"
+      "condition": "close current content"
+    },
+    {
+      "id": "SCL",
+      "from": {
+        "state": "PASS",
+        "phase": "STRATEGY_REVIEW"
+      },
+      "to": {
+        "state": "LOCKED",
+        "phase": "CLOSED"
+      },
+      "condition": "close after strategy review"
+    },
+    {
+      "id": "NEW",
+      "from": {
+        "state": "NEXT_TASK",
+        "phase": "NEXT_CONTENT"
+      },
+      "to": {
+        "state": "READY",
+        "phase": "INTAKE"
+      },
+      "condition": "R01 creates new content_id and resets content-scoped pointers; account-level strategy/voice/persona locks may persist"
     }
   ],
+  "new_content_reset_rule": {
+    "clear": [
+      "active_product_lock_path",
+      "active_sku_lock_path",
+      "active_content_lock_path",
+      "active_asset_manifest_path",
+      "active_image_qa_barrier_path",
+      "active_r10_review_path",
+      "active_r11_review_path",
+      "active_r12_review_path",
+      "active_r13_review_path",
+      "active_publish_compliance_gate_path",
+      "active_copy_path/revision/fingerprint",
+      "page revision arrays"
+    ],
+    "preserve_if_valid": [
+      "active_account_strategy_lock_path",
+      "active_voice_lock_path",
+      "active_persona_lock_path"
+    ],
+    "compliance": "may remain referenced only if new task scope fingerprint exactly matches; otherwise refresh before R13"
+  },
   "rules": [
-    "from和to都必须存在",
-    "phase不能当state",
-    "R14/R15/R16不能直接改正式state/phase"
+    "Every formal transition has explicit from+to+condition where conditional.",
+    "Skipped setup stages must use one of I01-I04/S01*/V01* transitions; no implicit jump.",
+    "R14/R15/R16 cannot mutate formal state/phase."
   ]
 }

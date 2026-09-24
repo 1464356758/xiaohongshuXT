@@ -1,0 +1,67 @@
+{
+  "task_id": "SYS-003",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R2",
+  "role": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "formal_task_path": "任务/SYS-003/V1/任务.json",
+  "source_revision_path": "返修/SYS-003/V1/R2/任务.json",
+  "baseline_fixed_commit": "a87b94fad30e24c4d212f15f5c0b09bacf12f45d",
+  "changed_scope": [
+    "新增PUBLISH_COMPLIANCE_GATE及证据模板/active pointer",
+    "发布流程改为发布包→合规二次门禁→PUBLISH_READY",
+    "PERSONA新增subject type/experience eligibility",
+    "PERSONA所有必需锚点新增不可变asset identity",
+    "VOICE/R07/R13联动禁止synthetic persona现实亲测",
+    "state/phase补齐完整主链/条件跳过/NEXT_CONTENT新生命周期",
+    "PARTIAL_REVISION切到生产/返修/",
+    "R16按content_id幂等计数ledger",
+    "C1/C2角色未就绪按触发分支BLOCKED_ROLE_NOT_READY"
+  ],
+  "frozen_scope": [
+    "16正式+2条件角色数量",
+    "R02/R03/R04研究时序",
+    "R10/R11/R12三审主体",
+    "R1 CONTENT LOCK/asset identity/compliance scope底盘"
+  ],
+  "production_runtime_enabled": false,
+  "self_check": {
+    "publish_compliance_gate_before_ready": true,
+    "publish_gate_time_and_scope_checks": true,
+    "refresh_only_vs_content_change_split": true,
+    "synthetic_persona_experience_forbidden": true,
+    "persona_anchor_fingerprint_required": true,
+    "same_path_anchor_change_requires_new_persona_lock": true,
+    "full_state_phase_chain": true,
+    "initialization_skip_paths": true,
+    "next_content_to_new_intake": true,
+    "partial_revision_production_namespace": true,
+    "r16_count_idempotent_by_content_id": true,
+    "conditional_roles_not_ready_block_only_when_triggered": true
+  },
+  "review_scope": {
+    "A": [
+      "完整state/phase路线",
+      "运行指针/路径",
+      "R16幂等计数",
+      "C1/C2 BLOCKED_ROLE_NOT_READY"
+    ],
+    "B": [
+      "PUBLISH_COMPLIANCE_GATE",
+      "synthetic persona真实性",
+      "PERSONA锚点身份证",
+      "局部返修实际可用性"
+    ],
+    "C": [
+      "第二篇跳过初始化",
+      "NEXT_CONTENT新生命周期",
+      "发布模式临时变化",
+      "同路径换脸",
+      "同篇重锁不重复计数",
+      "跨模块回归"
+    ]
+  },
+  "formal_system_pass_declared": false
+}
