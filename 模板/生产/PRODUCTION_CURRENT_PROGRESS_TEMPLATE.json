@@ -1,17 +1,21 @@
 {
-  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_V4",
+  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_V5_FINAL",
   "namespace": "生产",
   "runtime_enabled": false,
   "runtime_mode": "DISABLED|TEST_ONLY|LIVE",
   "runtime_enable_authority": "AI系统总监",
   "runtime_activation": {
     "module_lock_path": null,
-    "required": [
-      "SYS-003 A/B/C PASS + 总监MODULE LOCK",
-      "16角色正式指令A/B/C审完",
-      "CONTENT-TEST-001压力测试PASS"
-    ],
-    "hard_rule": "runtime_enabled=false时禁止真实CONTENT-*任务进入BUILDING/REVIEWING；仅显式CONTENT-TEST-*可在TEST_ONLY运行。"
+    "role_instruction_audit_lock_path": null,
+    "content_test_001_pass_path": null,
+    "evidence_status": {
+      "module_lock_pass": false,
+      "role_instruction_audit_pass": false,
+      "content_test_001_pass": false
+    },
+    "mechanical_enable_rule": "runtime_enabled may become true only when all three evidence paths are non-null, exist, bind the current system version, and their exact result/status is PASS/LOCKED as required.",
+    "on_missing_or_fail": "BLOCKED_RUNTIME_DISABLED",
+    "hard_rule": "runtime_enabled=false blocks real CONTENT-*; explicit CONTENT-TEST-* may use TEST_ONLY only under a formal test task."
   },
   "content_id": null,
   "task_id": null,
@@ -92,18 +96,18 @@
   "latest_r14_raw_data_delivery_path": null,
   "latest_r15_analysis_delivery_path": null,
   "r16_lifecycle": {
-    "content_lock_count_total": 0,
-    "content_lock_count_since_last_strategy_review": 0,
-    "last_strategy_review_content_lock_count": 0,
+    "published_content_count_total": 0,
+    "published_content_count_since_last_strategy_review": 0,
+    "last_strategy_review_published_content_count": 0,
+    "published_count_event_ledger": [],
     "trigger_event_id": null,
     "trigger_status": "IDLE|PENDING|IN_PROGRESS|CONSUMED",
     "trigger_reasons": [],
     "trigger_created_at": null,
     "trigger_task_path": null,
     "consumed_at": null,
-    "rule": "每10个CONTENT LOCK或其他触发条件由R01创建唯一trigger_event_id置PENDING；R16开始置IN_PROGRESS；R01处理结果后置CONSUMED；成功复盘后since_last归零，事件归档后清空，禁止重复消费。",
-    "content_count_event_ledger": [],
-    "counting_rule": "Use content_count_event_id = CONTENT_COUNT::{content_id}. Only first valid event for a content_id increments counters. Re-locking CONTENT-xxx as LOCK-V2/V3 never increments again."
+    "counting_rule": "PUBLISHED::{content_id} unique. Increment only after R01 confirms actual publication; CONTENT LOCK versions never increment.",
+    "trigger_rule": "Every 10 actually published contents or other trigger condition; R01 owns event lifecycle."
   },
   "next_role_ids": [],
   "legal_main_states": [
@@ -139,7 +143,12 @@
     "content_lock_path": null,
     "compliance_snapshot_path": null,
     "actual_publish_scope_fingerprint": null,
-    "checked_at": null
+    "checked_at": null,
+    "publish_authorization_issued_at": null,
+    "publish_authorization_valid_until": null,
+    "authorization_status": "NOT_STARTED|VALID|EXPIRED|STALE|BLOCKED",
+    "actual_publish_recheck_required": true,
+    "publish_package_binding_valid": false
   },
   "conditional_role_readiness": {
     "C1": {

@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_CONTENT_LOCK_TEMPLATE_V1",
+  "schema": "SYS-003_CONTENT_LOCK_TEMPLATE_V2",
   "lock_type": "CONTENT_LOCK",
   "content_lock_id": "CONTENT-000-LOCK-V1",
   "content_id": "CONTENT-000",
@@ -21,7 +21,8 @@
   "asset_manifest": {
     "path": "",
     "asset_manifest_id": "",
-    "manifest_revision": null
+    "manifest_revision": null,
+    "manifest_fingerprint": "REQUIRED_NON_EMPTY"
   },
   "locks": {
     "product_lock_path": null,
@@ -53,7 +54,8 @@
     "R13 PASS cites same copy+manifest",
     "PRODUCT/SKU/PERSONA/ACCOUNT_STRATEGY/VOICE refs equal current active locks",
     "compliance snapshot VALID, time-valid and exact scope fingerprint match",
-    "no cited evidence is STALE/SUPERSEDED"
+    "no cited evidence is STALE/SUPERSEDED",
+    "CONTENT LOCK asset_manifest.manifest_fingerprint equals current activated manifest fingerprint"
   ],
   "on_any_mismatch": "BLOCKED_CONFLICT",
   "immutable_rule": "LOCKED不可覆盖；任何最终绑定变化必须新LOCK版本并supersedes旧LOCK。"

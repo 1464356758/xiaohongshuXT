@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_WORKFLOW_GRAPH_V4",
+  "schema": "SYS-003_WORKFLOW_GRAPH_V5_FINAL",
   "formal_router": "R01",
   "formal_paths": {
     "asset_identity_gate": "系统/生产架构/SYS-003/ASSET_IDENTITY_GATE.json",
@@ -146,7 +146,15 @@
       "sequence": [
         "R14_PUBLISH_PACKAGE"
       ],
-      "precondition": "current CONTENT LOCK"
+      "precondition": "current CONTENT LOCK",
+      "output_contract": {
+        "required_bindings": [
+          "current CONTENT LOCK path/id",
+          "final copy fingerprint",
+          "asset manifest path/id/revision/manifest_fingerprint"
+        ],
+        "rule": "R14 publish package must copy these immutable bindings exactly; package without them is invalid."
+      }
     },
     {
       "id": "S10B_PUBLISH_COMPLIANCE",
@@ -162,12 +170,12 @@
       "id": "S10C_PUBLISH_READY",
       "type": "SERIAL_STATE_PHASE_GATE",
       "role": "R01",
-      "precondition": "active PUBLISH_COMPLIANCE_GATE result=PASS and binds current CONTENT LOCK + actual publish scope"
+      "precondition": "active PUBLISH_COMPLIANCE_GATE PASS + explicit non-expired publish_authorization_valid_until + exact package binding to current CONTENT LOCK"
     },
     {
       "id": "S10D_USER_ACTUAL_PUBLISH",
       "type": "EXTERNAL_USER_ACTION",
-      "precondition": "state=READY AND phase=PUBLISH_READY"
+      "precondition": "state=READY/PUBLISH_READY AND immediate actual_publish_recheck PASS; expired/stale authorization returns to PUBLISH_COMPLIANCE_CHECK"
     },
     {
       "id": "S10E_RECEIPT",
@@ -179,7 +187,11 @@
       "id": "S10F_CONFIRM_PUBLISHED",
       "type": "SERIAL_STATE_PHASE_GATE",
       "role": "R01",
-      "precondition": "valid R14 receipt"
+      "precondition": "valid R14 receipt",
+      "post_actions": [
+        "Create idempotent PUBLISHED::{content_id} count event if absent",
+        "Increment R16 periodic counters exactly once for this content_id"
+      ]
     },
     {
       "id": "S11_RAW_DATA",
@@ -207,7 +219,7 @@
     {
       "id": "S13_STRATEGY_TRIGGER",
       "type": "CONDITIONAL",
-      "rule": "Each content_id contributes at most one CONTENT_COUNT event. CONTENT LOCK version changes for same content_id do not increment again. R01 creates unique R16 trigger event when threshold/other signal is met."
+      "rule": "R16 periodic count uses only idempotent actual PUBLISHED::{content_id} events. CONTENT LOCK creation/re-lock never counts."
     },
     {
       "id": "S14_NEXT",
@@ -225,9 +237,11 @@
     "PUBLISH_READY requires current PUBLISH_COMPLIANCE_GATE PASS",
     "synthetic persona cannot own real-world product-use experiences",
     "persona anchor identity changes require a new PERSONA LOCK",
-    "same content_id counts at most once toward R16 periodic content count",
     "C1/C2 instruction readiness is checked only when the conditional role is triggered",
-    "A/B/C system audits must all PASS before module lock"
+    "A/B/C system audits must all PASS before module lock",
+    "R16 periodic count increments only after actual publication is confirmed",
+    "USER_ACTUAL_PUBLISH requires non-expired publish authorization recheck",
+    "R14 publish package must bind exact current CONTENT LOCK final copy and manifest fingerprints"
   ],
   "state_phase_contract": "系统/生产架构/SYS-003/STATE_PHASE_TRANSITION_TABLE.json is authoritative for every stage and skip transition.",
   "conditional_role_runtime": {

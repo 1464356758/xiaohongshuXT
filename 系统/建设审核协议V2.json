@@ -1,5 +1,5 @@
 {
-  "schema": "SYSTEM_BUILD_AUDIT_POLICY_V2",
+  "schema": "SYSTEM_BUILD_AUDIT_POLICY_V3_FINAL_ARCHITECTURE",
   "effective_from": "SYS-003/R1",
   "reviewers": {
     "A": {
@@ -41,5 +41,22 @@
   },
   "pass_rule": "A=PASS AND B=PASS AND C=PASS",
   "module_lock_authority": "AI系统总监",
-  "hard_rule": "任一FAIL都禁止SYSTEM MODULE LOCK；审核员只审核不修改生产产物。"
+  "hard_rule": "任一FAIL都禁止SYSTEM MODULE LOCK；审核员只审核不修改生产产物。",
+  "architecture_stop_rule": {
+    "applies_to": "SYS-003/R3_FINAL",
+    "purpose": "停止继续扩架构，把后续质量提升转入16角色正式指令与CONTENT-TEST-001压力测试。",
+    "r3_review_scope": [
+      "仅验证R3五个P1是否关闭",
+      "仅验证R3修改是否造成既有P0/P1级回归",
+      "不得以新功能、新角色、新模板偏好、P2/P3或顺手优化阻断R3收口"
+    ],
+    "after_r3_abc_pass": [
+      "AI系统总监应建立SYS-003 MODULE LOCK",
+      "架构阶段结束，进入16角色正式指令建设",
+      "随后进入CONTENT-TEST-001压力测试"
+    ],
+    "future_architecture_reopen_rule": "R3 PASS后只有压力测试或真实运行中可复现的P0/P1故障，且由AI系统总监下发正式任务，才允许重新打开架构。一般优化进入backlog，不得继续滚架构版本。",
+    "reviewers_may_record_nonblocking_observations": true,
+    "nonblocking_observations_destination": "CONTENT-TEST-001/运行迭代backlog"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_ACCOUNT_STRATEGY_LOCK_TEMPLATE_V2",
+  "schema": "SYS-003_ACCOUNT_STRATEGY_LOCK_TEMPLATE_V3_FINAL",
   "account_strategy_lock_id": "ACCOUNT-STRATEGY-001",
   "lock_version": "LOCK-V1",
   "status": "DRAFT|LOCKED|SUPERSEDED",
@@ -13,7 +13,7 @@
   "approved_by": "R01",
   "approved_at": null,
   "measurement": {
-    "default_window": "LAST_10_CONTENT_LOCKS",
+    "default_window": "LAST_10_PUBLISHED_CONTENTS",
     "ratio_interpretation": "ACCOUNT_WINDOW_NOT_SINGLE_POST",
     "default_tolerance": 0.15
   },
@@ -67,7 +67,7 @@
   },
   "review_triggers": [
     "INITIALIZATION",
-    "EVERY_10_CONTENT_LOCKS",
+    "EVERY_10_PUBLISHED_CONTENTS",
     "POSITIONING_DRIFT",
     "FOLLOWER_STAGE_CHANGE",
     "COMMERCIALIZATION_START",

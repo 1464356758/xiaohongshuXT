@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_PUBLISH_COMPLIANCE_GATE_EVIDENCE_TEMPLATE_V1",
+  "schema": "SYS-003_PUBLISH_COMPLIANCE_GATE_EVIDENCE_TEMPLATE_V2_FINAL",
   "content_id": "CONTENT-000",
   "task_version": "V1",
   "input_revision": 1,
@@ -25,12 +25,36 @@
     "commercial_status_unchanged": false,
     "ai_modalities_unchanged": false,
     "ai_label_requirement_current": false,
-    "commercial_disclosure_requirement_current": false
+    "commercial_disclosure_requirement_current": false,
+    "publish_package_binding_match": false,
+    "authorization_time_valid": false
   },
   "result": "PASS|FAIL_REFRESH_ONLY|FAIL_CONTENT_CHANGE_REQUIRED|BLOCKED_COMPLIANCE_STALE|BLOCKED_COMPLIANCE_UNVERIFIED|BLOCKED_COMPLIANCE_SCOPE_MISMATCH",
   "refresh_only": false,
   "content_change_required": false,
   "checked_by": "R01 with current R13 compliance evidence",
   "checked_at": null,
-  "hard_rule": "R01 may transition to PUBLISH_READY only when this exact active evidence result=PASS and it binds current CONTENT LOCK + actual publish scope."
+  "hard_rule": "PUBLISH_READY requires result=PASS plus explicit publish_authorization_valid_until and exact package-to-CONTENT-LOCK copy+manifest fingerprint binding. USER_ACTUAL_PUBLISH requires the actual_publish_recheck PASS immediately before publication.",
+  "publish_package_binding": {
+    "bound_content_lock_path": "",
+    "bound_content_lock_id": "",
+    "bound_final_copy_fingerprint": "",
+    "bound_asset_manifest_path": "",
+    "bound_asset_manifest_id": "",
+    "bound_manifest_revision": null,
+    "bound_manifest_fingerprint": "",
+    "package_binding_fingerprint": ""
+  },
+  "publish_authorization_issued_at": null,
+  "publish_authorization_valid_until": null,
+  "authorization_status": "NOT_STARTED|VALID|EXPIRED|STALE|BLOCKED",
+  "actual_publish_recheck": {
+    "required": true,
+    "checked_at": null,
+    "authorization_time_valid": false,
+    "package_binding_still_matches": false,
+    "scope_still_matches": false,
+    "compliance_still_current": false,
+    "result": "PENDING|PASS|RETURN_TO_PUBLISH_COMPLIANCE_CHECK"
+  }
 }

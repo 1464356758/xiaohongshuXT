@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_CONTENT_LOCK_GATE_V1",
+  "schema": "SYS-003_CONTENT_LOCK_GATE_V3_FINAL",
   "authority": "R01",
   "template_path": "模板/锁定/CONTENT_LOCK_TEMPLATE.json",
   "required_bindings": [
@@ -11,9 +11,12 @@
     "active_r11_review_path",
     "active_r12_review_path",
     "active_r13_review_path",
-    "active compliance snapshot revision+scope fingerprint"
+    "active compliance snapshot revision+scope fingerprint",
+    "active asset manifest manifest_fingerprint"
   ],
-  "pass_rule": "Every binding must equal current production pointers and all cited evidence must be current/non-STALE. R10/R11/R12 must bind same manifest; R13 must bind exact final copy+same manifest+exact compliance scope.",
+  "pass_rule": "Every binding equals current pointers; current manifest_fingerprint is non-empty; CONTENT LOCK stores the exact manifest_fingerprint; cited evidence is current/non-STALE; R10/R11/R12 same manifest; R13 exact copy+manifest+scope.",
   "on_fail": "BLOCKED_CONFLICT",
-  "immutable_rule": "Once LOCKED, any bound artifact/evidence change requires new CONTENT LOCK version with supersedes; never mutate old lock."
+  "immutable_rule": "Once LOCKED, any bound artifact/evidence change requires new CONTENT LOCK version with supersedes; never mutate old lock.",
+  "post_lock_publish_rule": "CONTENT LOCK is not permanent publish authorization. R14 publish package must bind CONTENT LOCK path/id + final_copy fingerprint + exact manifest_fingerprint, then PUBLISH_COMPLIANCE_GATE must issue a time-bounded authorization before PUBLISH_READY.",
+  "content_count_rule": "CONTENT LOCK creation or re-lock never increments R16 periodic count. Count is created only after R01 confirms actual PASS/PUBLISHED."
 }

@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_PRODUCTION_TASK_TEMPLATE_V4",
+  "schema": "SYS-003_PRODUCTION_TASK_TEMPLATE_V5",
   "content_id": "CONTENT-000",
   "task_id": "CONTENT-000-STAGE-000-R00",
   "stage": "INTAKE",
@@ -49,7 +49,7 @@
   "expected_output_paths": [],
   "dependency_revision": "REQUIRED_WHEN_DEPENDENCIES_EXIST",
   "idempotency_key_formula": "content_id|stage|role_id|task_version|input_revision|revision_round|dependency_revision",
-  "idempotency_key": "CONTENT-000|INTAKE|R00|V1|1|R00|dependency_revision",
+  "idempotency_key": "CONTENT-000|INTAKE|R00|V1|1|null|dependency_revision",
   "routing": {
     "on_success": [
       "R01"
@@ -80,5 +80,6 @@
     "R07/R13 experiential first-person tasks must bind active persona_subject_type and first_person_experience_eligible.",
     "Publish-ready tasks must bind active_publish_compliance_gate_path and actual_publish_scope_fingerprint.",
     "C1/C2 tasks require READY role instruction + audited PASS; otherwise BLOCKED_ROLE_NOT_READY."
-  ]
+  ],
+  "idempotency_example_rule": "When revision_round is null, literal null must occupy the revision_round slot. Example must exactly match idempotency_key_formula."
 }

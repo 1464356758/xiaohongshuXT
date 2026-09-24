@@ -1,0 +1,68 @@
+{
+  "task_id": "SYS-003",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R3",
+  "task_lifecycle_status": "ACTIVE",
+  "task_class": "FINAL_ARCHITECTURE_REPAIR",
+  "source": "AI系统总监最后一轮架构修复收口",
+  "baseline_fixed_commit": "680313f54d8512566b6237a4fba18dec9be4d2b7",
+  "current_status_before_build": {
+    "result": "FAIL",
+    "score": 90,
+    "audit_A": "FAIL_2_P1",
+    "audit_B": "FAIL_1_P1",
+    "audit_C": "FAIL_2_P1",
+    "module_lock": "FORBIDDEN",
+    "runtime_enabled": false
+  },
+  "exact_p1_scope": [
+    {
+      "owner": "A",
+      "id": "A-P1-01",
+      "fix": "runtime_activation增加role_instruction_audit_lock_path、content_test_001_pass_path，并与module_lock_path构成三项正式证据机械PASS门禁。"
+    },
+    {
+      "owner": "A",
+      "id": "A-P1-02",
+      "fix": "PRODUCTION_TASK_TEMPLATE实际idempotency_key样例与公式一致；revision_round=null时写literal null。"
+    },
+    {
+      "owner": "B",
+      "id": "B-P1-01",
+      "fix": "PUBLISH_COMPLIANCE_GATE增加publish_authorization_valid_until并在USER_ACTUAL_PUBLISH前即时复核；过期/失效退回PUBLISH_COMPLIANCE_CHECK。"
+    },
+    {
+      "owner": "C",
+      "id": "C-P1-01",
+      "fix": "R14发布包必须不可变绑定当前CONTENT LOCK的final_copy fingerprint与asset manifest fingerprint；任一变化使发布包/发布门失效。"
+    },
+    {
+      "owner": "C",
+      "id": "C-P1-02",
+      "fix": "R16周期计数只在R01确认实际PASS/PUBLISHED后按PUBLISHED::{content_id}幂等+1；CONTENT LOCK创建/重锁不计数。"
+    }
+  ],
+  "forbidden_scope": [
+    "不新增角色",
+    "不新增架构模块",
+    "不改变已通过主流程",
+    "不处理P2/P3顺手优化",
+    "不因审美/偏好新增模板或状态"
+  ],
+  "stop_design_rule": "R3复审只允许阻断这5个P1未关闭或R3造成的既有P0/P1级回归。A/B/C PASS后停止架构设计并交总监MODULE LOCK；后续优化进入压力测试/真实运行backlog。",
+  "acceptance": [
+    "runtime LIVE three evidence paths non-null/exist/current and mechanically PASS",
+    "idempotency example exactly CONTENT-000|INTAKE|R00|V1|1|null|dependency_revision",
+    "PUBLISH_READY authorization has explicit deadline and immediate pre-publish recheck",
+    "publish package binds exact current CONTENT LOCK final copy fingerprint + manifest fingerprint",
+    "R16 count increments only after actual confirmed publication and at most once per content_id"
+  ],
+  "delivery_path": "交付/SYS-003/V1/R3/交付.json",
+  "reviewers": [
+    "AI系统审核员A",
+    "AI系统审核员B",
+    "AI系统审核员C"
+  ]
+}

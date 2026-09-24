@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_ROLE_REGISTRY_V4",
+  "schema": "SYS-003_ROLE_REGISTRY_V5_FINAL",
   "formal_task_and_lock_authority": "R01",
   "roles": [
     {
@@ -25,7 +25,9 @@
         "phase",
         "active_pointers",
         "lock_approval",
-        "revision_scope"
+        "revision_scope",
+        "publish_authorization_activation",
+        "actual_published_count_event"
       ]
     },
     {
@@ -259,7 +261,11 @@
         "做最终数据判断",
         "缺数补0",
         "改state/phase/LOCK",
-        "绕过PUBLISH_COMPLIANCE_GATE直接声明PUBLISH_READY"
+        "绕过PUBLISH_COMPLIANCE_GATE直接声明PUBLISH_READY",
+        "发布包遗漏或改写CONTENT LOCK最终文案/图片身份证"
+      ],
+      "duties": [
+        "Publish package must bind current CONTENT LOCK path/id, final copy fingerprint, manifest path/id/revision/manifest_fingerprint."
       ]
     },
     {

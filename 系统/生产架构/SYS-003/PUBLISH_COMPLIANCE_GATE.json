@@ -1,11 +1,11 @@
 {
-  "schema": "SYS-003_PUBLISH_COMPLIANCE_GATE_V1",
+  "schema": "SYS-003_PUBLISH_COMPLIANCE_GATE_V2_FINAL",
   "gate_id": "PUBLISH_COMPLIANCE_GATE",
   "authority": "R01",
   "position": "R14_PUBLISH_PACKAGE -> PUBLISH_COMPLIANCE_GATE -> PUBLISH_READY -> USER_ACTUAL_PUBLISH",
   "required_inputs": [
     "active_content_lock_path",
-    "R14 publish package",
+    "R14 publish package with immutable content bindings",
     "active_compliance_snapshot_path",
     "actual_publish_scope"
   ],
@@ -16,7 +16,9 @@
     "actual_publish_scope.commercial_status matches active snapshot scope",
     "actual_publish_scope.AI_modalities matches active snapshot scope",
     "AI_label_requirement is VERIFIED or NOT_APPLICABLE for actual publish mode and current mechanism evidence remains current",
-    "commercial_disclosure_requirement is VERIFIED or NOT_APPLICABLE for actual publish mode"
+    "commercial_disclosure_requirement is VERIFIED or NOT_APPLICABLE for actual publish mode",
+    "publish package immutable bindings exactly match current CONTENT LOCK final copy fingerprint and current manifest fingerprint",
+    "current_time <= publish_authorization_valid_until at the moment of USER_ACTUAL_PUBLISH"
   ],
   "outputs": {
     "evidence_path_template": "生产/审核/{CONTENT_ID}/{Vn}/发布合规/PUBLISH_COMPLIANCE_GATE_EVIDENCE.json",
@@ -32,6 +34,26 @@
   },
   "refresh_only_rule": "若仅规则/机制刷新且R13确认最终正文、图片、商业披露内容无需变化：R13刷新COMPLIANCE_SNAPSHOT -> R01激活新快照 -> 重新运行本Gate；原CONTENT LOCK保持历史不可改，发布授权以新Gate evidence为准。",
   "content_change_rule": "若刷新后要求修改正文/图片/披露表达：旧R13 PASS标记STALE；旧CONTENT LOCK仅保留历史；进入REVISION_REQUIRED，完成受影响审核并建立新CONTENT LOCK版本后再运行本Gate。",
-  "publish_ready_rule": "只有当前active_publish_compliance_gate_path存在且result=PASS，并绑定当前active_content_lock_path与当前actual_publish_scope，R01才可进入READY/PUBLISH_READY。",
-  "r14_rule": "R14只生成发布包/提供实际发布模式信息，不得自行PASS本Gate或修改state/phase。"
+  "publish_ready_rule": "R01 may enter READY/PUBLISH_READY only with active gate PASS, explicit non-expired publish_authorization_valid_until, and package bindings exactly matching current CONTENT LOCK. Actual publish must recheck authorization immediately before user action.",
+  "r14_rule": "R14只生成发布包/提供实际发布模式信息，不得自行PASS本Gate或修改state/phase。",
+  "publish_package_binding_contract": {
+    "required_fields": [
+      "bound_content_lock_path",
+      "bound_content_lock_id",
+      "bound_final_copy_fingerprint",
+      "bound_asset_manifest_path",
+      "bound_asset_manifest_id",
+      "bound_manifest_revision",
+      "bound_manifest_fingerprint"
+    ],
+    "pass_rule": "Every package binding must exactly equal the current CONTENT LOCK final_copy fingerprint and asset_manifest path/id/revision/manifest_fingerprint. Any text or image change after package creation invalidates the package binding and this gate."
+  },
+  "authorization": {
+    "issued_at": "REQUIRED_ON_PASS",
+    "publish_authorization_valid_until": "REQUIRED_ON_PASS",
+    "validity_rule": "publish_authorization_valid_until must not exceed the active compliance snapshot valid_until; R01 records the explicit timestamp in gate evidence.",
+    "actual_publish_recheck_required": true,
+    "actual_publish_precondition": "Immediately before USER_ACTUAL_PUBLISH verify current_time <= publish_authorization_valid_until, authorization_status=VALID, package binding still matches current CONTENT LOCK, actual publish scope still matches, and active compliance evidence is still current.",
+    "on_expired_or_stale": "Return from READY/PUBLISH_READY to REVIEWING/PUBLISH_COMPLIANCE_CHECK and rerun the gate before publication."
+  }
 }

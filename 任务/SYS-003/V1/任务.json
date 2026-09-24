@@ -5,9 +5,9 @@
   "task_lifecycle_status": "ACTIVE",
   "source": "AI系统总监全系统整合升级 + R1三方返修 + R2精确返修",
   "baseline_fixed_commit": "a87b94fad30e24c4d212f15f5c0b09bacf12f45d",
-  "current_revision_round": "R2",
-  "active_revision_path": "返修/SYS-003/V1/R2/任务.json",
-  "delivery_path": "交付/SYS-003/V1/R2/交付.json",
+  "current_revision_round": "R3",
+  "active_revision_path": "返修/SYS-003/V1/R3/任务.json",
+  "delivery_path": "交付/SYS-003/V1/R3/交付.json",
   "architecture_target": "16正式生产AI+2条件AI",
   "r2_scope": [
     "PUBLISH_COMPLIANCE_GATE",
@@ -28,5 +28,14 @@
     "局部返修只用生产/返修",
     "同篇重锁不重复计数",
     "条件角色未就绪只阻塞其条件分支"
-  ]
+  ],
+  "r3_final_scope": [
+    "runtime activation formal evidence pointers + mechanical triple-pass gate",
+    "idempotency example exact formula alignment",
+    "publish authorization explicit expiry + immediate pre-publish recheck",
+    "publish package immutable binding to CONTENT LOCK final copy + manifest fingerprints",
+    "R16 periodic count driven only by actual PUBLISHED::{content_id}"
+  ],
+  "architecture_stop_rule": "R3 is final architecture repair. After A/B/C PASS, stop architecture revisions, MODULE LOCK, then build role instructions and run CONTENT-TEST-001. New nonblocking ideas go to backlog; reopen only for reproducible P0/P1 from test/real operation under a Director task.",
+  "next_after_r3_pass": "AI系统总监 MODULE LOCK -> 16正式角色指令建设/三审 -> CONTENT-TEST-001"
 }

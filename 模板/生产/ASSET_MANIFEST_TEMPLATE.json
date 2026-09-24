@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_ASSET_MANIFEST_TEMPLATE_V2",
+  "schema": "SYS-003_ASSET_MANIFEST_TEMPLATE_V3",
   "asset_manifest_id": "ASSET-CONTENT-000",
   "manifest_revision": 1,
   "content_id": "CONTENT-000",
@@ -39,6 +39,10 @@
   "revision_rules": [
     "图片实际变化=>manifest_revision+1。",
     "变化页asset_revision+1；未变化页身份完全保持。",
-    "旧manifest不可变。"
-  ]
+    "旧manifest不可变。",
+    "Activated manifest must record manifest_fingerprint; unchanged manifest identity preserves it exactly."
+  ],
+  "manifest_fingerprint_type": "SHA256_CANONICAL_ACTIVE_ASSET_IDENTITIES",
+  "manifest_fingerprint": "REQUIRED_NON_EMPTY_FOR_ACTIVATED_MANIFEST",
+  "manifest_fingerprint_rule": "Compute automatically from canonical ordered tuples of ACTIVE page_id|asset_id|asset_revision|fingerprint. Any image identity change changes this fingerprint; user never computes it manually."
 }

@@ -1,17 +1,21 @@
 {
-  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V4",
+  "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V5_FINAL",
   "namespace": "生产",
   "runtime_enabled": false,
   "runtime_mode": "DISABLED",
   "runtime_enable_authority": "AI系统总监",
   "runtime_activation": {
     "module_lock_path": null,
-    "required": [
-      "SYS-003 A/B/C PASS + 总监MODULE LOCK",
-      "16角色正式指令A/B/C审完",
-      "CONTENT-TEST-001压力测试PASS"
-    ],
-    "hard_rule": "当前禁止真实CONTENT生产；完成三项后才可切LIVE。"
+    "role_instruction_audit_lock_path": null,
+    "content_test_001_pass_path": null,
+    "evidence_status": {
+      "module_lock_pass": false,
+      "role_instruction_audit_pass": false,
+      "content_test_001_pass": false
+    },
+    "mechanical_enable_rule": "All three formal evidence paths must exist and PASS/LOCKED before LIVE.",
+    "on_missing_or_fail": "BLOCKED_RUNTIME_DISABLED",
+    "hard_rule": "当前禁止真实CONTENT生产。"
   },
   "content_id": null,
   "task_id": null,
@@ -82,9 +86,10 @@
   "latest_r14_raw_data_delivery_path": null,
   "latest_r15_analysis_delivery_path": null,
   "r16_lifecycle": {
-    "content_lock_count_total": 0,
-    "content_lock_count_since_last_strategy_review": 0,
-    "last_strategy_review_content_lock_count": 0,
+    "published_content_count_total": 0,
+    "published_content_count_since_last_strategy_review": 0,
+    "last_strategy_review_published_content_count": 0,
+    "published_count_event_ledger": [],
     "trigger_event_id": "R16-INIT-001",
     "trigger_status": "PENDING",
     "trigger_reasons": [
@@ -93,9 +98,7 @@
     "trigger_created_at": "2026-09-24T11:23:00+08:00",
     "trigger_task_path": null,
     "consumed_at": null,
-    "rule": "同一事件只能消费一次。",
-    "content_count_event_ledger": [],
-    "counting_rule": "CONTENT_COUNT::{content_id} unique. Same content re-lock does not increment."
+    "counting_rule": "PUBLISHED::{content_id} unique; increment only after R01 confirms actual publication from valid receipt."
   },
   "next_role_ids": [],
   "pointer_rule": "null表示无正式对象；禁止扫描目录猜最新版。",
@@ -107,7 +110,12 @@
     "content_lock_path": null,
     "compliance_snapshot_path": null,
     "actual_publish_scope_fingerprint": null,
-    "checked_at": null
+    "checked_at": null,
+    "publish_authorization_issued_at": null,
+    "publish_authorization_valid_until": null,
+    "authorization_status": "NOT_STARTED",
+    "actual_publish_recheck_required": true,
+    "publish_package_binding_valid": false
   },
   "conditional_role_readiness": {
     "C1": {

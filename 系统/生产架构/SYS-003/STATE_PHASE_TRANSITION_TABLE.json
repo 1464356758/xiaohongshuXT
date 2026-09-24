@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_STATE_PHASE_TRANSITION_TABLE_V4",
+  "schema": "SYS-003_STATE_PHASE_TRANSITION_TABLE_V5_FINAL",
   "authority": "R01",
   "legal_main_states": [
     "READY",
@@ -503,7 +503,11 @@
         "state": "PASS",
         "phase": "PUBLISHED"
       },
-      "condition": "user actual publish + R14 receipt + R01 confirmation"
+      "condition": "immediate publish authorization recheck PASS + user actual publish + R14 receipt + R01 confirmation",
+      "post_actions": [
+        "record immutable PUBLISHED::{content_id} count event if absent",
+        "increment R16 periodic counters exactly once"
+      ]
     },
     {
       "id": "PDW",
@@ -623,6 +627,18 @@
         "phase": "INTAKE"
       },
       "condition": "R01 creates new content_id and resets content-scoped pointers; account-level strategy/voice/persona locks may persist"
+    },
+    {
+      "id": "PUBLISH_AUTH_EXPIRED_RETURN",
+      "from": {
+        "state": "READY",
+        "phase": "PUBLISH_READY"
+      },
+      "to": {
+        "state": "REVIEWING",
+        "phase": "PUBLISH_COMPLIANCE_CHECK"
+      },
+      "condition": "publish authorization expired/stale OR package/content/scope binding changed before actual publish"
     }
   ],
   "new_content_reset_rule": {
@@ -650,6 +666,7 @@
   "rules": [
     "Every formal transition has explicit from+to+condition where conditional.",
     "Skipped setup stages must use one of I01-I04/S01*/V01* transitions; no implicit jump.",
-    "R14/R15/R16 cannot mutate formal state/phase."
+    "R14/R15/R16 cannot mutate formal state/phase.",
+    "CONTENT LOCK creation/re-lock never increments R16 periodic content counters; only confirmed PASS/PUBLISHED does."
   ]
 }

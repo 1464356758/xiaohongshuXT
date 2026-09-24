@@ -1,14 +1,14 @@
 {
-  "schema": "SYS-003_R16_TRIGGER_LIFECYCLE_V2",
+  "schema": "SYS-003_R16_TRIGGER_LIFECYCLE_V3_FINAL",
   "authority": "R01",
   "counters": [
-    "content_lock_count_total",
-    "content_lock_count_since_last_strategy_review",
-    "last_strategy_review_content_lock_count"
+    "published_content_count_total",
+    "published_content_count_since_last_strategy_review",
+    "last_strategy_review_published_content_count"
   ],
   "triggers": [
     "INITIALIZATION",
-    "EVERY_10_CONTENT_LOCKS",
+    "EVERY_10_PUBLISHED_CONTENTS",
     "POSITIONING_DRIFT",
     "FOLLOWER_STAGE_CHANGE",
     "COMMERCIALIZATION_START",
@@ -50,19 +50,22 @@
     "same trigger_event_id cannot be dispatched twice",
     "EVERY_10_CONTENT_LOCKS uses counter threshold, not chat memory",
     "R16 cannot create/consume/reset its own trigger event",
-    "content count is idempotent by content_id; lock-version changes cannot create extra counts"
+    "R16 periodic counters are driven only by actual PUBLISHED events, never by CONTENT LOCK creation."
   ],
-  "content_count_idempotency": {
-    "event_id_formula": "CONTENT_COUNT::{content_id}",
-    "ledger_path": "生产/当前进度.json.r16_lifecycle.content_count_event_ledger",
-    "increment_rule": "If event_id has never been recorded, record it once and increment content_lock_count_total and content_lock_count_since_last_strategy_review by 1.",
-    "duplicate_rule": "If event_id already exists, do not increment any counter. CONTENT LOCK V2/V3 for same content_id remains the same content count event.",
+  "count_source": "ACTUAL_PUBLISHED_CONTENT_ONLY",
+  "published_count_idempotency": {
+    "event_id_formula": "PUBLISHED::{content_id}",
+    "ledger_path": "生产/当前进度.json.r16_lifecycle.published_count_event_ledger",
+    "create_when": "Only after R01 confirms PASS/PUBLISHED from a valid R14 publish receipt.",
+    "increment_rule": "If PUBLISHED::{content_id} is absent, record one immutable event and increment published_content_count_total and published_content_count_since_last_strategy_review by 1.",
+    "duplicate_rule": "If already present, delta=0. CONTENT LOCK creation/re-lock, publish-package rebuild, or compliance reauthorization never increments.",
     "evidence_fields": [
-      "content_count_event_id",
+      "published_count_event_id",
       "content_id",
-      "first_counted_content_lock_id",
-      "first_counted_content_lock_path",
-      "counted_at",
+      "published_content_lock_id",
+      "publish_receipt_path",
+      "published_at",
+      "confirmed_by_r01_at",
       "event_fingerprint_or_commit"
     ]
   }

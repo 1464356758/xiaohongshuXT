@@ -1,5 +1,5 @@
 {
-  "schema": "SYS-003_ASSET_IDENTITY_GATE_V2",
+  "schema": "SYS-003_ASSET_IDENTITY_GATE_V3_FINAL",
   "gate_id": "ASSET_IDENTITY_VERIFIABLE",
   "formal_path": "系统/生产架构/SYS-003/ASSET_IDENTITY_GATE.json",
   "applies_to": [
@@ -13,14 +13,16 @@
     "R12",
     "IMAGE_QA_BARRIER",
     "R13_IMAGE_BINDING",
-    "CONTENT_LOCK"
+    "CONTENT_LOCK",
+    "PUBLISH_PACKAGE_BINDING"
   ],
-  "pass_rule": "每个ACTIVE页必须有与exact asset_id+asset_revision+asset_ref绑定的非空可验证fingerprint。",
+  "pass_rule": "Every ACTIVE page has non-empty verifiable identity AND the exact activated manifest has a non-empty automatically computed manifest_fingerprint over canonical ACTIVE asset identities.",
   "accepted_identity_sources": [
     "SHA256_COMPUTED_FROM_ACTUAL_BYTES",
     "GIT_BLOB_SHA_WITH_SHA256_WHEN_BYTES_ACCESSIBLE",
     "PLATFORM_IMMUTABLE_FILE_OR_ATTACHMENT_ID_FOR_EXACT_VERSION"
   ],
   "on_fail_state": "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE",
-  "user_rule": "绝不要求用户手算SHA。"
+  "user_rule": "绝不要求用户手算SHA。",
+  "manifest_fingerprint_rule": "R01 may activate a manifest only after manifest_fingerprint is computed from canonical ACTIVE page identities. User never calculates it manually."
 }
