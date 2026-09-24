@@ -4,60 +4,62 @@
   "input_revision": 1,
   "task_lifecycle_status": "ACTIVE",
   "task_type": ["14角色生产工作流总架构", "生产权限", "并行屏障", "资产版本", "发布数据闭环"],
-  "source": "用户转交的AI系统总监正式SYS-002及R1/R2精确返修指令",
+  "source": "用户转交的AI系统总监正式SYS-002及R1/R2/R3精确返修指令",
   "user_original_requirements": [
     "4个AI仅保留为系统建设组，未来内容生产使用14个常驻专业AI角色，另保留增长投放AI与商务合作AI两个条件角色。",
     "14角色必须明确职责、读写边界、禁止修改项、串并行关系、交接、LOCK、状态机、返修、防重复与用户最少操作。",
     "图片为最高重点之一，R10/R11/R12独立审核，PRODUCT/SKU/PERSONA/CONTENT LOCK继续作为硬门禁。",
     "SYS-002 R1修复正式任务、商品事实研究时序、并行交付证据、角色独立幂等、ASSET MANIFEST与三审同版、R14到R01状态闭环。",
-    "SYS-002 R2只修生产尾段state与phase混用，PUBLISHED/DATA_FEEDBACK/CLOSED必须仅作为phase。"
+    "SYS-002 R2修复生产尾段state与phase混用。",
+    "SYS-002 R3只修USER_FILE/GITHUB资产fingerprint硬阻塞与根数据库入口/当前进度漂移。"
   ],
-  "goal": "在不推倒14角色主体架构的前提下，把SYS-002修成可从GitHub单一真源恢复、并能严格区分生产主状态与业务阶段的生产总架构。",
+  "goal": "在不扩大已通过模块的前提下，使SYS-002可从根GitHub单一真源恢复，并确保任何进入图片三审的ACTIVE资产都具有机器可验证的非空版本身份证。",
   "allowed_scope": [
-    "系统/生产架构/SYS-002/WORKFLOW_GRAPH.json",
-    "系统/生产架构/SYS-002/R1修正规则.md",
-    "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json",
-    "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
-    "模板/生产/DATA_COLLECTION_PLAN_TEMPLATE.json",
+    "数据库入口.json",
+    "当前进度.json",
     "任务/SYS-002/V1/任务.json",
-    "返修/SYS-002/V1/R2/任务.json",
-    "交付/SYS-002/V1/R2/交付.json"
+    "返修/SYS-002/V1/R3/任务.json",
+    "模板/生产/ASSET_MANIFEST_TEMPLATE.json",
+    "模板/生产/PRODUCTION_CURRENT_PROGRESS_TEMPLATE.json",
+    "模板/生产/PRODUCTION_TASK_TEMPLATE.json",
+    "模板/生产/IMAGE_REVIEW_EVIDENCE_TEMPLATE.json",
+    "系统/生产架构/SYS-002/ASSET_IDENTITY_GATE.json",
+    "系统/生产架构/SYS-002/STATE_PHASE_TRANSITION_TABLE.json（仅登记新BLOCKED主状态）",
+    "交付/SYS-002/V1/R3/交付.json"
   ],
   "forbidden_scope": [
-    "14个角色数量和主体职责",
-    "R01总监独占正式权限",
+    "14角色数量和主体职责",
     "R02/R03/R04研究时序",
     "PRODUCT LOCK",
     "SKU LOCK",
     "PERSONA LOCK",
-    "ASSET MANIFEST",
-    "R09图片制作职责",
-    "R10/R11/R12三道图片审核职责",
-    "并行证据链",
+    "R09职责主体",
+    "R10/R11/R12审核主体",
+    "并行证据链主体",
     "幂等键",
-    "R13真实性审核职责",
-    "四大发布硬门禁",
+    "R13主体",
+    "R14主体",
+    "state/phase尾段迁移主体",
     "局部返修主体规则",
-    "USER_FILE图片传递模式",
-    "SYS-001"
+    "SYS-001历史文件"
   ],
   "acceptance_criteria": [
-    "main state与business phase始终是两个独立字段。",
-    "PUBLISHED、DATA_FEEDBACK、CLOSED不得作为state值。",
-    "尾段每次正式迁移同时记录state_transition与phase_transition，且只由R01执行。",
-    "发布尾段映射为BUILDING/PUBLISH_PREP → READY/PUBLISH_READY → PASS/PUBLISHED。",
-    "数据尾段映射为READY/DATA_WAITING → BUILDING/DATA_FEEDBACK → PASS/DATA_REVIEWED → NEXT_TASK/NEXT_CONTENT或LOCKED/CLOSED。",
-    "新AI只读生产当前进度即可分别回答主状态与业务阶段。"
+    "ACTIVE图片资产fingerprint必须非空且机器可验证；无法取得时进入BLOCKED_ASSET_IDENTITY_UNVERIFIABLE。",
+    "用户永远不需要手工计算SHA-256。",
+    "BLOCKED资产不得激活manifest，不得启动/继续计入R10/R11/R12有效PASS。",
+    "根数据库入口.json与当前进度.json准确指向SYS-002/V1/R3，生产目录采用生产/命名空间。",
+    "新AI只读数据库入口→当前进度→active_task_path→active_revision_path→delivery_path即可恢复当前SYS-002 R3。"
   ],
   "baseline_fixed_commit": "57de47e58758762ffb904a81823e7242a971fd4d",
   "r1_fixed_commit": "6e95e466479b0d19b2f7a13c51beaf6c786f4a97",
-  "current_revision_round": "R2",
-  "active_revision_path": "返修/SYS-002/V1/R2/任务.json",
-  "delivery_path": "交付/SYS-002/V1/R2/交付.json",
+  "r2_fixed_commit": "2c35d66bf3246c688a19a83bc15907a877dad0c5",
+  "current_revision_round": "R3",
+  "active_revision_path": "返修/SYS-002/V1/R3/任务.json",
+  "delivery_path": "交付/SYS-002/V1/R3/交付.json",
   "formal_task_path": "任务/SYS-002/V1/任务.json",
   "assigned_to": "AI系统制作员",
   "review_after_build": {
-    "AI系统审核员A": ["state/phase拆分", "STATE_PHASE_TRANSITION_TABLE", "生产尾段迁移合法性"],
-    "AI系统审核员B": "PASS_FROZEN_NO_REVIEW_REQUIRED"
+    "AI系统审核员A": ["根数据库入口/当前进度单一真源一致性"],
+    "AI系统审核员B": ["fingerprint非空硬门禁", "BLOCKED_ASSET_IDENTITY_UNVERIFIABLE", "三审不得消费不可验证资产身份"]
   }
 }
