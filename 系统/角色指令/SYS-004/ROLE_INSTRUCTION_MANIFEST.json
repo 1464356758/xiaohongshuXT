@@ -3,36 +3,36 @@
   "task_id": "SYS-004",
   "task_version": "V1",
   "input_revision": 1,
-  "revision_round": null,
+  "revision_round": "R1",
   "source_module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
   "source_architecture_fixed_commit": "5dfa8459a55942fe913971766bcb163b7a205f54",
   "role_count": 16,
   "role_instruction_set_fingerprint_type": "SHA256_CANONICAL_ROLE_ID_PATH_GIT_BLOB_SHA",
-  "role_instruction_set_fingerprint": "2c5fa9cd96d06fb1fd513fa9fc06195060b5155d7c290a76533e97bf51182039",
+  "role_instruction_set_fingerprint": "5dbf7a25796c9acc0588247586a0394c33c64b92f789e5c1b6568f5aed86f981",
   "roles": [
     {
       "role_id": "R01",
       "name": "运营总监AI",
       "path": "系统/角色指令/SYS-004/R01_运营总监AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "409c0bba10e7420a4ae87deeb497734931abb729",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "6b25f255b87d42d70046cbe22d55c23f2842b97c",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R02",
       "name": "热点侦察AI",
       "path": "系统/角色指令/SYS-004/R02_热点侦察AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "5bad9b63f3f616c9bcf0486da35c3d110b89fd07",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "29d73b8b04d685d5972622ccc66f51eb82a3fba4",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R03",
       "name": "市场与竞品研究AI",
       "path": "系统/角色指令/SYS-004/R03_市场与竞品研究AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "474731362e3d57bc400b7dc93b0d2bd27a8989f1",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "f7becc609413e2d41235bf2b08734630d592bd72",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R04",
@@ -40,7 +40,7 @@
       "path": "系统/角色指令/SYS-004/R04_商品事实研究AI.md",
       "instruction_version": "V1",
       "git_blob_sha": "f17922be389d0f525a40d89b3248bb8e7f2da7be",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "status": "FROZEN_UNCHANGED_R1"
     },
     {
       "role_id": "R05",
@@ -48,7 +48,7 @@
       "path": "系统/角色指令/SYS-004/R05_商品与SKU管理员AI.md",
       "instruction_version": "V1",
       "git_blob_sha": "667d6740a14501836d897d5362e32dc71b127086",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "status": "FROZEN_UNCHANGED_R1"
     },
     {
       "role_id": "R06",
@@ -56,23 +56,23 @@
       "path": "系统/角色指令/SYS-004/R06_选题策划AI.md",
       "instruction_version": "V1",
       "git_blob_sha": "2496ae00fe472b8cf5b26ddc1758b09e02d90e41",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "status": "FROZEN_UNCHANGED_R1"
     },
     {
       "role_id": "R07",
       "name": "文案脚本AI",
       "path": "系统/角色指令/SYS-004/R07_文案脚本AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "29d09dcf56a5f83b722477e39e2234c8c8d6b5ad",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "74d5362fe191470c32ae83cebb68735475c17032",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R08",
       "name": "视觉总策划AI",
       "path": "系统/角色指令/SYS-004/R08_视觉总策划AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "687999be53f1e1cd0753ee1a189663640e414f29",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "4c22321da3c2ed71f6fdeb56831c2f39d7d3a68e",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R09",
@@ -80,47 +80,47 @@
       "path": "系统/角色指令/SYS-004/R09_图片制作AI.md",
       "instruction_version": "V1",
       "git_blob_sha": "905c00a9bd667712191fea7a165d43c2af48dc41",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "status": "FROZEN_UNCHANGED_R1"
     },
     {
       "role_id": "R10",
       "name": "商品图片核验AI",
       "path": "系统/角色指令/SYS-004/R10_商品图片核验AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "0a7251fa23403a9b6db5487fe375881a3449273c",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "950b85cf14fb217ec1642dc06123c12f3fd1f5c0",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R11",
       "name": "人物一致性审核AI",
       "path": "系统/角色指令/SYS-004/R11_人物一致性审核AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "2e36acf740dfaf7ceb3d0f21f5e9e081572f9aa7",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "7be3856dc2a4fe59653d5e2dfe1213072741004e",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R12",
       "name": "图片终审AI",
       "path": "系统/角色指令/SYS-004/R12_图片终审AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "aac96682d59fc3a62d4c45ea97aeafffe528c0d4",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "be6e82baa4d2ec4033e056deaa01b17a98a77dda",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R13",
       "name": "内容真实性与平台合规审核AI",
       "path": "系统/角色指令/SYS-004/R13_内容真实性与平台合规审核AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "08eb56e1259c1f6d0555ce3773a7855b3ebe1e30",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "8c0c0dc43058af2483ab02cd489379922f8fd963",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R14",
       "name": "发布与社群运营AI",
       "path": "系统/角色指令/SYS-004/R14_发布与社群运营AI.md",
       "instruction_version": "V1",
-      "git_blob_sha": "b3cec35e243f56f9175d50675c46bb4e86c7e7f0",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "git_blob_sha": "33991cf04eff6d0779a6984fc318493e4dd63649",
+      "status": "R1_BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
     },
     {
       "role_id": "R15",
@@ -128,7 +128,7 @@
       "path": "系统/角色指令/SYS-004/R15_数据分析与实验AI.md",
       "instruction_version": "V1",
       "git_blob_sha": "8a5563feca93e7d3080acbffa516e86ca6aff427",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "status": "FROZEN_UNCHANGED_R1"
     },
     {
       "role_id": "R16",
@@ -136,7 +136,7 @@
       "path": "系统/角色指令/SYS-004/R16_账号策略与增长规划AI.md",
       "instruction_version": "V1",
       "git_blob_sha": "d7d348d10b48710229717d6a5d93321ae34866a3",
-      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+      "status": "FROZEN_UNCHANGED_R1"
     }
   ],
   "common_contract_checks": [
@@ -161,11 +161,48 @@
     "strategy": "R16 consumes only R01 trigger and counts only actual PUBLISHED::{content_id}."
   },
   "audit_required": {
-    "A": "PENDING",
-    "B": "PENDING",
-    "C": "PENDING",
+    "A": "PENDING_R1_REVIEW",
+    "B": "PENDING_R1_REVIEW",
+    "C": "PENDING_R1_INTEGRATION_REVIEW",
     "pass_rule": "A PASS + B PASS + C PASS required before AI系统总监 may create ROLE-INSTRUCTION-AUDIT-LOCK."
   },
   "audit_lock_path_expected": "批准/SYS-004/ROLE-INSTRUCTION-AUDIT-LOCK-V1.json",
-  "runtime_effect": "NONE_UNTIL_AUDIT_LOCK; runtime_enabled remains false."
+  "runtime_effect": "NONE; runtime_enabled remains false; ROLE-INSTRUCTION-AUDIT-LOCK is forbidden until A/B/C all PASS.",
+  "source_role_instruction_fixed_commit": "c1dc1d59133e957ddcce61c6a9c4bc2409378000",
+  "active_revision_path": "返修/SYS-004/V1/R1/任务.json",
+  "r1": {
+    "changed_role_ids": [
+      "R01",
+      "R02",
+      "R03",
+      "R07",
+      "R08",
+      "R10",
+      "R11",
+      "R12",
+      "R13",
+      "R14"
+    ],
+    "frozen_role_ids": [
+      "R04",
+      "R05",
+      "R06",
+      "R09",
+      "R15",
+      "R16"
+    ],
+    "frozen_sha_rule": "R04/R05/R06/R09/R15/R16 must retain their V1 git_blob_sha exactly.",
+    "repair_scope": [
+      "R01 ROUTER_BOOTSTRAP + state/phase permission semantics + non-self routing",
+      "R02/R03 and R10/R11/R12 unique parallel task addressing by role_id",
+      "R10-R14 write permissions aligned to ROLE_REGISTRY; R14 actual publish mode input",
+      "R08 PERSONA_SETUP_DRAFT + R11 PERSONA_SETUP_REVIEW/CONTENT_PERSONA_REVIEW",
+      "R07 VOICE_SETUP_DRAFT + R13 VOICE_DRAFT_TRUTH_REVIEW"
+    ],
+    "audit_required": {
+      "A": "PENDING_R1_REVIEW",
+      "B": "PENDING_R1_REVIEW",
+      "C": "PENDING_R1_INTEGRATION_REVIEW"
+    }
+  }
 }

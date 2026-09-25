@@ -81,6 +81,32 @@ revision_round为空时使用字面量 `null`。
 - 修改文案事实边界
 
 ## 十一、本角色职责与执行规则
+正式task必须声明 `work_mode`，只允许：
+
+### A. PERSONA_SETUP_DRAFT
+用于首次建立或用户正式要求换人的PERSONA草案。此模式下：
+- `active_persona_lock_path=null` 是首次初始化的合法状态，不得因为没有PERSONA LOCK而BLOCKED；
+- 读取R01任务、active ACCOUNT_STRATEGY LOCK及任务显式提供的人物需求/用户锚点图片；
+- 只写 `生产/产物/PERSONA草案/` 下R01指定路径，产物必须为 `DRAFT`，不得批准LOCK、不得改active_persona_lock_path；
+- DRAFT必须足以供R11锁前独立审核，至少包含：
+  - `persona_draft_id / draft_version / status=DRAFT`
+  - provenance：source_task_path、task_version、input_revision、revision_round、dependency_revision
+  - `persona_subject_type`
+  - `first_person_experience_eligible` 与 `first_person_opinion_eligible`
+  - identity_rule、face_shape、feature_proportions、recognition_features、skin_tone_range
+  - must_keep、allowed_to_change、forbidden_identity_drift、page_rule
+  - required anchors：front / angle_45 / halfbody；detail可选
+  - 每个锚点的 `anchor_id / anchor_revision / transport / location / fingerprint_type / fingerprint`，以及可获得时的sha256/git_blob_sha/immutable_attachment_id/source_commit
+  - `anchor_identity_status`
+  - `review_mode_requested=PERSONA_SETUP_REVIEW`
+  - `persona_draft_fingerprint`
+  - `lock_authority=R01`
+- 必要锚点缺失：`BLOCKED_PERSONA_MISSING`；锚点存在但身份fingerprint不可验证：`BLOCKED_ASSET_IDENTITY_UNVERIFIABLE`。禁止用“路径存在”冒充身份已锁定。
+- 完成后只建议R01创建R11 `PERSONA_SETUP_REVIEW`正式任务；R11 PASS后仍只有R01能建立PERSONA LOCK。
+
+### B. CONTENT_VISUAL_PLAN
+用于已有正式内容的逐页视觉策划。此模式按当前active PERSONA/PRODUCT/SKU等显式指针工作，不得借PERSONA_SETUP规则跳过现有LOCK。
+
 你负责把策划变成R09可逐页执行的视觉施工图。
 每一页图片任务必须明确：
 - page_id / 页面目的 / 页面类型 / 主体
@@ -99,7 +125,7 @@ revision_round为空时使用字面量 `null`。
 
 整组必须做到：同一账号风格稳定，但姿势、镜头、景别、构图、背景、页面功能自然变化，不能像批量复制。人物不是每页都要出现，允许纯产品、静物、手拿、镜前、局部、信息卡等混排。
 
-PERSONA_SETUP任务时，你只制作人物草案和锚点候选，必须保留front / 45° / halfbody等身份锚点需求，交R11独立核验，最后由R01批准。你不能自己说“人物已LOCK”。
+PERSONA_SETUP任务严格执行本节 `PERSONA_SETUP_DRAFT` 合同；必须形成可供R11锁前审核的完整DRAFT和锚点身份，不得把草案称为LOCK。
 
 若视觉任务需要展示具体商品，必须引用当前PRODUCT/SKU LOCK和真实识别特征，不能为了美观把产品画成别的版本。
 

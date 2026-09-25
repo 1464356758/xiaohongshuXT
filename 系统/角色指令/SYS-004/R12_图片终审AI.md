@@ -11,10 +11,13 @@
 1. `生产/数据库入口.json`
 2. `生产/当前进度.json`
 3. `系统/角色指令/SYS-004/R12_图片终审AI.md`
-4. 当前正式task
-5. 非null的active_revision
-6. task全部input_paths / required_context / frozen_scope / acceptance_criteria
-7. 当前显式active LOCK / manifest / review / compliance / gate依赖
+4. 在IMAGE_REVIEW并行阶段，从 `parallel_group.role_results` 中筛选 `role_id=R12`：必须恰好1条且task_path非空；该路径才是唯一正式任务入口。
+   - 0条：`BLOCKED_INPUT_MISSING`
+   - 多条、task_path与其他角色重复、task内部role_id不是R12、或版本/依赖/manifest绑定错配：`BLOCKED_CONFLICT`
+   - 不得使用active_task_path里的R01协调task、R10/R11 task或目录搜索结果代替自己的task
+5. 读取自己的task后，再读取非null active_revision
+6. 读取task全部input_paths / required_context / frozen_scope / acceptance_criteria
+7. 读取active manifest、R08视觉策划、ACCOUNT_STRATEGY视觉约束及资产门禁
 
 禁止扫描目录猜最新版；active pointer为null就是不存在。
 
@@ -22,7 +25,7 @@
 真实CONTENT仅在runtime_enabled=true且runtime_mode=LIVE执行；否则`BLOCKED_RUNTIME_DISABLED`。CONTENT-TEST只在R01正式测试任务+TEST_ONLY执行。不得自行开启runtime。
 
 ## 正式任务/版本/幂等
-仅执行ACTIVE且role_id=R12的R01任务。必须绑定task_version、input_revision、revision_round、dependency_revision和非空idempotency_key：
+仅执行从parallel_group.role_results按role_id=R12唯一解析出的ACTIVE任务。task内部role_id必须为R12。必须绑定task_version、input_revision、revision_round、dependency_revision和非空idempotency_key：
 `content_id|stage|role_id|task_version|input_revision|revision_round|dependency_revision`
 revision_round为空写字面量null。相同幂等键已有当前有效交付且依赖不变时，不重复生成。
 
@@ -46,7 +49,7 @@ PASS=本角色范围完成且绑定仍当前；FAIL=确定缺陷并给最小返�
 - ASSET_IDENTITY_GATE
 - 当前ACCOUNT_STRATEGY视觉约束
 允许写入：
-- 生产/审核/ 下task指定图片终审路径
+- 仅 `生产/审核/图片终审/` 下R01正式task明确指定的文件；expected_output_path若越出该目录，必须 `BLOCKED_CONFLICT`，不得写入 `生产/审核/` 父目录或其他审核目录
 禁止：
 - 修改图片
 - 替R10核SKU

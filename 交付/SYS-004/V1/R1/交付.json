@@ -1,0 +1,69 @@
+{
+  "task_id": "SYS-004",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R1",
+  "role": "AI系统制作员",
+  "result": "BUILD_COMPLETE",
+  "source_fixed_commit": "c1dc1d59133e957ddcce61c6a9c4bc2409378000",
+  "source_revision_path": "返修/SYS-004/V1/R1/任务.json",
+  "role_instruction_manifest_path": "系统/角色指令/SYS-004/ROLE_INSTRUCTION_MANIFEST.json",
+  "role_instruction_set_fingerprint": "5dbf7a25796c9acc0588247586a0394c33c64b92f789e5c1b6568f5aed86f981",
+  "changed_role_ids": [
+    "R01",
+    "R02",
+    "R03",
+    "R07",
+    "R08",
+    "R10",
+    "R11",
+    "R12",
+    "R13",
+    "R14"
+  ],
+  "frozen_role_ids": [
+    "R04",
+    "R05",
+    "R06",
+    "R09",
+    "R15",
+    "R16"
+  ],
+  "frozen_role_blob_shas": {
+    "R04": "f17922be389d0f525a40d89b3248bb8e7f2da7be",
+    "R05": "667d6740a14501836d897d5362e32dc71b127086",
+    "R06": "2496ae00fe472b8cf5b26ddc1758b09e02d90e41",
+    "R09": "905c00a9bd667712191fea7a165d43c2af48dc41",
+    "R15": "8a5563feca93e7d3080acbffa516e86ca6aff427",
+    "R16": "d7d348d10b48710229717d6a5d93321ae34866a3"
+  },
+  "closed_p1": [
+    "R01权限语义去矛盾，运行state/phase可按锁定表执行但不得改定义；取消固定自循环",
+    "R01为R02/R03及R10/R11/R12建立parallel_group.role_results唯一task_path；并行角色按role_id唯一寻址",
+    "R10-R14写权限收窄至ROLE_REGISTRY授权子树；R14增加实际发布模式输入权限且不得写Gate结论",
+    "R08 PERSONA_SETUP_DRAFT完整合同；R11双review_mode，首次active PERSONA LOCK为null不阻断",
+    "R07 VOICE_SETUP_DRAFT完整合同；R13 VOICE_DRAFT_TRUTH_REVIEW允许首次active VOICE LOCK为null",
+    "R01 ROUTER_BOOTSTRAP在active_task_path=null的合法state/phase下仅允许控制面自举，不得代做专业产物"
+  ],
+  "self_check": {
+    "router_bootstrap_control_plane_only": true,
+    "r01_runtime_state_permission_not_architecture_mutation": true,
+    "r01_no_fixed_self_loop": true,
+    "parallel_role_task_unique_addressing": true,
+    "r10_r14_write_scope_registry_aligned": true,
+    "r14_actual_publish_scope_input_only": true,
+    "persona_first_init_chain": "R08 DRAFT -> R11 PRE-LOCK REVIEW -> R01 LOCK",
+    "voice_first_init_chain": "R07 DRAFT -> R13 PRE-LOCK REVIEW -> R01 LOCK",
+    "frozen_roles_sha_unchanged": true,
+    "sys003_architecture_modified": false,
+    "runtime_enabled": false,
+    "role_instruction_audit_lock_created": false
+  },
+  "required_review_after_build": {
+    "A": "仅复审R1中A的3项",
+    "B": "仅复审R1中B的2项",
+    "C": "仅复审ROUTER_BOOTSTRAP、PERSONA/VOICE首次初始化、并行task寻址、冻结回归"
+  },
+  "formal_system_pass_declared": false
+}

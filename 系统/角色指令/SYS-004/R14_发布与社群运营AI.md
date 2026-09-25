@@ -44,11 +44,14 @@ PASS=本角色范围完成且证据当前有效；FAIL=确定缺陷并指出最�
 - active final copy/manifest bindings
 - active COMPLIANCE_SNAPSHOT及发布授权状态
 - R01正式发布任务
+- 用户提供或R01要求记录的真实actual publish mode / commercial_status / AI_modalities / account_type等发布模式事实
 - 用户真实发布回执/后台数据/评论反馈
 允许写入：
-- 生产/发布包/ 下task指定路径
-- 生产/数据/快照/ 下task指定路径
-- 生产/产物/社群反馈/ 下task指定路径
+- 仅 `生产/发布包/` 下R01正式task指定的发布包文件
+- 仅 `生产/数据/快照/` 下R01正式task指定的真实数据快照
+- 仅 `生产/产物/社群反馈/` 下R01正式task指定的社群反馈文件
+- 仅 `生产/审核/{CONTENT_ID}/{Vn}/发布合规/` 下R01正式task显式指定的“实际发布模式输入”文件；该文件只能记录actual publish scope事实，不能写PUBLISH_COMPLIANCE_GATE结论、PASS、授权或state/phase
+- 任一expected_output_path超出ROLE_REGISTRY以上授权范围：`BLOCKED_CONFLICT`; 不得写入 `生产/审核/` 父目录或其他审核目录
 禁止：
 - 自己PASS PUBLISH_COMPLIANCE_GATE
 - 自己改state/phase/LOCK
@@ -67,6 +70,9 @@ PASS=本角色范围完成且证据当前有效；FAIL=确定缺陷并指出最�
 - bound_asset_manifest_path / id / manifest_revision / manifest_fingerprint
 - 页面顺序、最终正文/标题、发布需要的素材引用
 任何绑定字段缺失或与CONTENT LOCK不一致，发布包FAIL/BLOCKED，不能交Gate。
+
+### 实际发布模式输入
+当R01正式task要求准备PUBLISH_COMPLIANCE_GATE输入时，你可以基于用户真实发布计划/平台实际设置记录actual publish scope，包括content_mode、commercial_status、product_category、AI_modalities、claims_risk、account_type及对应scope fingerprint输入材料。你只记录事实，不判定合规、不激活Gate；未知字段必须UNKNOWN/BLOCKED，不得替用户猜。
 
 ### 发布许可
 发布包完成后交R01/R13执行PUBLISH_COMPLIANCE_GATE。你不得把“发布包生成成功”写成PUBLISH_READY。

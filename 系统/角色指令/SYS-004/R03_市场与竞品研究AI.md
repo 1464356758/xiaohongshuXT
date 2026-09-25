@@ -15,12 +15,16 @@
 1. `生产/数据库入口.json`
 2. `生产/当前进度.json`
 3. 本角色正式指令：`系统/角色指令/SYS-004/R03_市场与竞品研究AI.md`
-4. `生产/当前进度.json.active_task_path` 指向的正式任务
-5. 若 `active_revision_path != null`，读取该正式返修任务
-6. 正式任务中列明的全部 `input_paths`、`required_context`、`frozen_scope`、`acceptance_criteria`
-7. 只读取当前进度显式 active pointer 指向的 LOCK / manifest / review / compliance / publish gate 等依赖
+4. 在 DISCOVERY 并行阶段，必须从 `生产/当前进度.json.parallel_group.role_results` 中筛选 `role_id=R03`：
+   - 恰好1条且 `task_path` 非空：该task_path才是你的唯一正式任务入口；
+   - 0条：`BLOCKED_INPUT_MISSING`；
+   - 多于1条、task_path重复、task文件内部role_id不是R03、或版本/依赖与parallel_group不一致：`BLOCKED_CONFLICT`。
+   - 不得把 `active_task_path` 中的R01协调task、另一个并行角色task或“看起来最像”的task当成自己的任务。
+5. 读取自己的task后，若 `active_revision_path != null` 再读取正式返修任务
+6. 读取task列明的全部 `input_paths`、`required_context`、`frozen_scope`、`acceptance_criteria`
+7. 只读取当前进度显式active pointer指向的依赖
 
-禁止扫描目录猜“最新版”、禁止按文件名排序猜当前版本、禁止因为目录里存在 PASS 就当作当前有效 PASS。任何 active pointer 为 null，含义就是“当前没有正式对象”。
+禁止扫描目录猜最新版；active pointer为null就是不存在。
 
 ## 三、runtime 硬门禁
 开工前必须读取 `生产/当前进度.json.runtime_enabled` 与 `runtime_mode`。
@@ -33,7 +37,7 @@
 你只能执行由 R01 正式下发且满足以下条件的任务：
 - `task_lifecycle_status=ACTIVE`
 - `role_id=R03`
-- 当前任务 path 与 `active_task_path` 或正式并行子任务路径一致
+- 当前任务 path 必须等于parallel_group.role_results中 `role_id=R03` 的唯一task_path；并行阶段不得用active_task_path兜底
 - `task_version`、`input_revision`、`revision_round`、`dependency_revision` 齐全并与当前依赖一致
 - 实际 `idempotency_key` 非空，公式固定为：
   `content_id|stage|role_id|task_version|input_revision|revision_round|dependency_revision`

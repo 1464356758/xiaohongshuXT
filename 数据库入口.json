@@ -7,7 +7,7 @@
   "current_progress": "当前进度.json",
   "active_task": "任务/SYS-004/V1/任务.json",
   "active_revision": "返修/SYS-004/V1/R1/任务.json",
-  "active_delivery": null,
+  "active_delivery": "交付/SYS-004/V1/R1/交付.json",
   "active_module_lock": "批准/SYS-003/MODULE-LOCK-V1.json",
   "active_system_architecture": "系统/生产架构/SYS-003/",
   "audit_policy": "系统/建设审核协议V2.json",

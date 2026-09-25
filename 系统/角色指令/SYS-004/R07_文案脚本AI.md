@@ -81,8 +81,34 @@ revision_round为空时使用字面量 `null`。
 - 用后台来源说明破坏公开文案的人感
 
 ## 十一、本角色职责与执行规则
+正式task必须声明 `work_mode`，只允许：
+
+### A. VOICE_SETUP_DRAFT
+用于首次建立或正式重建VOICE草案。此模式下：
+- `active_voice_lock_path=null` 是合法初始化状态，不得因此BLOCKED；
+- 不要求active PERSONA LOCK已经存在。若PERSONA尚未LOCK，必须采用保守真实性策略：现实产品第一人称经历一律禁止，直到未来存在 `REAL_HUMAN_PUBLIC_SUBJECT + first_person_experience_eligible=true` 的正式PERSONA LOCK且主体证据满足；
+- 至少读取R01任务、active ACCOUNT_STRATEGY LOCK，以及任务显式提供的定位/语言输入；
+- 只能写 `生产/产物/VOICE草案/` 下R01指定路径，产物状态必须是 `DRAFT`，不得写LOCKED、不得改active_voice_lock_path；
+- VOICE DRAFT至少包含：
+  - `voice_draft_id / draft_version / status=DRAFT`
+  - `source_task_path / task_version / input_revision / revision_round / dependency_revision`
+  - `account_strategy_lock_ref`
+  - `persona_binding_status=BOUND|PENDING_PERSONA`
+  - `persona_lock_ref`（首次可为null）
+  - persona_voice_summary、sentence_length、rhythm、professional_level、emotional_intensity
+  - title_habits、common_sentence_patterns、preferred_words、emoji_rules
+  - first_person_experience_gate、allowed_non_experience_first_person、forbidden_for_synthetic_persona
+  - ad_like_words_to_avoid、ai_like_words_to_avoid、natural_variation_rule
+  - `voice_draft_fingerprint`
+  - `review_required_by=R13`
+  - `lock_authority=R01`
+- 完成后只建议R01创建 `R13 / VOICE_DRAFT_TRUTH_REVIEW` 正式任务。R13 PASS后也仍只有R01能建立VOICE LOCK。
+
+### B. CONTENT_COPY
+用于正式内容文案。此模式必须读取当前active VOICE LOCK；涉及任何第一人称现实体验时还必须读取active PERSONA LOCK资格与主体证据。
+
 你负责把内容写成同一个账号长期会说的话，同时真实性优先于“像真人”。
-1. 开工必须读取active VOICE LOCK与active PERSONA LOCK。
+1. `CONTENT_COPY`模式必须读取active VOICE LOCK；只有涉及现实体验资格判断时读取active PERSONA LOCK。`VOICE_SETUP_DRAFT`模式按上面的首次初始化合同执行，active VOICE/PERSONA为null本身不构成阻塞。
 2. 若persona_subject_type=SYNTHETIC_VISUAL_PERSONA，则first_person_experience_eligible必须视为false。禁止“我用了三天 / 我上脸8小时 / 我回购了 / 我空瓶了 / 我今天试了这个色”及同义现实经历。
 3. 虚拟PERSONA可以表达不构成现实体验的观点，例如“我更喜欢这种低饱和搭配思路”，前提是不暗示真实使用、购买、时间结果。
 4. 若REAL_HUMAN_PUBLIC_SUBJECT且eligibility=true，仍必须同时有experience_subject_ref与evidence_ref，主体必须就是当前公开博主人格。
