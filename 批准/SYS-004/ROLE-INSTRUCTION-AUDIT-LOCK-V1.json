@@ -1,0 +1,122 @@
+{
+  "schema": "SYS-004_ROLE_INSTRUCTION_AUDIT_LOCK_V1",
+  "task_id": "SYS-004",
+  "task_version": "V1",
+  "revision_round": "R1",
+  "status": "LOCKED",
+  "fixed_commit": "4ac740011f230a11e2b39f0cd5e848ba470c0944",
+  "role_instruction_set_fingerprint": "5dbf7a25796c9acc0588247586a0394c33c64b92f789e5c1b6568f5aed86f981",
+  "role_instruction_set_fingerprint_type": "SHA256_CANONICAL_ROLE_ID_PATH_GIT_BLOB_SHA",
+  "locked_role_blob_list": [
+    {
+      "role_id": "R01",
+      "path": "系统/角色指令/SYS-004/R01_运营总监AI.md",
+      "git_blob_sha": "6b25f255b87d42d70046cbe22d55c23f2842b97c"
+    },
+    {
+      "role_id": "R02",
+      "path": "系统/角色指令/SYS-004/R02_热点侦察AI.md",
+      "git_blob_sha": "29d73b8b04d685d5972622ccc66f51eb82a3fba4"
+    },
+    {
+      "role_id": "R03",
+      "path": "系统/角色指令/SYS-004/R03_市场与竞品研究AI.md",
+      "git_blob_sha": "f7becc609413e2d41235bf2b08734630d592bd72"
+    },
+    {
+      "role_id": "R04",
+      "path": "系统/角色指令/SYS-004/R04_商品事实研究AI.md",
+      "git_blob_sha": "f17922be389d0f525a40d89b3248bb8e7f2da7be"
+    },
+    {
+      "role_id": "R05",
+      "path": "系统/角色指令/SYS-004/R05_商品与SKU管理员AI.md",
+      "git_blob_sha": "667d6740a14501836d897d5362e32dc71b127086"
+    },
+    {
+      "role_id": "R06",
+      "path": "系统/角色指令/SYS-004/R06_选题策划AI.md",
+      "git_blob_sha": "2496ae00fe472b8cf5b26ddc1758b09e02d90e41"
+    },
+    {
+      "role_id": "R07",
+      "path": "系统/角色指令/SYS-004/R07_文案脚本AI.md",
+      "git_blob_sha": "74d5362fe191470c32ae83cebb68735475c17032"
+    },
+    {
+      "role_id": "R08",
+      "path": "系统/角色指令/SYS-004/R08_视觉总策划AI.md",
+      "git_blob_sha": "4c22321da3c2ed71f6fdeb56831c2f39d7d3a68e"
+    },
+    {
+      "role_id": "R09",
+      "path": "系统/角色指令/SYS-004/R09_图片制作AI.md",
+      "git_blob_sha": "905c00a9bd667712191fea7a165d43c2af48dc41"
+    },
+    {
+      "role_id": "R10",
+      "path": "系统/角色指令/SYS-004/R10_商品图片核验AI.md",
+      "git_blob_sha": "950b85cf14fb217ec1642dc06123c12f3fd1f5c0"
+    },
+    {
+      "role_id": "R11",
+      "path": "系统/角色指令/SYS-004/R11_人物一致性审核AI.md",
+      "git_blob_sha": "7be3856dc2a4fe59653d5e2dfe1213072741004e"
+    },
+    {
+      "role_id": "R12",
+      "path": "系统/角色指令/SYS-004/R12_图片终审AI.md",
+      "git_blob_sha": "be6e82baa4d2ec4033e056deaa01b17a98a77dda"
+    },
+    {
+      "role_id": "R13",
+      "path": "系统/角色指令/SYS-004/R13_内容真实性与平台合规审核AI.md",
+      "git_blob_sha": "8c0c0dc43058af2483ab02cd489379922f8fd963"
+    },
+    {
+      "role_id": "R14",
+      "path": "系统/角色指令/SYS-004/R14_发布与社群运营AI.md",
+      "git_blob_sha": "33991cf04eff6d0779a6984fc318493e4dd63649"
+    },
+    {
+      "role_id": "R15",
+      "path": "系统/角色指令/SYS-004/R15_数据分析与实验AI.md",
+      "git_blob_sha": "8a5563feca93e7d3080acbffa516e86ca6aff427"
+    },
+    {
+      "role_id": "R16",
+      "path": "系统/角色指令/SYS-004/R16_账号策略与增长规划AI.md",
+      "git_blob_sha": "d7d348d10b48710229717d6a5d93321ae34866a3"
+    }
+  ],
+  "audits": {
+    "A": {
+      "result": "PASS_FROZEN",
+      "p0": 0,
+      "p1": 0
+    },
+    "B": {
+      "result": "PASS_FROZEN",
+      "p0": 0,
+      "p1": 0
+    },
+    "C": {
+      "result": "PASS_FROZEN",
+      "p0": 0,
+      "p1": 0
+    }
+  },
+  "pass_rule": "A PASS + B PASS + C PASS",
+  "c_final_scope": [
+    "ROUTER_BOOTSTRAP",
+    "PERSONA first init",
+    "VOICE first init",
+    "parallel task stitching",
+    "frozen-role regression"
+  ],
+  "c_result": "PASS",
+  "score": 94,
+  "runtime_effect": "This lock satisfies runtime_activation.role_instruction_audit_lock_path only. runtime must remain false until CONTENT-TEST-001 PASS evidence also exists.",
+  "canonical_identity_rule": "The authoritative identity is this exact ordered locked_role_blob_list together with role_instruction_set_fingerprint from the manifest. Consumers must compare all 16 role_id/path/git_blob_sha entries; do not recompute from an unspecified serializer.",
+  "next_task": "CONTENT-TEST-001"
+}
