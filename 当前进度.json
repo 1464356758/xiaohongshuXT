@@ -1,40 +1,45 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V2.0-CANDIDATE-R3-FINAL",
-  "task_id": "SYS-003",
+  "system_version": "V2.0-ARCH-LOCKED-ROLE-BUILD",
+  "task_id": "SYS-004",
   "task_version": "V1",
   "input_revision": 1,
-  "revision_round": "R3",
-  "state": "REVIEWING",
+  "revision_round": null,
+  "state": "READY",
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "AI系统总监",
-  "build_result": "R3_FINAL_BUILD_COMPLETE_PENDING_A_B_C_REVIEW",
+  "build_result": "SYS-003_MODULE_LOCKED_SYS-004_READY_FOR_BUILD",
   "builder": "AI系统制作员",
-  "active_task_path": "任务/SYS-003/V1/任务.json",
-  "active_revision_path": "返修/SYS-003/V1/R3/任务.json",
-  "delivery_path": "交付/SYS-003/V1/R3/交付.json",
+  "active_task_path": "任务/SYS-004/V1/任务.json",
+  "active_revision_path": null,
+  "delivery_path": null,
   "active_system_architecture_path": "系统/生产架构/SYS-003/",
+  "active_module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
   "audit_policy_path": "系统/建设审核协议V2.json",
   "production_namespace": "生产/",
-  "review_status": {
-    "AI系统审核员A": "PENDING_R3_FINAL_REVIEW",
-    "AI系统审核员B": "PENDING_R3_FINAL_REVIEW",
-    "AI系统审核员C": "PENDING_R3_FINAL_INTEGRATION_REVIEW"
+  "previous_module": {
+    "task_id": "SYS-003",
+    "result": "PASS_LOCKED",
+    "fixed_commit": "5dfa8459a55942fe913971766bcb163b7a205f54",
+    "score": 94,
+    "audit": {
+      "A": "PASS_FROZEN",
+      "B": "PASS_FROZEN",
+      "C": "PASS_FROZEN"
+    }
   },
-  "lock_status": "UNLOCKED",
+  "review_status": {
+    "AI系统审核员A": "NOT_STARTED_SYS004",
+    "AI系统审核员B": "NOT_STARTED_SYS004",
+    "AI系统审核员C": "NOT_STARTED_SYS004"
+  },
+  "lock_status": "SYS-003_LOCKED",
   "runtime_enabled": false,
   "next_roles": [
-    "AI系统审核员A",
-    "AI系统审核员B",
-    "AI系统审核员C"
+    "AI系统制作员"
   ],
-  "module_lock_rule": "仅AI系统总监可在A/B/C全部PASS后建立SYSTEM MODULE LOCK。",
-  "bootstrap_note": "SYS-003 R3 FINAL仅关闭A2+B1+C2共5个P1，并启用停止继续设计规则。runtime继续关闭。",
-  "updated_at": "2026-09-25T07:53:00+08:00",
-  "previous_revision": {
-    "revision_round": "R2",
-    "fixed_commit": "680313f54d8512566b6237a4fba18dec9be4d2b7",
-    "result": "FAIL_90"
-  },
+  "module_lock_rule": "SYS-003架构已LOCK；SYS-004完成后必须A/B/C三审，只有正式ROLE-INSTRUCTION-AUDIT-LOCK可作为runtime第二证据。",
+  "bootstrap_note": "架构设计阶段结束。当前只建设R01-R16正式角色指令，不允许开启SYS-003 R4或改变架构。",
+  "updated_at": "2026-09-25T22:11:00+08:00",
   "architecture_stop_rule_active": true
 }
