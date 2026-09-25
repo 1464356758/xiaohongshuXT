@@ -1,13 +1,14 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V2.0-CANDIDATE-R3-FINAL",
+  "system_version": "V2.0-ARCH-LOCKED-ROLE-BUILD",
   "repository": "https://github.com/1464356758/xiaohongshuXT",
   "branch": "main",
   "single_source_of_truth": "GitHub文字资料",
   "current_progress": "当前进度.json",
-  "active_task": "任务/SYS-003/V1/任务.json",
-  "active_revision": "返修/SYS-003/V1/R3/任务.json",
-  "active_delivery": "交付/SYS-003/V1/R3/交付.json",
+  "active_task": "任务/SYS-004/V1/任务.json",
+  "active_revision": null,
+  "active_delivery": null,
+  "active_module_lock": "批准/SYS-003/MODULE-LOCK-V1.json",
   "active_system_architecture": "系统/生产架构/SYS-003/",
   "audit_policy": "系统/建设审核协议V2.json",
   "production_namespace": "生产/",
@@ -24,5 +25,7 @@
     "production_state_phase": "R01",
     "production_lock_approval": "R01"
   },
-  "read_rule": "系统建设恢复：本文件→当前进度→active_task→active_revision→active_delivery。生产恢复：生产/数据库入口→生产/当前进度→runtime/active指针。禁止扫描目录。"
+  "read_rule": "系统建设恢复：本文件→当前进度→active_module_lock→active_task→active_revision(非null)→active_delivery(非null)。生产恢复：生产/数据库入口→生产/当前进度→runtime/active指针。禁止扫描目录。",
+  "architecture_status": "SYS-003_LOCKED_NO_R4",
+  "runtime_status": "DISABLED_PENDING_ROLE_INSTRUCTION_AUDIT_AND_CONTENT_TEST"
 }
