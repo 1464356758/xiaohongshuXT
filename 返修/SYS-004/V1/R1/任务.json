@@ -1,0 +1,66 @@
+{
+  "task_id": "SYS-004",
+  "task_version": "V1",
+  "input_revision": 1,
+  "parent_version": "V1",
+  "revision_round": "R1",
+  "task_lifecycle_status": "ACTIVE",
+  "task_class": "ROLE_INSTRUCTION_FOCUSED_REPAIR",
+  "created_by": "AI系统总监",
+  "source_fixed_commit": "c1dc1d59133e957ddcce61c6a9c4bc2409378000",
+  "audit_summary": {
+    "A": {
+      "p1": 3
+    },
+    "B": {
+      "p1": 2
+    },
+    "C": {
+      "p1": 1
+    }
+  },
+  "p1": [
+    "R01权限语义去矛盾：不得改架构定义，但可按LOCK状态表改运行state/phase/active pointers；结尾不得固定自循环到R01。",
+    "并行任务精确寻址：R01先在parallel_group.role_results为R02/R03/R10/R11/R12写唯一task_path；各角色按role_id取自己的task，缺失/重复/错配则BLOCKED。",
+    "R10-R14写权限与ROLE_REGISTRY精确对齐，不得扩大到生产/审核/父目录；R14补实际发布模式输入权限。",
+    "R08补PERSONA_SETUP完整DRAFT合同；R11增加PERSONA_SETUP_REVIEW与CONTENT_PERSONA_REVIEW双模式，首次无active PERSONA LOCK不得误阻断。",
+    "R07补VOICE_SETUP完整DRAFT合同；R13增加VOICE_DRAFT_TRUTH_REVIEW，首次无active VOICE LOCK可审核R01绑定草案。",
+    "R01增加ROUTER_BOOTSTRAP：当active_task_path=null且state/phase允许新生命周期时，可作为formal_task唯一authority创建首个协调task/首批角色task；仅限控制面，不得代做专业角色产物。"
+  ],
+  "allowed_role_files": [
+    "R01",
+    "R02",
+    "R03",
+    "R07",
+    "R08",
+    "R10",
+    "R11",
+    "R12",
+    "R13",
+    "R14"
+  ],
+  "frozen_role_files": [
+    "R04",
+    "R05",
+    "R06",
+    "R09",
+    "R15",
+    "R16"
+  ],
+  "manifest_rule": "改动角色文件后回读Git blob SHA并更新ROLE_INSTRUCTION_MANIFEST；未改6角色SHA保持不变；重算集合fingerprint。",
+  "p2_backlog": "最终ROLE-INSTRUCTION-AUDIT-LOCK锁入集合fingerprint canonical算法或16项role_id/path/blob SHA清单。",
+  "acceptance": [
+    "零状态R01可合法创建首批task且不需要预存R01 task",
+    "R02/R03与R10/R11/R12并行task均按role_id唯一寻址",
+    "首次PERSONA/VOICE初始化锁前审核可闭环",
+    "R10-R14越权路径必须BLOCKED",
+    "runtime继续false且不得建立ROLE-INSTRUCTION-AUDIT-LOCK"
+  ],
+  "required_review_after_build": {
+    "A": "复审3项",
+    "B": "复审2项",
+    "C": "复审bootstrap与跨角色拼接"
+  },
+  "result_rule": "制作员只能声明R1 BUILD COMPLETE；A+B+C全部PASS前不得建立ROLE-INSTRUCTION-AUDIT-LOCK。",
+  "runtime_rule": "runtime_enabled必须继续false；真实CONTENT禁止启动。"
+}
