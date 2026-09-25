@@ -1,18 +1,18 @@
 {
   "project_id": "XHS-XT",
-  "system_version": "V2.0-ARCH-LOCKED-ROLE-BUILD",
-  "task_id": "SYS-004",
+  "system_version": "V2.0-ROLE-LOCKED-STRESS-TEST",
+  "task_id": "CONTENT-TEST-001",
   "task_version": "V1",
   "input_revision": 1,
-  "revision_round": "R1",
-  "state": "REVIEWING",
+  "revision_round": null,
+  "state": "READY",
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "AI系统总监",
-  "build_result": "SYS-004_R1_BUILD_COMPLETE_PENDING_A_B_C_REVIEW",
+  "build_result": "SYS-004_ROLE_INSTRUCTIONS_LOCKED_CONTENT_TEST_001_READY",
   "builder": "AI系统制作员",
-  "active_task_path": "任务/SYS-004/V1/任务.json",
-  "active_revision_path": "返修/SYS-004/V1/R1/任务.json",
-  "delivery_path": "交付/SYS-004/V1/R1/交付.json",
+  "active_task_path": "任务/CONTENT-TEST-001/V1/任务.json",
+  "active_revision_path": null,
+  "delivery_path": null,
   "active_system_architecture_path": "系统/生产架构/SYS-003/",
   "active_module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
   "audit_policy_path": "系统/建设审核协议V2.json",
@@ -29,21 +29,22 @@
     }
   },
   "review_status": {
-    "AI系统审核员A": "PENDING_R1_REVIEW_3_P1",
-    "AI系统审核员B": "PENDING_R1_REVIEW_2_P1",
-    "AI系统审核员C": "PENDING_R1_INTEGRATION_REVIEW"
+    "AI系统审核员A": "PASS_FROZEN_SYS004_R1",
+    "AI系统审核员B": "PASS_FROZEN_SYS004_R1",
+    "AI系统审核员C": "PASS_FROZEN_SYS004_R1"
   },
-  "lock_status": "SYS-003_LOCKED",
+  "lock_status": "SYS-003_MODULE_LOCKED_SYS-004_ROLE_AUDIT_LOCKED",
   "runtime_enabled": false,
   "next_roles": [
-    "AI系统审核员A",
-    "AI系统审核员B",
-    "AI系统审核员C"
+    "R01 运营总监AI"
   ],
   "module_lock_rule": "SYS-003架构已LOCK；SYS-004完成后必须A/B/C三审，只有正式ROLE-INSTRUCTION-AUDIT-LOCK可作为runtime第二证据。",
-  "bootstrap_note": "SYS-004 R1制作完成，仅关闭正式R1的6个P1；冻结R04/R05/R06/R09/R15/R16；等待A/B/C定向复审。ROLE-INSTRUCTION-AUDIT-LOCK仍禁止建立。",
-  "updated_at": "2026-09-25T22:20:00+08:00",
+  "bootstrap_note": "SYS-004 A/B/C全部PASS并已建立ROLE-INSTRUCTION-AUDIT-LOCK。当前仅进入CONTENT-TEST-001 TEST_ONLY压力测试；真实CONTENT仍禁止。",
+  "updated_at": "2026-09-25T23:16:00+08:00",
   "architecture_stop_rule_active": true,
   "role_instruction_manifest_path": "系统/角色指令/SYS-004/ROLE_INSTRUCTION_MANIFEST.json",
-  "role_instruction_set_fingerprint": "5dbf7a25796c9acc0588247586a0394c33c64b92f789e5c1b6568f5aed86f981"
+  "role_instruction_set_fingerprint": "5dbf7a25796c9acc0588247586a0394c33c64b92f789e5c1b6568f5aed86f981",
+  "role_instruction_audit_lock_path": "批准/SYS-004/ROLE-INSTRUCTION-AUDIT-LOCK-V1.json",
+  "content_test_task_path": "任务/CONTENT-TEST-001/V1/任务.json",
+  "role_instruction_score": 94
 }
