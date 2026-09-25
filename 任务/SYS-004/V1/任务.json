@@ -1,0 +1,76 @@
+{
+  "task_id": "SYS-004",
+  "task_version": "V1",
+  "input_revision": 1,
+  "revision_round": null,
+  "task_lifecycle_status": "ACTIVE",
+  "task_class": "ROLE_INSTRUCTION_BUILD",
+  "created_by": "AI系统总监",
+  "created_at": "2026-09-25T22:11:00+08:00",
+  "source_module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
+  "source_architecture_fixed_commit": "5dfa8459a55942fe913971766bcb163b7a205f54",
+  "goal": "基于已LOCK的SYS-003架构，为R01-R16制作可直接复制到独立聊天中运行的完整正式角色指令，并通过A/B/C三方独立审核；不得重新设计SYS-003架构。",
+  "mandatory_roles": [
+    "R01 运营总监AI",
+    "R02 热点侦察AI",
+    "R03 市场与竞品研究AI",
+    "R04 商品事实研究AI",
+    "R05 商品与SKU管理员AI",
+    "R06 选题策划AI",
+    "R07 文案脚本AI",
+    "R08 视觉总策划AI",
+    "R09 图片制作AI",
+    "R10 商品图片核验AI",
+    "R11 人物一致性审核AI",
+    "R12 图片终审AI",
+    "R13 内容真实性与平台合规审核AI",
+    "R14 发布与社群运营AI",
+    "R15 数据分析与实验AI",
+    "R16 账号策略与增长规划AI"
+  ],
+  "conditional_roles": {
+    "C1": "增长投放AI，可同步制作但不作为普通CONTENT LIVE的角色指令审核硬门禁；未READY时由BLOCKED_ROLE_NOT_READY保护。",
+    "C2": "商务合作AI，可同步制作但不作为普通CONTENT LIVE的角色指令审核硬门禁；未READY时由BLOCKED_ROLE_NOT_READY保护。"
+  },
+  "output_root": "系统/角色指令/SYS-004/",
+  "common_contract_required": [
+    "启动时读取生产/数据库入口.json→生产/当前进度.json→本角色指令→R01正式任务→显式依赖，不扫描目录猜最新版",
+    "严格遵守ROLE_REGISTRY reads/writes/cannot与R01唯一正式权限",
+    "runtime=false时真实CONTENT任务必须BLOCKED_RUNTIME_DISABLED；只有正式CONTENT-TEST可TEST_ONLY",
+    "所有任务绑定task_version/input_revision/revision_round/dependency_revision/idempotency_key",
+    "只写本角色允许目录，不覆盖LOCK或历史版本",
+    "明确PASS/FAIL/BLOCKED/STALE语义与回R01路由",
+    "图片相关角色绑定active manifest+manifest_revision+fingerprint",
+    "文案/真实性角色执行PERSONA first_person_experience_eligible与VOICE LOCK",
+    "合规角色执行COMPLIANCE scope+time有效性；发布阶段执行time-bounded authorization",
+    "每次交付给出正式delivery_path、结果和下一角色建议，但建议不能替代R01正式路由"
+  ],
+  "role_specific_acceptance": [
+    "R01不得伪造专业角色交付或绕过FAIL/BLOCKED",
+    "R02/R03研究输出可并行且必须有证据与时效",
+    "R04只能研究R01候选集，区分官方事实/用户反馈/推断",
+    "R05不得自批PRODUCT/SKU LOCK",
+    "R07不得为SYNTHETIC PERSONA制造现实亲测",
+    "R08逐页视觉任务必须足够详细且支持多页面结构",
+    "R09只制作不自审，生成后建立可验证资产身份",
+    "R10/R11/R12独立审核同一active manifest",
+    "R13不能用过期或错scope合规快照PASS",
+    "R14只负责发布/社群/原始数据，不做最终数据结论",
+    "R15只基于真实同口径数据分析，一次一个主要实验变量",
+    "R16只消费R01正式trigger_event，不每篇强制运行"
+  ],
+  "audit_after_build": {
+    "A": "权限/路径/状态/任务契约/越权/恢复/幂等",
+    "B": "实际生产可用性/商品SKU/图片/PERSONA/真实性/合规/发布体验",
+    "C": "跨角色拼接/回归/从0启动/异常路径/用户操作成本/与MODULE LOCK一致性"
+  },
+  "pass_output": "批准/SYS-004/ROLE-INSTRUCTION-AUDIT-LOCK-V1.json",
+  "runtime_effect": "只有该审核锁A/B/C全部PASS后，才能填入生产/当前进度.json.runtime_activation.role_instruction_audit_lock_path；runtime仍不得LIVE，直到CONTENT-TEST-001也PASS。",
+  "forbidden": [
+    "不得修改SYS-003 MODULE LOCK",
+    "不得开启SYS-003 R4",
+    "不得新增或删除生产角色",
+    "不得用角色Prompt改变state/phase、LOCK、审核门禁或权限架构"
+  ],
+  "next_if_pass": "建立CONTENT-TEST-001正式压力测试任务"
+}
