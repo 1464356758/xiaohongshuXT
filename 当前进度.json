@@ -4,14 +4,14 @@
   "task_id": "SYS-004",
   "task_version": "V1",
   "input_revision": 1,
-  "revision_round": null,
-  "state": "REVIEWING",
+  "revision_round": "R1",
+  "state": "REVISION_REQUIRED",
   "task_lifecycle_status": "ACTIVE",
   "state_owner": "AI系统总监",
-  "build_result": "SYS-004_V1_BUILD_COMPLETE_PENDING_A_B_C_REVIEW",
+  "build_result": "SYS-004_V1_A_B_C_AUDIT_FAIL_R1_REQUIRED",
   "builder": "AI系统制作员",
   "active_task_path": "任务/SYS-004/V1/任务.json",
-  "active_revision_path": null,
+  "active_revision_path": "返修/SYS-004/V1/R1/任务.json",
   "delivery_path": "交付/SYS-004/V1/交付.json",
   "active_system_architecture_path": "系统/生产架构/SYS-003/",
   "active_module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
@@ -29,20 +29,18 @@
     }
   },
   "review_status": {
-    "AI系统审核员A": "PENDING_SYS004_V1_REVIEW",
-    "AI系统审核员B": "PENDING_SYS004_V1_REVIEW",
-    "AI系统审核员C": "PENDING_SYS004_V1_INTEGRATION_REVIEW"
+    "AI系统审核员A": "FAIL_3_P1",
+    "AI系统审核员B": "FAIL_2_P1",
+    "AI系统审核员C": "FAIL_1_P1"
   },
   "lock_status": "SYS-003_LOCKED",
   "runtime_enabled": false,
   "next_roles": [
-    "AI系统审核员A",
-    "AI系统审核员B",
-    "AI系统审核员C"
+    "AI系统制作员"
   ],
   "module_lock_rule": "SYS-003架构已LOCK；SYS-004完成后必须A/B/C三审，只有正式ROLE-INSTRUCTION-AUDIT-LOCK可作为runtime第二证据。",
-  "bootstrap_note": "SYS-004 V1已完成R01-R16正式角色指令建设，等待A/B/C三审。不得自行建立ROLE-INSTRUCTION-AUDIT-LOCK；runtime继续DISABLED。",
-  "updated_at": "2026-09-25T22:20:00+08:00",
+  "bootstrap_note": "SYS-004 V1三审未通过。R1仅修A3+B2+C1共6个P1；不得重写16角色；runtime继续DISABLED。",
+  "updated_at": "2026-09-25T22:45:00+08:00",
   "architecture_stop_rule_active": true,
   "role_instruction_manifest_path": "系统/角色指令/SYS-004/ROLE_INSTRUCTION_MANIFEST.json",
   "role_instruction_set_fingerprint": "2c5fa9cd96d06fb1fd513fa9fc06195060b5155d7c290a76533e97bf51182039"
