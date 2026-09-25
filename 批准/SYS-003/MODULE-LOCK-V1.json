@@ -1,0 +1,44 @@
+{
+  "schema": "SYS-003_MODULE_LOCK_V1",
+  "task_id": "SYS-003",
+  "module": "生产系统总架构",
+  "architecture_version": "SYS-003-R3-FINAL",
+  "status": "LOCKED",
+  "locked_by": "AI系统总监",
+  "locked_at": "2026-09-25T22:11:00+08:00",
+  "fixed_commit": "5dfa8459a55942fe913971766bcb163b7a205f54",
+  "final_score": 94,
+  "audit": {
+    "A": {
+      "result": "PASS_FROZEN",
+      "p0": 0,
+      "p1": 0
+    },
+    "B": {
+      "result": "PASS_FROZEN",
+      "p0": 0,
+      "p1": 0
+    },
+    "C": {
+      "result": "PASS_FROZEN",
+      "p0": 0,
+      "p1": 0
+    }
+  },
+  "pass_rule": "A=PASS AND B=PASS AND C=PASS",
+  "runtime": {
+    "runtime_enabled": false,
+    "runtime_mode": "DISABLED",
+    "this_lock_satisfies": "runtime_activation.module_lock_path",
+    "remaining_evidence": [
+      "role_instruction_audit_lock_path",
+      "content_test_001_pass_path"
+    ]
+  },
+  "stop_design_rule": "架构阶段结束。除后续角色指令或CONTENT-TEST-001暴露真实P0级架构致命问题外，不开启SYS-003 R4；一般缺陷进入后续任务返修。",
+  "next_module": {
+    "task_id": "SYS-004",
+    "task_path": "任务/SYS-004/V1/任务.json",
+    "name": "16个正式生产角色完整指令建设与三审"
+  }
+}
