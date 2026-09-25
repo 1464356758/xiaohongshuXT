@@ -1,0 +1,171 @@
+{
+  "schema": "SYS-004_ROLE_INSTRUCTION_MANIFEST_V1",
+  "task_id": "SYS-004",
+  "task_version": "V1",
+  "input_revision": 1,
+  "revision_round": null,
+  "source_module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
+  "source_architecture_fixed_commit": "5dfa8459a55942fe913971766bcb163b7a205f54",
+  "role_count": 16,
+  "role_instruction_set_fingerprint_type": "SHA256_CANONICAL_ROLE_ID_PATH_GIT_BLOB_SHA",
+  "role_instruction_set_fingerprint": "2c5fa9cd96d06fb1fd513fa9fc06195060b5155d7c290a76533e97bf51182039",
+  "roles": [
+    {
+      "role_id": "R01",
+      "name": "运营总监AI",
+      "path": "系统/角色指令/SYS-004/R01_运营总监AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "409c0bba10e7420a4ae87deeb497734931abb729",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R02",
+      "name": "热点侦察AI",
+      "path": "系统/角色指令/SYS-004/R02_热点侦察AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "5bad9b63f3f616c9bcf0486da35c3d110b89fd07",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R03",
+      "name": "市场与竞品研究AI",
+      "path": "系统/角色指令/SYS-004/R03_市场与竞品研究AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "474731362e3d57bc400b7dc93b0d2bd27a8989f1",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R04",
+      "name": "商品事实研究AI",
+      "path": "系统/角色指令/SYS-004/R04_商品事实研究AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "f17922be389d0f525a40d89b3248bb8e7f2da7be",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R05",
+      "name": "商品与SKU管理员AI",
+      "path": "系统/角色指令/SYS-004/R05_商品与SKU管理员AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "667d6740a14501836d897d5362e32dc71b127086",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R06",
+      "name": "选题策划AI",
+      "path": "系统/角色指令/SYS-004/R06_选题策划AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "2496ae00fe472b8cf5b26ddc1758b09e02d90e41",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R07",
+      "name": "文案脚本AI",
+      "path": "系统/角色指令/SYS-004/R07_文案脚本AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "29d09dcf56a5f83b722477e39e2234c8c8d6b5ad",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R08",
+      "name": "视觉总策划AI",
+      "path": "系统/角色指令/SYS-004/R08_视觉总策划AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "687999be53f1e1cd0753ee1a189663640e414f29",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R09",
+      "name": "图片制作AI",
+      "path": "系统/角色指令/SYS-004/R09_图片制作AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "905c00a9bd667712191fea7a165d43c2af48dc41",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R10",
+      "name": "商品图片核验AI",
+      "path": "系统/角色指令/SYS-004/R10_商品图片核验AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "0a7251fa23403a9b6db5487fe375881a3449273c",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R11",
+      "name": "人物一致性审核AI",
+      "path": "系统/角色指令/SYS-004/R11_人物一致性审核AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "2e36acf740dfaf7ceb3d0f21f5e9e081572f9aa7",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R12",
+      "name": "图片终审AI",
+      "path": "系统/角色指令/SYS-004/R12_图片终审AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "aac96682d59fc3a62d4c45ea97aeafffe528c0d4",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R13",
+      "name": "内容真实性与平台合规审核AI",
+      "path": "系统/角色指令/SYS-004/R13_内容真实性与平台合规审核AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "08eb56e1259c1f6d0555ce3773a7855b3ebe1e30",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R14",
+      "name": "发布与社群运营AI",
+      "path": "系统/角色指令/SYS-004/R14_发布与社群运营AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "b3cec35e243f56f9175d50675c46bb4e86c7e7f0",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R15",
+      "name": "数据分析与实验AI",
+      "path": "系统/角色指令/SYS-004/R15_数据分析与实验AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "8a5563feca93e7d3080acbffa516e86ca6aff427",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    },
+    {
+      "role_id": "R16",
+      "name": "账号策略与增长规划AI",
+      "path": "系统/角色指令/SYS-004/R16_账号策略与增长规划AI.md",
+      "instruction_version": "V1",
+      "git_blob_sha": "d7d348d10b48710229717d6a5d93321ae34866a3",
+      "status": "BUILD_COMPLETE_PENDING_A_B_C_AUDIT"
+    }
+  ],
+  "common_contract_checks": [
+    "startup read order",
+    "reads/writes/cannot",
+    "formal task recognition",
+    "runtime gate",
+    "task/version/input_revision/revision_round/dependency_revision/idempotency",
+    "LOCK and active pointer rules",
+    "PASS/FAIL/BLOCKED/STALE",
+    "partial revision",
+    "output/delivery",
+    "return-to-R01 routing",
+    "no directory scanning",
+    "GitHub overrides old chat"
+  ],
+  "special_contract_checks": {
+    "image_roles": "R09-R12 bind active ASSET MANIFEST + fingerprint + manifest_revision; R10/R11/R12 independent same-manifest review.",
+    "truthfulness": "R07/R13 forbid real-world product-use experience for SYNTHETIC_VISUAL_PERSONA.",
+    "compliance": "R13 enforces compliance scope + time validity and publish-time revalidation.",
+    "publish": "R14 package binds CONTENT LOCK final copy+manifest fingerprints; PUBLISH_COMPLIANCE_GATE + time-bounded authorization + actual_publish_recheck.",
+    "strategy": "R16 consumes only R01 trigger and counts only actual PUBLISHED::{content_id}."
+  },
+  "audit_required": {
+    "A": "PENDING",
+    "B": "PENDING",
+    "C": "PENDING",
+    "pass_rule": "A PASS + B PASS + C PASS required before AI系统总监 may create ROLE-INSTRUCTION-AUDIT-LOCK."
+  },
+  "audit_lock_path_expected": "批准/SYS-004/ROLE-INSTRUCTION-AUDIT-LOCK-V1.json",
+  "runtime_effect": "NONE_UNTIL_AUDIT_LOCK; runtime_enabled remains false."
+}
