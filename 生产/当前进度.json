@@ -5,17 +5,17 @@
   "runtime_mode": "DISABLED",
   "runtime_enable_authority": "AI系统总监",
   "runtime_activation": {
-    "module_lock_path": null,
+    "module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
     "role_instruction_audit_lock_path": null,
     "content_test_001_pass_path": null,
     "evidence_status": {
-      "module_lock_pass": false,
+      "module_lock_pass": true,
       "role_instruction_audit_pass": false,
       "content_test_001_pass": false
     },
-    "mechanical_enable_rule": "All three formal evidence paths must exist and PASS/LOCKED before LIVE.",
+    "mechanical_enable_rule": "All three formal evidence paths must exist, bind the current system/role/test versions, and PASS/LOCKED before LIVE.",
     "on_missing_or_fail": "BLOCKED_RUNTIME_DISABLED",
-    "hard_rule": "当前禁止真实CONTENT生产。"
+    "hard_rule": "当前仍禁止真实CONTENT生产；SYS-003 MODULE LOCK只满足第一项证据。"
   },
   "content_id": null,
   "task_id": null,
