@@ -2,20 +2,20 @@
   "schema": "SYS-003_PRODUCTION_CURRENT_PROGRESS_RUNTIME_V5_FINAL",
   "namespace": "生产",
   "runtime_enabled": false,
-  "runtime_mode": "DISABLED",
+  "runtime_mode": "TEST_ONLY",
   "runtime_enable_authority": "AI系统总监",
   "runtime_activation": {
     "module_lock_path": "批准/SYS-003/MODULE-LOCK-V1.json",
-    "role_instruction_audit_lock_path": null,
+    "role_instruction_audit_lock_path": "批准/SYS-004/ROLE-INSTRUCTION-AUDIT-LOCK-V1.json",
     "content_test_001_pass_path": null,
     "evidence_status": {
       "module_lock_pass": true,
-      "role_instruction_audit_pass": false,
+      "role_instruction_audit_pass": true,
       "content_test_001_pass": false
     },
     "mechanical_enable_rule": "All three formal evidence paths must exist, bind the current system/role/test versions, and PASS/LOCKED before LIVE.",
     "on_missing_or_fail": "BLOCKED_RUNTIME_DISABLED",
-    "hard_rule": "当前仍禁止真实CONTENT生产；SYS-003 MODULE LOCK只满足第一项证据。"
+    "hard_rule": "仅允许正式CONTENT-TEST-*压力测试；真实CONTENT仍禁止。完成CONTENT-TEST-001 PASS前不得LIVE。"
   },
   "content_id": null,
   "task_id": null,
